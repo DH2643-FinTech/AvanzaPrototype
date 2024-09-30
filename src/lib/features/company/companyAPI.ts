@@ -1,3 +1,4 @@
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { avanzaUrlBuilder, options, serverUrlBuilderCompanies } from "./urls";
 import { Company } from "./companyTypes";
