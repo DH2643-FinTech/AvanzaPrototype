@@ -1,55 +1,93 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {url, options} from './urls';
-import { Company } from './companyTypes';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { avanzaUrlBuilder, options, serverUrlBuilderCompanies } from "./urls";
+import { Company } from "./companyTypes";
+import { CompanyID } from "@/src/app/api/companies/dataTypes";
+
+interface FetchCompanyDetailsParams {
+  name: string;
+  timePeriod?: string;
+  randomCount?: number;
+}
 
 export const fetchCompanyDetails = createAsyncThunk(
-    'company/fetchCompanies',
-    async (arg:string, {dispatch, rejectWithValue}) => {
+  "company/fetchCompanies",
+  async (
+    arg: FetchCompanyDetailsParams,
+    { dispatch, rejectWithValue, getState }
+  ) => {
+    try {
 
-        try{
-            // Id should be fetched from our server and then passed as an argument to the url builder function
-            const companyToSearch:string = arg;
+      const { name, randomCount, timePeriod } = arg;
 
-            console.log("Company to search : ", arg);
+      const url = serverUrlBuilderCompanies({ name, randomCount });
+      const responseFromServer = await fetch(url);
 
-            // const response = await fetch(url, options);
-            const response = await fetch("https://www.avanza.se/_api/price-chart/stock/573878/compare/1002994?timePeriod=one_month", {
-                "headers": {
-                  "accept": "application/json, text/plain, */*",
-                  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,sv;q=0.7",
-                  "aza-do-not-touch-session": "true",
-                  "content-type": "application/json;charset=UTF-8",
-                  "priority": "u=1, i",
-                  "sec-ch-ua": "\"Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
-                  "sec-ch-ua-mobile": "?1",
-                  "sec-ch-ua-platform": "\"Android\"",
-                  "sec-fetch-dest": "empty",
-                  "sec-fetch-mode": "cors",
-                  "sec-fetch-site": "same-origin",
-                  "x-securitytoken": "-",
-                  "cookie": "AZACOOKIECONSENT_UX=YES; AZACOOKIECONSENT_ANALYSIS=YES; AZACOOKIECONSENT_MARKETING=YES; _ga=GA1.1.1217373007.1725994723; FPID=FPID2.2.cb4nt4W%2BxpvEuOquX7navjW0uwG1EMOV0jJe1HH4tPo%3D.1725994723; FPLC=F45i8bSaeNCa97pGjRq2Eqa0VfQRda0TcKvrfOa%2FYKDo%2BkcJWBOB%2FYq0BVv5zstDkcGZB3Rsvkn4eOCPPc7QOXZImmVb5TgECGeObu28aa94BzdA%2FWijaB3%2BQCmrPA%3D%3D; AZAPERSISTENCE=0253c8bd2e-1942-40bkjA6JiOFSZZjq9nI2FARQcB4oGZ46Pr_30xYq2tkIT78Z5FQI2th1mDwb9pDCaQH1I; PAGE_ANALYTICS=2e74c1cb-e543-4992-a085-75a890895a26; _ga_W3Z698S33N=GS1.1.1727334519.3.1.1727334535.0.0.70315356",
-                  "Referer": "https://www.avanza.se/aktier/om-aktien.html/573878/soltech-energy-sweden",
-                  "Referrer-Policy": "origin-when-cross-origin"
-                },
-                "body": null,
-                "method": "GET"
-              });
-                
-            const data = await response.json();
-            console.log(data);
-            console.log("Company to search 2 : ", arg);
-            return {
-                id: "1",
-                name: "Apple",
-                revenue: 234,
-                profit: 234,
-                description: "string"} as Company;
+      if (!responseFromServer.ok) {
+        throw new Error("Failed to fetch companies");
+      }
 
-        }
-        catch(error: any){
-            console.error('Fetch error:', error);
-            // return rejectWithValue((error as Error).message || 'Failed to fetch company details');
-            return "error";
-        }
+      const companyIds = await responseFromServer.json();
+
+      const avanzaUrls = avanzaUrlBuilder({
+        companyIds,
+        timePeriod,
+      });
+
+      //TODO: we may need to fetch details info about many companies at once!! Looping through all ids and fetch one by one or if we can solve it in a better way
+      const response = await fetch(avanzaUrls[0], options);
+
+      //TODO: return data
+      const data = await response.json();
+
+      return {
+        id: "1",
+        name: "Apple",
+        revenue: 234,
+        profit: 234,
+        description: "string",
+      } as Company;
+
+    } catch (error: any) {
+      console.error("Fetch error:", error);
+      // return rejectWithValue((error as Error).message || 'Failed to fetch company details');
+      return "error";
     }
+  }
 );
+
+/**
+ * DEPRECATED: Can be used for testing purposes
+ */
+
+interface FetchCompanyParams {
+  name?: string;
+  randomCount?: number;
+}
+
+export const fetchCompanyIdFromServer = createAsyncThunk<
+  CompanyID[] | string,
+  FetchCompanyParams
+>("company/fetchCompanyIdFromServer", async (params: FetchCompanyParams) => {
+  const { name, randomCount } = params;
+  let url = "/api/companies";
+
+  if (name) {
+    url += `?name=${encodeURIComponent(name)}`;
+  } else if (randomCount) {
+    url += `?randomCount=${randomCount}`;
+  }
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch companies");
+    }
+    const data = await response.json();
+    // console.log("Response : ", data);
+
+    return data as CompanyID[];
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return "error";
+  }
+});
