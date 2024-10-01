@@ -1,13 +1,13 @@
-name: App Service Code
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Node.js app to Azure Web App - dh2643
 
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-
-env:
-  AZURE_WEBAPP_NAME: web-inmeta-learn
 
 jobs:
   build:
@@ -52,11 +52,17 @@ jobs:
         with:
           name: app
 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74392A163C534447875DD95AC8490AEC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F0A9C90B1308468080F3396D9E8A438E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F8F9C6592C3342D49010906BED60FD99 }}
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: 'dh2643'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.PUBLISH_PROFILE }}
           package: .
