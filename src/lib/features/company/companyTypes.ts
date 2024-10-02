@@ -8,12 +8,32 @@ export interface Company {
   description: string;
 }
 
+export interface StockInfo{
+    timestamp: string;
+    open: number;
+    close: number;
+    low: number;
+    high:number;
+    totalVolumeTraded: number;    
+}
+
+export interface Stock{
+    id: string;
+    availableResolutions: string[];
+    chartResolution: string;
+    ohlc: StockInfo[];
+    from: string;
+    to: string; 
+}
+
 export interface CompanyState {
   companies: Company[];
   companyDetails: Company | null;
   loading: boolean;
   error: string;
   companiesIds: CompanyID[];
+  currentStock: Stock | null;
+
 }
 
 export interface AvanzaUrlParams {

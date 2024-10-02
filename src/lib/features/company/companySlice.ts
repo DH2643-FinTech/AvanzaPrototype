@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { Company, CompanyState } from './companyTypes';
+import { Company, CompanyState, Stock, StockInfo } from './companyTypes';
 import { CompanyID } from '@/src/app/api/companies/dataTypes';
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from './companyAPI';
 import { RootState } from '@/src/lib/store/store';
@@ -10,6 +10,7 @@ const initialState: CompanyState = {
     loading: false,
     error: '',
     companiesIds: [],
+    currentStock: null,
 };
 
 const companySlice = createSlice(
@@ -25,12 +26,12 @@ const companySlice = createSlice(
             builder.addCase(fetchCompanyDetails.pending, (state) => {
                 state.loading = true;
             });
-            builder.addCase(fetchCompanyDetails.fulfilled, (state, action: PayloadAction<Company | string>) => {
+            builder.addCase(fetchCompanyDetails.fulfilled, (state, action: PayloadAction<Stock | string>) => {
                 state.loading = false;
                 if (typeof action.payload === 'string') {
                     state.error = action.payload;
                 } else {
-                    state.companyDetails = action.payload;
+                    state.currentStock = action.payload;
                 }
             });
             builder.addCase(fetchCompanyDetails.rejected, (state, action) => {
