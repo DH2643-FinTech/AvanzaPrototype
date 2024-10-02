@@ -37,8 +37,8 @@ import clientPromise from '../../../lib/database/mongodb'; // assuming you're us
 export const POST = async (request: Request) => {
   try {
     const { email, password } = await request.json(); // Extract username and password from the request body
-    console.log("email: ", email);
-    console.log("password", password);
+    // console.log("email: ", email);
+    // console.log("password", password);
     const client = await clientPromise;
     const db = client.db('database');
 

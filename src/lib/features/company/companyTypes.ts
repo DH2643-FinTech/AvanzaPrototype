@@ -26,6 +26,11 @@ export interface Stock{
     to: string; 
 }
 
+export interface avanzaData {
+    stockData: Stock;
+    companyData: any;
+}
+
 export interface CompanyState {
   companies: Company[];
   companyDetails: Company | null;
@@ -33,6 +38,7 @@ export interface CompanyState {
   error: string;
   companiesIds: CompanyID[];
   currentStock: Stock | null;
+  companyData: any;
 
 }
 

@@ -20,7 +20,6 @@ export const serverUrlBuilderCompanies = ({ name, randomCount }: ServerCompanies
   } else if (randomCount) {
     url += `?randomCount=${randomCount}`; 
   }
-  
   return url; 
 };
 
@@ -54,3 +53,29 @@ export const serverUrlBuilderCompanies = ({ name, randomCount }: ServerCompanies
     },
     body: null
   }
+
+export const detailUrlBuilder = (companyId: string): string => {
+  return `https://www.avanza.se/_api/market-guide/stock/${companyId}/details`;
+};
+
+export const detailUrl = 'https://www.avanza.se/_api/market-guide/stock/1144920/details';
+
+export const detailOptions: RequestInit = {
+  method: 'GET',
+  headers: {
+    'accept': 'application/json, text/plain, */*',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept-language': 'sv-SE,sv;q=0.9,fa-IR;q=0.8,fa;q=0.7,en-US;q=0.6,en;q=0.5',
+    'content-type': 'application/json;charset=UTF-8',
+    'cookie': 'AZACOOKIECONSENT_UX=YES; AZACOOKIECONSENT_ANALYSIS=YES; AZACOOKIECONSENT_MARKETING=YES; PAGE_ANALYTICS=14e7d08c-0bac-44a7-b659-53c6178e64ba; AZAPERSISTENCE=0253c8bd2e-1942-407DZRx-39-h6nYEs_a77rQlCEMn6CbMODMeMtv2IsL0jcpZse28HiiaOGI6InaRK7b_8',
+    'referer': 'https://www.avanza.se/aktier/om-aktien.html/1144920/verve-group',
+    'sec-ch-ua': '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-platform': '"Android"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-origin',
+    'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Mobile Safari/537.36'
+  },
+  mode: 'cors',
+};

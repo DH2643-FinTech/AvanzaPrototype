@@ -63,7 +63,7 @@ const ApiTest = () => {
   return (
     <div>
 
-    <h2>Create Account</h2>
+    {/* <h2>Create Account</h2>
     <form onSubmit={handleSubmit}>
         <div>
             <label htmlFor="email">Email:</label>
@@ -88,7 +88,8 @@ const ApiTest = () => {
         <button type="submit">Register</button>
     </form>
     {error && <p style={{ color: 'red' }}>{error}</p>}
-    {success && <p style={{ color: 'green' }}>{success}</p>}
+    {success && <p style={{ color: 'green' }}>{success}</p>} */}
+  <button className="h-20 w-20 border p-20 ml-10" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
 </div>
   )
 }
