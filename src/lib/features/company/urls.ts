@@ -3,7 +3,7 @@ import { AvanzaUrlParams, ServerCompaniesUrlParams } from "./companyTypes";
 
 export const avanzaUrlBuilder = (params: AvanzaUrlParams): string[] => {
   const { companyIds, timePeriod = 'one_month' } = params;
-  const baseUrl = 'https://cors-anywhere.herokuapp.com/https://www.avanza.se/_api/price-chart/stock/573878/compare';
+  const baseUrl = 'https://www.avanza.se/_api/price-chart/stock/573878/compare';
   const urls = companyIds.map(companyId => {
     return `${baseUrl}/${companyId}?timePeriod=${encodeURIComponent(timePeriod)}`;
   });
@@ -32,7 +32,7 @@ export const serverUrlBuilderCompanies = ({ name, randomCount }: ServerCompanies
 //   return url;
 // }
 
-  export const url = "https://cors-anywhere.herokuapp.com/https://www.avanza.se/_api/price-chart/stock/573878/compare/1002994?timePeriod=one_month";
+  export const url = "https://www.avanza.se/_api/price-chart/stock/573878/compare/1002994?timePeriod=one_month";
   export const options: RequestInit = {
     method: "GET",
     headers:{

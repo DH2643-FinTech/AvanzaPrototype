@@ -1,20 +1,27 @@
-'use client';
-import React from 'react'
-import { useState } from 'react';
-import { useAppSelector } from '@/src/lib/hooks/useAppSelector'
-import { useAppDispatch } from '@/src/lib/hooks/useAppDispatch'
+"use client";
+import React from "react";
+import { useState } from "react";
+import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
+import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
+
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
 import Email from 'next-auth/providers/email';
 
-const ApiTest = () => {
 
+const ApiTest = () => {
   const dispatch = useAppDispatch();
 
   const fetchCompanyDetailsHandler = (symbol: string) => {
-    // dispatch(fetchCompanyDetails("symbol"))
-    dispatch(fetchCompanyIdFromServer({name: undefined, randomCount: undefined}))
-  }
+    dispatch(
+      fetchCompanyDetails({
+        name: "AAK",
+        randomCount: 5,
+        timePeriod: "one_month",
+      })
+    );
+    // dispatch(fetchCompanyIdFromServer({name: undefined, randomCount: undefined}))
+  };
 
 
   const [email, setEmail] = useState('');
@@ -22,10 +29,12 @@ const ApiTest = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+
   const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      setError('');
-      setSuccess('');
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
 
       const res = await fetch('http://localhost:3000/api/register', {
           method: 'POST',
@@ -35,7 +44,9 @@ const ApiTest = () => {
           body: JSON.stringify({ email, password }),
       });
 
-      console.log(res)
+
+    console.log(res);
+
 
       if (res.ok) {
           setSuccess('User created successfully!');
@@ -46,19 +57,12 @@ const ApiTest = () => {
           // setError(errorData.message || 'An error occurred.');
           console.log("error")
       }
+
   };
-
-
-
-  // return (
-  //   <div>
-  //       <button className='borde w-10 h-10 bg-slate-800' onClick={()=> fetchCompanyDetailsHandler("AAPL")
-  //       }>Call API Test</button>
-  //   </div>
-  // )
 
   return (
     <div>
+
     <h2>Create Account</h2>
     <form onSubmit={handleSubmit}>
         <div>
@@ -89,4 +93,5 @@ const ApiTest = () => {
   )
 }
 
-export default ApiTest
+
+export default ApiTest;
