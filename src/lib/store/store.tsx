@@ -1,4 +1,3 @@
-import {createWrapper} from 'next-redux-wrapper';
 import {configureStore} from '@reduxjs/toolkit';
 import companyReducer from '@/src/lib/features/company/companySlice';
 
