@@ -1,9 +1,14 @@
 import { MongoClient } from 'mongodb';
-const MONGODB_URI = "mongodb://dh2643-db:cbNUpkCX10rUY2FZ30qEBflWHhQJtt6itDCmHz8W8gbiai2bupYV4ZrqWOvhmdBbyP3rAAVrb3xSACDbjZ015Q%3D%3D@dh2643-db.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&maxIdleTimeMS=120000&appName=@dh2643-db@";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
+if (!MONGODB_URI) {
+  throw new Error(
+    'Please define the MONGODB_URI environment variable inside .env.local'
+  );
+}
 if (process.env.NODE_ENV === 'development') {
   if (!(global as any)._mongoClientPromise) {
     client = new MongoClient(MONGODB_URI);
@@ -16,7 +21,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default clientPromise;
-
 
 /**
  * DEPRECATED: Mongoose is not used in this project yet!
@@ -42,8 +46,4 @@ export default clientPromise;
 //     }
 // }
 
-
-
 // export default connectMongoDB;
-
-

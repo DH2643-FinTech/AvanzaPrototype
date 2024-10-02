@@ -1,13 +1,13 @@
 // components/LoginButton.js
-"use client";
-import { signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
+'use client';
+import { signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export const GoogleLogInButton = () => {
   const handleSignIn = () => {
-    const response = signIn("google");
-    console.log("success", response);
+    const response = signIn('google');
+    console.log('success', response);
   };
 
   return (
@@ -51,34 +51,56 @@ export const GoogleLogInButton = () => {
 };
 
 export const CredentialAuthButton = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   // const router = useRouter();
+  //TODO do this properly, this is just a test
+  const handleRegister = async (e: Event) => {
+    e.preventDefault();
+
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
+    } else {
+      console.log('error');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
 
     const data = new FormData(e.currentTarget as HTMLFormElement);
 
-    const signInResponse = await signIn("credentials", {
-      email: data.get("email") as string,
-      password: data.get("password") as string,
+    const signInResponse = await signIn('credentials', {
+      email: email as string,
+      password: password as string,
       redirect: false,
     });
 
     if (signInResponse && !signInResponse.error) {
-      setSuccess("User created successfully!");
-      setEmail("");
-      setPassword("");
-      console.log("success", signInResponse);
+      setSuccess('User logged in successfully!');
+      setEmail('');
+      setPassword('');
+      console.log('success', signInResponse);
     } else {
       // const errorData = await res.json();
       // setError(errorData.message || 'An error occurred.');
-      console.log("error");
+      console.log('error');
     }
   };
 
@@ -107,21 +129,21 @@ export const CredentialAuthButton = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <button onClick={(e) => handleRegister(e as any)}>Register</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
   );
 };
 
-export const SignOutButton = () =>{
+export const SignOutButton = () => {
   return (
     <button
-      onClick={() => signOut() }
+      onClick={() => signOut()}
       className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg"
     >
       Sign out
     </button>
   );
-
-}
+};
