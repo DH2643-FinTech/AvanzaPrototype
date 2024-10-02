@@ -37,7 +37,8 @@ import clientPromise from '../../../lib/database/mongodb'; // assuming you're us
 export const POST = async (request: Request) => {
   try {
     const { email, password } = await request.json(); // Extract username and password from the request body
-
+    console.log("email: ", email);
+    console.log("password", password);
     const client = await clientPromise;
     const db = client.db('database');
 
@@ -56,7 +57,7 @@ export const POST = async (request: Request) => {
     // Create a new user
     const newUser = { email: email, password: hashedPassword };
     const result = await db.collection('users').insertOne(newUser);
-
+    // console.log("result: ", result);
     return NextResponse.json(
       { message: 'User created successfully', userId: result.insertedId },
       { status: 201 }

@@ -5,6 +5,7 @@ import { useAppSelector } from '@/src/lib/hooks/useAppSelector'
 import { useAppDispatch } from '@/src/lib/hooks/useAppDispatch'
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
+import Email from 'next-auth/providers/email';
 
 const ApiTest = () => {
 
@@ -16,7 +17,7 @@ const ApiTest = () => {
   }
 
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -26,19 +27,19 @@ const ApiTest = () => {
       setError('');
       setSuccess('');
 
-      const res = await fetch('http://localhost:3000/api/auth', {
+      const res = await fetch('http://localhost:3000/api/register', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ email, password }),
       });
 
       console.log(res)
 
       if (res.ok) {
           setSuccess('User created successfully!');
-          setUsername('');
+          setEmail('');
           setPassword('');
       } else {
           // const errorData = await res.json();
@@ -61,12 +62,12 @@ const ApiTest = () => {
     <h2>Create Account</h2>
     <form onSubmit={handleSubmit}>
         <div>
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="email">Email:</label>
             <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
             />
         </div>
