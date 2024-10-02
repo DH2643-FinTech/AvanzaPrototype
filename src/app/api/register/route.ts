@@ -8,7 +8,7 @@
 //         const { username, password } = req.body;
 
 //         const client = await clientPromise;
-//         const db = client.db('database'); 
+//         const db = client.db('database');
 
 //         const existingUser = await db.collection('company').findOne({ name: username });
 
@@ -17,7 +17,7 @@
 //         }
 
 //         const hashedPassword = await bcrypt.hash(password, 10);
-//         const newUser = { name: username, password: hashedPassword }; 
+//         const newUser = { name: username, password: hashedPassword };
 //         const result = await db.collection('users').insertOne(newUser);
 
 //         console.log("server trying to create user");
@@ -32,17 +32,17 @@
 
 import bcrypt from 'bcrypt';
 import { NextResponse } from 'next/server';
-import clientPromise from "../../lib/database/mongodb"; // assuming you're using MongoDB client
+import clientPromise from '../../../lib/database/mongodb'; // assuming you're using MongoDB client
 
 export const POST = async (request: Request) => {
   try {
-    const { username, password } = await request.json(); // Extract username and password from the request body
+    const { email, password } = await request.json(); // Extract username and password from the request body
 
     const client = await clientPromise;
     const db = client.db('database');
 
     // Check if the user already exists
-    const existingUser = await db.collection('users').findOne({ name: username });
+    const existingUser = await db.collection('users').findOne({ email: email });
     if (existingUser) {
       return NextResponse.json(
         { message: 'User already exists' },
@@ -54,7 +54,7 @@ export const POST = async (request: Request) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = { name: username, password: hashedPassword };
+    const newUser = { email: email, password: hashedPassword };
     const result = await db.collection('users').insertOne(newUser);
 
     return NextResponse.json(
