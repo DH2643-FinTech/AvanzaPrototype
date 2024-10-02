@@ -1,7 +1,6 @@
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { avanzaUrlBuilder, options, serverUrlBuilderCompanies } from "./urls";
-import { Company, Stock, StockInfo } from "./companyTypes";
+import { avanzaData, Company, Stock, StockInfo } from "./companyTypes";
 import { CompanyID } from "@/src/app/api/companies/dataTypes";
 
 interface FetchCompanyDetailsParams {
@@ -17,23 +16,31 @@ export const fetchCompanyDetails = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     try {
-
       const { name, randomCount, timePeriod } = arg;
 
-      const url = serverUrlBuilderCompanies({ name, randomCount });
-      const responseFromServer = await fetch(url);
+      //TODO: It is needed when we fixed the database migration. It fetches IDs from the database
+      //   const url = serverUrlBuilderCompanies({ name, randomCount });
+      //   const responseFromServer = await fetch(url);
 
-      if (!responseFromServer.ok) {
-        throw new Error("Failed to fetch companies");
-      }
+      //   if (!responseFromServer.ok) {
+      //     throw new Error("Failed to fetch companies");
+      //   }
 
-      const companyIds = await responseFromServer.json();
+      //   const companyIds = await responseFromServer.json();
 
       //TODO: we may need to fetch details info about many companies at once!! Looping through all ids and fetch one by one or if we can solve it in a better way
 
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
-      headers.append("companyId", JSON.stringify(companyIds)); // Pass the companyIds as a comma-separated string
+      headers.append(
+        "companyId",
+        JSON.stringify([
+          {
+            _id: "26268",
+            name: "AAK",
+          },
+        ])
+      ); // Pass the companyIds as a comma-separated string
       if (timePeriod) {
         headers.append("timePeriod", JSON.stringify(timePeriod));
       }
@@ -44,18 +51,30 @@ export const fetchCompanyDetails = createAsyncThunk(
       });
 
       //TODO: return data
-      const data = await response.json();
-      const {metadata:{resolution:{availableResolutions, chartResolution}}, ohlc, from, to} = data;
-    //   console.log("Response : ", data);
-      return {
-        id: "1",
-        availableResolutions,
-        chartResolution,
-        ohlc,
-        from,
-        to,
-      } as Stock;
-
+      const resData = await response.json();
+      const {
+        data: {
+          metadata: {
+            resolution: { availableResolutions, chartResolution },
+          },
+          ohlc,
+          from,
+          to,
+        },
+        detailData,
+      } = resData;
+      const stockInfo: avanzaData = {
+        stockData: {
+          id: "1",
+          availableResolutions,
+          chartResolution,
+          ohlc,
+          from,
+          to,
+        },
+        companyData: detailData,
+      };
+      return stockInfo as avanzaData;
     } catch (error: any) {
       console.error("Fetch error:", error);
       // return rejectWithValue((error as Error).message || 'Failed to fetch company details');
