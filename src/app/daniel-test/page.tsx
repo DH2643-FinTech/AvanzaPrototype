@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
+import StockGraph from "@/src/components/ui/charts/stockGraph";
 
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
@@ -90,6 +91,7 @@ const ApiTest = () => {
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {success && <p style={{ color: 'green' }}>{success}</p>} */}
   <button className="h-20 w-20 border p-20 ml-10" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
+    <StockGraph />
 </div>
   )
 }
