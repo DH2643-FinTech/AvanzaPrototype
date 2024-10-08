@@ -12,6 +12,7 @@ const initialState: CompanyState = {
     companiesIds: [],
     currentStock: null,
     companyData: null,
+    searchParams: null,
 };
 
 
@@ -23,6 +24,12 @@ const companySlice = createSlice(
         reducers: {
             setCurrentCompany: (state, action: PayloadAction<string>) => {
                 state.companyDetails = state.companies.find(company => company.id === action.payload) || null;
+            },
+            setSearchParamStartDate: (state, action: PayloadAction<string>) => {
+                state.searchParams = {...state.searchParams, startDate: action.payload};
+            },
+            setSearchParamEndDate: (state, action: PayloadAction<string>) => {
+                state.searchParams = {...state.searchParams, endDate: action.payload};
             },
         },
         extraReducers: (builder) => {
@@ -61,6 +68,6 @@ const companySlice = createSlice(
     }
 );
 
-export const {setCurrentCompany} = companySlice.actions;
+export const {setCurrentCompany, setSearchParamStartDate, setSearchParamEndDate} = companySlice.actions;
 export const selectCurrentCompany = (state: RootState) => state.company.companyDetails;
 export default companySlice.reducer;

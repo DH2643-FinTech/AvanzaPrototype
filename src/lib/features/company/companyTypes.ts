@@ -39,6 +39,7 @@ export interface CompanyState {
   companiesIds: CompanyID[];
   currentStock: Stock | null;
   companyData: any;
+  searchParams: any;
 
 }
 

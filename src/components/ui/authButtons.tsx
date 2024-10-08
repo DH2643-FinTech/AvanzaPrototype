@@ -1,20 +1,48 @@
 // components/LoginButton.js
-'use client';
-import { signIn, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+"use client";
+import { signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
+
+export default function BasicTextFields() {
+  return (
+    <Box
+      component="form"
+      sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+      noValidate
+      autoComplete="off"
+    >
+      <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+      <TextField id="filled-basic" label="Filled" variant="filled" />
+      <TextField id="standard-basic" label="Standard" variant="standard" />
+    </Box>
+  );
+}
 
 export const GoogleLogInButton = () => {
   const handleSignIn = () => {
-    const response = signIn('google');
-    console.log('success', response);
+    const response = signIn("google");
+    console.log("success", response);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex min-w-[500px] justify-center items-center">
       <button
         onClick={handleSignIn}
-        className="flex items-center px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm shadow-md transition duration-300 ease-in-out"
+        className="flex items-center w-[500px] justify-center px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm shadow-md transition duration-300 ease-in-out"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -50,24 +78,63 @@ export const GoogleLogInButton = () => {
   );
 };
 
-export const CredentialAuthButton = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  // const router = useRouter();
-  //TODO do this properly, this is just a test
-  const handleRegister = async (e: Event) => {
-    e.preventDefault();
+export const SignInComp = () => {
+  return (
+    <div className=" h-[600px] justify-center items-center border border-black flex flex-col">
+      <div>
+        <GoogleLogInButton />
+      </div>
+      <div className="mt-10 flex flex-col justify-center items-center">
+        <div className="flex justify-between items-center">
+          <div className="border border-blue-600 w-[200px]"></div>
+          <div className="w-[100px] justify-center items-center text-center">
+            OR
+          </div>
+          <div className="border border-blue-600 w-[200px]"></div>
+        </div>
+        <CredentialAuthButton />
+      </div>
+    </div>
+  );
+};
 
-    const res = await fetch('/api/register', {
-      method: 'POST',
+export const SignUpComp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  // const router = useRouter();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    const data = new FormData(e.currentTarget as HTMLFormElement);
+    const res = await fetch("/api/register", {
+      method: "POST",
       body: JSON.stringify({
         email: email,
         password: password,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -75,64 +142,191 @@ export const CredentialAuthButton = () => {
       const data = await res.json();
       console.log(data);
     } else {
-      console.log('error');
+      console.log("error");
+    }
+  };
+
+  return (
+    <div>
+      <form
+        className="min-w-[500px] flex-col flex py-4 border border-blue-400 justify-center items-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-2">
+          <TextField
+            sx={{ width: 500 }}
+            onChange={(e) => setEmail(e.target.value)}
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+          />
+        </div>
+        <div>
+          <FormControl sx={{ width: 500 }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              onChange={(e) => setPassword(e.target.value)}
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+        </div>
+        <button
+          className="border border-slate-300 w-[500px] py-2 mt-2 bg-blue-400 text-white font-bold"
+          type="submit"
+        >
+          Register
+        </button>
+      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+    </div>
+  );
+};
+
+export const CredentialAuthButton = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  // const router = useRouter();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  //TODO do this properly, this is just a test
+  const handleRegister = async (e: Event) => {
+    e.preventDefault();
+
+    const res = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
+    } else {
+      console.log("error");
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     const data = new FormData(e.currentTarget as HTMLFormElement);
 
-    const signInResponse = await signIn('credentials', {
+    const signInResponse = await signIn("credentials", {
       email: email as string,
       password: password as string,
       redirect: false,
     });
 
     if (signInResponse && !signInResponse.error) {
-      setSuccess('User logged in successfully!');
-      setEmail('');
-      setPassword('');
-      console.log('success', signInResponse);
+      setSuccess("User logged in successfully!");
+      setEmail("");
+      setPassword("");
+      console.log("success", signInResponse);
     } else {
       // const errorData = await res.json();
       // setError(errorData.message || 'An error occurred.');
-      console.log('error');
+      console.log("error");
     }
   };
 
   return (
     <div>
-      <h2>Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Username:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
+      <form
+        className="min-w-[500px] flex-col flex py-4 justify-center items-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-2">
+          <TextField
+            sx={{ width: 500 }}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <FormControl sx={{ width: 500 }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              onChange={(e) => setPassword(e.target.value)}
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
         </div>
-        <button type="submit">Login</button>
-        <button onClick={(e) => handleRegister(e as any)}>Register</button>
+        <button
+          className="border border-slate-300 w-[500px] py-2 mt-12 bg-green-400 text-white font-bold"
+          type="submit"
+        >
+          Sign in
+        </button>
+        <button
+          className="border border-slate-300 w-[500px] py-2 mt-2 bg-blue-400 text-white font-bold"
+          onClick={(e) => handleRegister(e as any)}
+        >
+          Register
+        </button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
     </div>
   );
 };

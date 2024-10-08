@@ -1,14 +1,80 @@
 import React, { useEffect } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import * as d3 from "d3";
+import DatePickerComp from "@/src/components/ui/datePicker";
+import { useState } from "react";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
+import { setSearchParamEndDate, setSearchParamStartDate } from "@/src/lib/features/company/companySlice";
+
+
+
+const DropdownToggle = (props: any) => {
+  const [isOpen, setIsOpen] = useState(false); // State to manage toggle
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen); // Toggle the state
+  };
+
+  const handleStartDateChange = (e: any) => {
+    // setValue(e.target.value);
+    props.setStartDate(e.$d);
+    console.log(e.$d);
+
+}
+
+const handleEndDateChange = (e: any) => {
+    // setValue(e.target.value);
+    props.setEndDate(e.$d);
+    console.log(e.$d);
+}
+
+  return (
+    <div className="relative">
+      <button
+        onClick={toggleDropdown}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md focus:outline-none ml-[80px]"
+      >
+        {isOpen ? "Close Date Picker" : "Open Date Picker"}
+      </button>
+      <div
+        className={`transition-all ease-in-out duration-300 ${
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        } overflow-hidden bg-white border border-gray-300 rounded-md shadow-md mt-2 absolute w-[300px] ml-[80px] z-10`}
+      >
+        <div className="p-4">
+          {/* <DatePickerComp setStartDate={props.setStartDate} setEndDate={props.setEndDate} /> */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker onChange={handleStartDateChange} slotProps={{textField: {size: 'small', sx:{width:130, marginRight: 0.4}},}}/>
+          <DatePicker onChange={handleEndDateChange} slotProps={{textField: {size: 'small', sx:{width:130}},}} maxDate={dayjs(new Date())} />
+    </LocalizationProvider>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const StockGraph = () => {
-  const margin = { top: 70, right: 60, bottom: 50, left: 80 };
-  const width = 1600 - margin.left - margin.right;
+  const margin = { top: 70, right: 60, bottom: 50, left: 0 };
+  const width = 1500 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
 
   // Access the stock data from Redux store
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
+  const dispatch = useAppDispatch();
+
+  const dispatchStartDate = (date: string) => {
+    // console.log(typeof String(date));
+    dispatch(setSearchParamStartDate(String(date)));
+  };
+
+  const dispatchEndDate = (date: string) => {
+    dispatch(setSearchParamEndDate(String(date)));
+  };
 
   useEffect(() => {
     if (!stockData || stockData.length === 0) return; // Ensure data is available before rendering the graph
@@ -234,7 +300,7 @@ const StockGraph = () => {
       tooltip
         .style("display", "block")
         .style("position", "absolute")
-        .style("left", `${width + 130}px`)
+        .style("left", `${width + 50}px`)
         .style("top", `${yPos + 68}px`)
         .style("border", `2px solid red`)
         .html(`$${d.Close !== undefined ? d.Close.toFixed(2) : "N/A"}`);
@@ -243,7 +309,7 @@ const StockGraph = () => {
         .style("display", "block")
         .style("position", "absolute")
         .style("left", `${xPos + 60}px`)
-        .style("top", `${height + 53}px`)
+        .style("top", `${height + 200}px`)
         .style("border", `2px solid red`)
         .html(
           `${d.Date !== undefined ? d.Date.toISOString().slice(0, 10) : "N/A"}`
@@ -280,7 +346,20 @@ const StockGraph = () => {
       .text("Powered by Avanza");
   }, [stockData]); // The effect depends on stockData, so it runs whenever stockData updates
 
-  return <div id="chart-container"></div>;
+
+  return (
+    <>
+      <div className="w-full flex flex-col items-center justify-center">
+      <div className="w-[1500px] h-[800px] border-slate-200 shadow-md">
+      <div id="chart-container"></div>
+      </div >
+      <div className="self-start ml-[-30px]">
+
+      <DropdownToggle setStartDate={dispatchStartDate} setEndDate={dispatchEndDate}/>
+      </div>
+      </div>
+    </>
+  );
 };
 
 export default StockGraph;

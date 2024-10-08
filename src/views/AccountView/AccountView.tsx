@@ -3,6 +3,7 @@ import {
   GoogleLogInButton,
   CredentialAuthButton,
   SignOutButton,
+  SignInComp
 } from '@/src/components/ui/authButtons';
 import { useRouter } from 'next/navigation';
 
@@ -11,9 +12,10 @@ const AccountView = () => {
 
   return (
     <div>
-      <GoogleLogInButton />
-      <CredentialAuthButton />
-      <SignOutButton />
+      {/* <GoogleLogInButton /> */}
+      {/* <CredentialAuthButton /> */}
+      <SignInComp />
+      {/* <SignOutButton /> */}
       <button onClick={() => router.push('/watchlist')}>Go to watchlist</button>
     </div>
   );

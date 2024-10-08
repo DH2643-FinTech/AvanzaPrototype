@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import StockGraph from "@/src/components/ui/charts/stockGraph";
-
+// import DatePickerValue from "@/src/components/ui/datePicker";
+import DatePickerComp from "@/src/components/ui/datePicker";
+import ThemeSignInPage from "@/src/components/signInComp";
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
 import Email from 'next-auth/providers/email';
@@ -90,8 +92,11 @@ const ApiTest = () => {
     </form>
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {success && <p style={{ color: 'green' }}>{success}</p>} */}
-  <button className="h-20 w-20 border p-20 ml-10" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
+  <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
     <StockGraph />
+    {/* <ThemeSignInPage/> */}
+      {/* <DatePickerValue /> */}
+      {/* <DatePickerComp /> */}
 </div>
   )
 }
