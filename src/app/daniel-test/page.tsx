@@ -6,7 +6,6 @@ import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import StockGraph from "@/src/components/ui/charts/stockGraph";
 // import DatePickerValue from "@/src/components/ui/datePicker";
 import DatePickerComp from "@/src/components/ui/datePicker";
-import ThemeSignInPage from "@/src/components/signInComp";
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
 import Email from 'next-auth/providers/email';
