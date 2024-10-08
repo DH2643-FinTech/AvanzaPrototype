@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - dh2643dev
 on:
   push:
     branches:
-      - main
+      - development
   workflow_dispatch:
 
 jobs:
@@ -70,4 +70,4 @@ jobs:
         with:
           app-name: 'dh2643dev'
           slot-name: 'Production'
-          package: .
+          package: ./.next/standalone

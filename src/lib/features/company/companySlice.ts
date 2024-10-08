@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { Company, CompanyState } from './companyTypes';
+import { Company, CompanyState, Stock, StockInfo, avanzaData } from './companyTypes';
 import { CompanyID } from '@/src/app/api/companies/dataTypes';
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from './companyAPI';
 import { RootState } from '@/src/lib/store/store';
@@ -10,7 +10,12 @@ const initialState: CompanyState = {
     loading: false,
     error: '',
     companiesIds: [],
+    currentStock: null,
+    companyData: null,
+    searchParams: null,
 };
+
+
 
 const companySlice = createSlice(
     {
@@ -20,17 +25,24 @@ const companySlice = createSlice(
             setCurrentCompany: (state, action: PayloadAction<string>) => {
                 state.companyDetails = state.companies.find(company => company.id === action.payload) || null;
             },
+            setSearchParamStartDate: (state, action: PayloadAction<string>) => {
+                state.searchParams = {...state.searchParams, startDate: action.payload};
+            },
+            setSearchParamEndDate: (state, action: PayloadAction<string>) => {
+                state.searchParams = {...state.searchParams, endDate: action.payload};
+            },
         },
         extraReducers: (builder) => {
             builder.addCase(fetchCompanyDetails.pending, (state) => {
                 state.loading = true;
             });
-            builder.addCase(fetchCompanyDetails.fulfilled, (state, action: PayloadAction<Company | string>) => {
+            builder.addCase(fetchCompanyDetails.fulfilled, (state, action: PayloadAction<avanzaData | string>) => {
                 state.loading = false;
                 if (typeof action.payload === 'string') {
                     state.error = action.payload;
                 } else {
-                    state.companyDetails = action.payload;
+                    state.currentStock = action.payload.stockData;
+                    state.companyData = action.payload.companyData;
                 }
             });
             builder.addCase(fetchCompanyDetails.rejected, (state, action) => {
@@ -56,6 +68,6 @@ const companySlice = createSlice(
     }
 );
 
-export const {setCurrentCompany} = companySlice.actions;
+export const {setCurrentCompany, setSearchParamStartDate, setSearchParamEndDate} = companySlice.actions;
 export const selectCurrentCompany = (state: RootState) => state.company.companyDetails;
 export default companySlice.reducer;
