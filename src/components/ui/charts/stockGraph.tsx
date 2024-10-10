@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import * as d3 from "d3";
-import DatePickerComp from "@/src/components/ui/datePicker";
+
 import { useState } from "react";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
@@ -10,73 +10,31 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import { setSearchParamEndDate, setSearchParamStartDate } from "@/src/lib/features/company/companySlice";
+import { DatePickerComp } from "../datePicker";
 
-
-
-const DropdownToggle = (props: any) => {
-  const [isOpen, setIsOpen] = useState(false); // State to manage toggle
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen); // Toggle the state
-  };
-
-  const handleStartDateChange = (e: any) => {
-    // setValue(e.target.value);
-    props.setStartDate(e.$d);
-    console.log(e.$d);
-
-}
-
-const handleEndDateChange = (e: any) => {
-    // setValue(e.target.value);
-    props.setEndDate(e.$d);
-    console.log(e.$d);
-}
-
-  return (
-    <div className="relative">
-      <button
-        onClick={toggleDropdown}
-        className="bg-blue-500 text-white px-4 py-2 rounded-md focus:outline-none ml-[80px]"
-      >
-        {isOpen ? "Close Date Picker" : "Open Date Picker"}
-      </button>
-      <div
-        className={`transition-all ease-in-out duration-300 ${
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden bg-white border border-gray-300 rounded-md shadow-md mt-2 absolute w-[300px] ml-[80px] z-10`}
-      >
-        <div className="p-4">
-          {/* <DatePickerComp setStartDate={props.setStartDate} setEndDate={props.setEndDate} /> */}
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker onChange={handleStartDateChange} slotProps={{textField: {size: 'small', sx:{width:130, marginRight: 0.4}},}}/>
-          <DatePicker onChange={handleEndDateChange} slotProps={{textField: {size: 'small', sx:{width:130}},}} maxDate={dayjs(new Date())} />
-    </LocalizationProvider>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const StockGraph = () => {
-  const margin = { top: 70, right: 60, bottom: 50, left: 0 };
-  const width = 1500 - margin.left - margin.right;
-  const height = 800 - margin.top - margin.bottom;
+
+  const startDate = useAppSelector((state) => state.company.searchParams?.startDate);
+  const endDate = useAppSelector((state) => state.company.searchParams?.endDate);
+
+
+  const setSearchParamStartDateHandler = (date: string) => {
+    dispatch(setSearchParamStartDate(String(date)));
+  }
+  const setSearchParamEndtDateHandler = (date: string) => {
+    dispatch(setSearchParamEndDate(String(date)));
+  }
 
   // Access the stock data from Redux store
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
   const dispatch = useAppDispatch();
 
-  const dispatchStartDate = (date: string) => {
-    // console.log(typeof String(date));
-    dispatch(setSearchParamStartDate(String(date)));
-  };
+  const renderGraph = () =>{
 
-  const dispatchEndDate = (date: string) => {
-    dispatch(setSearchParamEndDate(String(date)));
-  };
-
-  useEffect(() => {
+    const margin = { top: 70, right: 60, bottom: 50, left: 0 };
+    const width = 1500 - margin.left - margin.right;
+    const height = 800 - margin.top - margin.bottom;
     if (!stockData || stockData.length === 0) return; // Ensure data is available before rendering the graph
 
     // Parse the timestamp to create Date objects and ensure other fields are numeric
@@ -344,6 +302,10 @@ const StockGraph = () => {
       .style("font-size", "12px")
       .style("font-family", "sans-serif")
       .text("Powered by Avanza");
+  }
+
+  useEffect(() => {
+    return renderGraph();
   }, [stockData]); // The effect depends on stockData, so it runs whenever stockData updates
 
 
@@ -354,8 +316,7 @@ const StockGraph = () => {
       <div id="chart-container"></div>
       </div >
       <div className="self-start ml-[-30px]">
-
-      <DropdownToggle setStartDate={dispatchStartDate} setEndDate={dispatchEndDate}/>
+      <DatePickerComp startDate ={startDate} endDate = {endDate} setStartDate = {setSearchParamStartDateHandler} setEndDate={ setSearchParamEndtDateHandler} />
       </div>
       </div>
     </>
