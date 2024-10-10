@@ -5,15 +5,29 @@ import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import StockGraph from "@/src/components/ui/charts/stockGraph";
 // import DatePickerValue from "@/src/components/ui/datePicker";
-import DatePickerComp from "@/src/components/ui/datePicker";
 import ThemeSignInPage from "@/src/components/signInComp";
 
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
 import Email from 'next-auth/providers/email';
+import {DatePickerComp} from "@/src/components/ui/datePicker";
+import {setSearchParamStartDate, setSearchParamEndDate} from "@/src/lib/features/company/companySlice";
+import { SignUp } from "@/src/components/ui/signUpForm";
+import { SignInForm } from "@/src/components/ui/signInForm";
+import {SheetSidebar} from "@/src/components/ui/sidebar";
 
 
 const ApiTest = () => {
   const dispatch = useAppDispatch();
+  const startDate = useAppSelector((state) => state.company.searchParams?.startDate);
+  const endDate = useAppSelector((state) => state.company.searchParams?.endDate);
+
+
+  const setSearchParamStartDateHandler = (date: string) => {
+    dispatch(setSearchParamStartDate(String(date)));
+  }
+  const setSearchParamEndtDateHandler = (date: string) => {
+    dispatch(setSearchParamEndDate(String(date)));
+  }
 
   const fetchCompanyDetailsHandler = (symbol: string) => {
     dispatch(
@@ -93,10 +107,17 @@ const ApiTest = () => {
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {success && <p style={{ color: 'green' }}>{success}</p>} */}
   <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
-    <StockGraph />
+    {/* <StockGraph /> */}
+    <SheetSidebar side="left" />
+    {/* <SignUp /> */}
+    {/* <SignInForm/> */}
     {/* <ThemeSignInPage/> */}
       {/* <DatePickerValue /> */}
       {/* <DatePickerComp /> */}
+      <div>
+      {/* <DatePickerComp startDate ={startDate} endDate = {endDate} setStartDate = {setSearchParamStartDateHandler} setEndDate={ setSearchParamEndtDateHandler} /> */}
+
+      </div>
 </div>
   )
 }
