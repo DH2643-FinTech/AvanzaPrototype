@@ -56,12 +56,12 @@ export const DatePickerComp = (props: any) => {
   );
 
   return (
-    <div className="ml-[80px] mt-2">
+    <div className="">
       <Popover>
         <PopoverTrigger>
           <Button>Open</Button>
         </PopoverTrigger>
-        <PopoverContent className="ml-[50px]">
+        <PopoverContent className="relative top-[20px] left-[60px]">
           <div className="relative">
             <div className="p-4">
               <DatePickerPair

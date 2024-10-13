@@ -107,17 +107,11 @@ const ApiTest = () => {
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {success && <p style={{ color: 'green' }}>{success}</p>} */}
   <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
-    {/* <StockGraph /> */}
-    <SheetSidebar side="left" />
+    <StockGraph />
+    {/* <SheetSidebar side="left" /> */}
     {/* <SignUp /> */}
     {/* <SignInForm/> */}
     {/* <ThemeSignInPage/> */}
-      {/* <DatePickerValue /> */}
-      {/* <DatePickerComp /> */}
-      <div>
-      {/* <DatePickerComp startDate ={startDate} endDate = {endDate} setStartDate = {setSearchParamStartDateHandler} setEndDate={ setSearchParamEndtDateHandler} /> */}
-
-      </div>
 </div>
   )
 }
