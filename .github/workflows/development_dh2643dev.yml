@@ -8,7 +8,7 @@ on:
 
 env:
   APPLICATION_PUBLISH_PROFILE: ${{ secrets.APP_PUBLISH_PROFILE_DEV }}
-  WEBAPP_NAME: 'dh2643'
+  WEBAPP_NAME: 'dh2643dev'
 
 jobs:
   build:
@@ -41,5 +41,5 @@ jobs:
         with:
           app-name: ${{ env.WEBAPP_NAME }}
           slot-name: 'Production'
-          publish-profile: ${{ env.APP_PUBLISH_PROFILE_DEV }}
+          publish-profile: ${{ env.APPLICATION_PUBLISH_PROFILE }}
           package: ./build/standalone
