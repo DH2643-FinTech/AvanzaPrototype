@@ -16,6 +16,8 @@ import { signIn, signOut } from "next-auth/react";
 export const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 
+//TODO: DEPRECATED - DO NOT USE
+
 export const SignUp = (props: any) => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");

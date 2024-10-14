@@ -15,6 +15,10 @@ import { useState } from "react"
 export const description =
   "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account."
 
+
+  //TODO: DEPRECATED - DO NOT USE
+
+
 export const SignInForm = ()=> {
 
     const [email, setEmail] = useState("");
