@@ -3,6 +3,7 @@ import { Company, CompanyState, Stock, StockInfo, avanzaData } from './companyTy
 import { CompanyID } from '@/src/app/api/companies/dataTypes';
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from './companyAPI';
 import { RootState } from '@/src/lib/store/store';
+import { mockAppleData } from './mockStockData';
 
 const initialState: CompanyState = {
     companies: [],
@@ -10,8 +11,8 @@ const initialState: CompanyState = {
     loading: false,
     error: '',
     companiesIds: [],
-    currentStock: null,
-    companyData: null,
+    currentStock: mockAppleData.stockData,  // TODO Change back to null when not using example
+    companyData: mockAppleData.companyData, // TODO Change back to null when not using example
     searchParams: null,
 };
 
