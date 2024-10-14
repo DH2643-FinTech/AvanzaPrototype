@@ -1,6 +1,5 @@
 "use client"
 
-import React from 'react'
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { Bell, ChevronDown } from 'lucide-react'
@@ -15,7 +14,7 @@ import {
 } from "@/src/components/shadcn/dropdown-menu"
 import Searchbar from '@/src/components/Searchbar'
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
     const { data: session, status } = useSession()
 
     return (

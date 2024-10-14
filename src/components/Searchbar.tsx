@@ -10,7 +10,7 @@ import { fetchCompanyIdFromServer } from "@/src/lib/features/company/companyAPI"
 import { CompanyID } from "@/src/app/api/companies/dataTypes"
 import Link from "next/link"
 
-export default function Searchbar() {
+const Searchbar = () => {
     const [query, setQuery] = useState("")
     const [showDropdown, setShowDropdown] = useState(false)
     const dispatch = useAppDispatch()
@@ -71,3 +71,5 @@ export default function Searchbar() {
         </div>
     )
 }
+
+export default Searchbar
