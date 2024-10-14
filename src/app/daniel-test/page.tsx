@@ -14,6 +14,7 @@ import {setSearchParamStartDate, setSearchParamEndDate} from "@/src/lib/features
 import { SignUp } from "@/src/components/ui/signUpForm";
 import { SignInForm } from "@/src/components/ui/signInForm";
 import {SheetSidebar} from "@/src/components/ui/sidebar";
+import Navbar from "@/src/components/ui/navbar";
 
 
 const ApiTest = () => {
@@ -106,18 +107,13 @@ const ApiTest = () => {
     </form>
     {error && <p style={{ color: 'red' }}>{error}</p>}
     {success && <p style={{ color: 'green' }}>{success}</p>} */}
-  <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button>
+  {/* <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button> */}
     {/* <StockGraph /> */}
-    <SheetSidebar side="left" />
+    <Navbar/>
+    {/* <SheetSidebar side="left" /> */}
     {/* <SignUp /> */}
     {/* <SignInForm/> */}
     {/* <ThemeSignInPage/> */}
-      {/* <DatePickerValue /> */}
-      {/* <DatePickerComp /> */}
-      <div>
-      {/* <DatePickerComp startDate ={startDate} endDate = {endDate} setStartDate = {setSearchParamStartDateHandler} setEndDate={ setSearchParamEndtDateHandler} /> */}
-
-      </div>
 </div>
   )
 }

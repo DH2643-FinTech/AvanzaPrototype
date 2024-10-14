@@ -58,6 +58,7 @@ const companySlice = createSlice(
                 if (typeof action.payload === 'string') {
                     state.error = action.payload;
                 } else {
+                    state.companiesIds = [];
                     state.companiesIds.push(...action.payload);
                 }
             });

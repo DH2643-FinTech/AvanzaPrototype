@@ -2,36 +2,44 @@ import React, { useEffect } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import * as d3 from "d3";
 
-import { useState } from "react";
-import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { setSearchParamEndDate, setSearchParamStartDate } from "@/src/lib/features/company/companySlice";
+import {
+  setSearchParamEndDate,
+  setSearchParamStartDate,
+} from "@/src/lib/features/company/companySlice";
 import { DatePickerComp } from "../datePicker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../shadcn/select";
+
+
 
 
 const StockGraph = () => {
-
-  const startDate = useAppSelector((state) => state.company.searchParams?.startDate);
-  const endDate = useAppSelector((state) => state.company.searchParams?.endDate);
-
+  const startDate = useAppSelector(
+    (state) => state.company.searchParams?.startDate
+  );
+  const endDate = useAppSelector(
+    (state) => state.company.searchParams?.endDate
+  );
 
   const setSearchParamStartDateHandler = (date: string) => {
     dispatch(setSearchParamStartDate(String(date)));
-  }
+
+  };
   const setSearchParamEndtDateHandler = (date: string) => {
     dispatch(setSearchParamEndDate(String(date)));
-  }
+  };
 
   // Access the stock data from Redux store
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
   const dispatch = useAppDispatch();
 
-  const renderGraph = () =>{
-
+  const renderGraph = () => {
     const margin = { top: 70, right: 60, bottom: 50, left: 0 };
     const width = 1500 - margin.left - margin.right;
     const height = 800 - margin.top - margin.bottom;
@@ -291,8 +299,7 @@ const StockGraph = () => {
       .attr("y", margin.top - 100)
       .style("font-size", "20px")
       .style("font-weight", "bold")
-      .style("font-family", "sans-serif")
-      .text("Stock share of a Company X");
+      .style("font-family", "sans-serif");
 
     svg
       .append("text")
@@ -302,23 +309,53 @@ const StockGraph = () => {
       .style("font-size", "12px")
       .style("font-family", "sans-serif")
       .text("Powered by Avanza");
-  }
+  };
+
+  const [resolution, setResolution] = React.useState("Day");
 
   useEffect(() => {
     return renderGraph();
   }, [stockData]); // The effect depends on stockData, so it runs whenever stockData updates
 
+  const [selectedValue, setSelectedValue] = React.useState("");
+
+  // Step 3: Handle selection change
+  const handleSelectChange = (value: any) => {
+    setSelectedValue(value);
+    console.log("Selected value:", value); // You can use this value as needed
+  };
+
+
 
   return (
     <>
       <div className="w-full flex flex-col items-center justify-center">
-      <div className="w-[1500px] h-[800px] border-slate-200 shadow-md">
-      <div id="chart-container"></div>
-      </div >
-      <div className="self-start ml-[-30px]">
-      <DatePickerComp startDate ={startDate} endDate = {endDate} setStartDate = {setSearchParamStartDateHandler} setEndDate={ setSearchParamEndtDateHandler} />
+       
+        <div className="max-w-[1500px] w-[1500px] h-[900px]  shadow-md">
+
+          <Select onValueChange={handleSelectChange}>
+            <SelectTrigger className="w-[180px] h-[40px] left-12 top-24 relative">
+              <SelectValue placeholder="day" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem 
+                value="day">Day</SelectItem>
+              <SelectItem value="week">Week</SelectItem>
+              <SelectItem value="month">Month</SelectItem>
+            </SelectContent>
+          </Select>
+          <div className="w-[1440] h-[800px]" id="chart-container"></div>
+          <div className="relative justify-start items-center flex left-12 bottom-2 h-[60px] w-[1400px]">
+          <DatePickerComp
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setSearchParamStartDateHandler}
+          setEndDate={setSearchParamEndtDateHandler}
+        />
       </div>
+        </div>
       </div>
+
     </>
   );
 };
