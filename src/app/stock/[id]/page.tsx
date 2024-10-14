@@ -8,7 +8,7 @@ import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 import { addRecentlyVisited } from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice";
 import StockView from '@/src/views/StockView/StockView';
 
-export default function StockPage() {
+const StockPage = () => {
     const { id } = useParams();
     const dispatch = useAppDispatch();
     const { companyData, currentStock, loading, error } = useAppSelector((state) => state.company);
@@ -35,3 +35,4 @@ export default function StockPage() {
 
     return <StockView />;
 }
+export default StockPage;
