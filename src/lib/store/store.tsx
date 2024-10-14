@@ -1,10 +1,12 @@
-import {configureStore} from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import companyReducer from '@/src/lib/features/company/companySlice';
+import recentlyVisitedReducer from '@/src/lib/features/recentlyVisited/recentlyVisitedSlice';
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             company: companyReducer,
+            recentlyVisited: recentlyVisitedReducer,
         },
     });
 }
