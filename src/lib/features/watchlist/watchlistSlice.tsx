@@ -27,6 +27,7 @@ const initialState: WatchlistState = {
     lastUpdated: new Date().toISOString(),
 };
 
+// WIP: Only used for mock data
 export const fetchWatchlist = createAsyncThunk(
     'watchlist/fetchWatchlist',
     async (_, { rejectWithValue }) => {
