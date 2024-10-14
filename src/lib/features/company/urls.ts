@@ -58,6 +58,30 @@ export const detailUrlBuilder = (companyId: string): string => {
   return `https://www.avanza.se/_api/market-guide/stock/${companyId}/details`;
 };
 
+
+export const avanzaUrlBuilderStockPriceTimePeriod = (companyId: string, fromDate:Date, toDate:Date, resolution = "default", defaultTimePeriod: boolean): string => {
+
+  if (!defaultTimePeriod && resolution !== "default") {
+    return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=${fromDate.toISOString().slice(0,10)}&to=${toDate.toISOString().slice(0,10)}&resolution=${resolution}`;
+  }
+
+  if(defaultTimePeriod && resolution === "default") {
+    return `https://www.avanza.se/_api/price-chart/stock/${companyId}?timePeriod=infinity`;
+  }
+
+  if(defaultTimePeriod && resolution !== "default") {
+    return `https://www.avanza.se/_api/price-chart/stock/${companyId}?timePeriod=infinity&resolution=${resolution}`;
+  }
+
+  if(!defaultTimePeriod && resolution === "default") {
+    return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=${fromDate.toISOString().slice(0,10)}&to=${toDate.toISOString().slice(0,10)}`;
+  }
+
+  // Default return statement if none of the conditions are met
+  return `https://www.avanza.se/_api/price-chart/stock/${companyId}?timePeriod=infinity`;
+}
+
+
 export const detailUrl = 'https://www.avanza.se/_api/market-guide/stock/1144920/details';
 
 export const detailOptions: RequestInit = {

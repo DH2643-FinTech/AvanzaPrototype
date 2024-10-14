@@ -2,9 +2,12 @@
 import { NextResponse } from 'next/server'; 
 import clientPromise from '@/src/lib/database/mongodb'; 
 import { CompanyID } from './dataTypes';
+import fs from 'fs';
+import path from 'path';
 
 export const GET = async (request: Request) => {
   try {
+    console.log("GET request to /api/companies");
     const { searchParams } = new URL(request.url); 
 
     const name = searchParams.get("name");
@@ -12,13 +15,31 @@ export const GET = async (request: Request) => {
 
     const client = await clientPromise;
     const db = client.db('database'); 
-    const stocksCollection = db.collection('stock'); 
+    const stocksCollection = db.collection('stocks'); 
 
     if (name) {
+      // const company = await stocksCollection.find<CompanyID>(
+      //   { name: { $regex: name, $options: "i" } },
+      //   { projection: { _id: 1, name: 1 } }
+      // ).toArray(); 
       const company = await stocksCollection.find<CompanyID>(
-        { name: { $regex: name, $options: "i" } },
-        { projection: { _id: 1, name: 1 } }
+{}
       ).toArray(); 
+
+      const names = company.map(item => item.name).join("\n");
+
+      // Define the file path
+      const filePath = path.join(process.cwd(), "names.txt"); // Save in the root of your project
+  
+      // Write names to the file
+      fs.writeFile(filePath, names, (err) => {
+        if (err) {
+          console.error("Error writing to file:", err);
+          // return res.status(500).json({ error: "Failed to write to file" });
+        }
+        // res.status(200).json({ message: "Names saved to names.txt" });
+      });
+
 
     //   console.log("Company : ", company);
       if (company.length === 0) {
