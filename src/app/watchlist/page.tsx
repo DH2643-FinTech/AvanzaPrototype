@@ -1,8 +1,7 @@
-"use client";
-import WatchListView from "@/src/views/WatchlistView/WatchlistView";
+'use client';
 
-const WatchListPresenter = () => {
-  return <WatchListView/>;
-};
+import WatchlistView from '@/src/views/WatchlistView/WatchlistView';
 
-export default WatchListPresenter;
+export default function WatchlistPage() {
+  return <WatchlistView />;
+}

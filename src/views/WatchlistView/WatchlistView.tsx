@@ -1,21 +1,34 @@
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// @/src/views/WatchlistView/WatchlistView.tsx
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Navbar from '@/src/components/Navbar';
+import Sidebar from '@/src/components/Sidebar';
+import WatchlistTable from '@/src/components/WatchlistTable';
+import { Button } from "@/src/components/shadcn/button";
 
-const WatchListView = () => {
-    const { data: session } = useSession();
-    const router = useRouter();
+export default function WatchlistView() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   return (
-    <div>
-      <h1 className="font-serif w-4 h-4 ml-10">WatchList</h1>
-      <p>
-        {session && session.user
-          ? "Signed in as " + session.user.email
-          : "Not signed in"}
-      </p>
-      <button className="w-10 h-20 border-2" onClick={() => router.push("/sign-in")}>To account page</button>
+    <div className="flex flex-col h-screen bg-white">
+      <Navbar />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 p-6 overflow-auto">
+          <h1 className="text-3xl font-bold mb-6">Watchlist</h1>
+          {status === 'loading' ? (
+            <div>Loading...</div>
+          ) : status === 'unauthenticated' ? (
+            <div className="text-center py-10">
+              <h2 className="text-2xl font-bold mb-4">Please sign in to view your watchlist</h2>
+              <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
+            </div>
+          ) : (
+            <WatchlistTable />
+          )}
+        </main>
+      </div>
     </div>
   );
-};
-
-export default WatchListView;
+}
