@@ -1,6 +1,7 @@
 import { avanzaData } from '../company/companyTypes';
 
 // Temporary generic mock data
+// TODO: Should have its own interface
 export const mockWatchlistData: avanzaData[] = [
     {
         stockData: {

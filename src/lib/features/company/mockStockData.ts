@@ -1,5 +1,7 @@
 import { avanzaData } from './companyTypes';
 
+// Temporary generic mock data
+// TODO: Should have its own interface
 export const mockAppleData: avanzaData = {
     stockData: {
         id: "AAPL",
