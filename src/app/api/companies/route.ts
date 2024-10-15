@@ -32,13 +32,13 @@ export const GET = async (request: Request) => {
       const filePath = path.join(process.cwd(), "names.txt"); // Save in the root of your project
   
       // Write names to the file
-      fs.writeFile(filePath, names, (err) => {
-        if (err) {
-          console.error("Error writing to file:", err);
-          // return res.status(500).json({ error: "Failed to write to file" });
-        }
-        // res.status(200).json({ message: "Names saved to names.txt" });
-      });
+      // fs.writeFile(filePath, names, (err) => {
+      //   if (err) {
+      //     console.error("Error writing to file:", err);
+      //     // return res.status(500).json({ error: "Failed to write to file" });
+      //   }
+      //   // res.status(200).json({ message: "Names saved to names.txt" });
+      // });
 
 
     //   console.log("Company : ", company);

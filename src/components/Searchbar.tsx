@@ -9,7 +9,7 @@ import { useAppSelector } from "@/src/lib/hooks/useAppSelector"
 import { fetchCompanyIdFromServer } from "@/src/lib/features/company/companyAPI"
 import { CompanyID } from "@/src/app/api/companies/dataTypes"
 import Link from "next/link"
-
+import {fetchCompanyDetails} from "@/src/lib/features/company/companyAPI";
 const Searchbar = () => {
     const [query, setQuery] = useState("")
     const [showDropdown, setShowDropdown] = useState(false)
