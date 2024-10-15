@@ -7,6 +7,7 @@ interface FetchCompanyDetailsParams {
   name: string;
   timePeriod?: string;
   randomCount?: number;
+  id?: string;
 }
 
 export const fetchCompanyDetails = createAsyncThunk(
@@ -16,7 +17,7 @@ export const fetchCompanyDetails = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     try {
-      const { name, randomCount, timePeriod } = arg;
+      const { name, randomCount, timePeriod, id } = arg;
 
       //TODO: It is needed when we fixed the database migration. It fetches IDs from the database
       //   const url = serverUrlBuilderCompanies({ name, randomCount });
@@ -36,8 +37,8 @@ export const fetchCompanyDetails = createAsyncThunk(
         "companyId",
         JSON.stringify([
           {
-            _id: "26268",
-            name: "AAK",
+            _id: id,
+            name: name,
           },
         ])
       ); // Pass the companyIds as a comma-separated string

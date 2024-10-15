@@ -1,11 +1,9 @@
-'use client';
-import React from 'react'
+"use client";
+import { redirect } from 'next/navigation';
 
-
-const page = () => {
-  return (
-    <div className='ml-30 border bg-slate-100 font-semibold'>page</div>
-  )
+// Redirect to /overview since we dont use this page for anything (yet?)
+const DefaultPage = () => {
+  redirect('/overview');
 }
 
-export default page
+export default DefaultPage  

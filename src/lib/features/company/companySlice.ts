@@ -3,6 +3,7 @@ import { Company, CompanyState, Stock, StockInfo, avanzaData } from './companyTy
 import { CompanyID } from '@/src/app/api/companies/dataTypes';
 import { fetchCompanyDetails, fetchCompanyIdFromServer } from './companyAPI';
 import { RootState } from '@/src/lib/store/store';
+import { mockAppleData } from './mockStockData';
 
 const initialState: CompanyState = {
     companies: [],
@@ -10,8 +11,8 @@ const initialState: CompanyState = {
     loading: false,
     error: '',
     companiesIds: [],
-    currentStock: null,
-    companyData: null,
+    currentStock: mockAppleData.stockData,  // TODO Change back to null when not using example
+    companyData: mockAppleData.companyData, // TODO Change back to null when not using example
     searchParams: null,
 };
 
@@ -26,6 +27,7 @@ const companySlice = createSlice(
                 state.companyDetails = state.companies.find(company => company.id === action.payload) || null;
             },
             setSearchParamStartDate: (state, action: PayloadAction<string>) => {
+                console.log(action.payload);
                 state.searchParams = {...state.searchParams, startDate: action.payload};
             },
             setSearchParamEndDate: (state, action: PayloadAction<string>) => {
@@ -57,6 +59,7 @@ const companySlice = createSlice(
                 if (typeof action.payload === 'string') {
                     state.error = action.payload;
                 } else {
+                    state.companiesIds = [];
                     state.companiesIds.push(...action.payload);
                 }
             });
