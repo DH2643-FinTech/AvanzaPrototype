@@ -1,5 +1,5 @@
 'use client';
-import { SignInComp } from '@/src/components/signInComp';
+//import { SignInComp } from '@/src/components/signInComp';
 import { SignUpComp } from '@/src/components/signUpComp';
 import {
   GoogleLogInButton,
@@ -15,7 +15,7 @@ const AccountView = () => {
     <div>
       {/* <GoogleLogInButton /> */}
       {/* <CredentialAuthButton /> */}
-      <SignInComp />
+      {/* <SignInComp /> */ }
       {/* <SignUpComp /> */}
       {/* <SignOutButton /> */}
       <button onClick={() => router.push('/watchlist')}>Go to watchlist</button>

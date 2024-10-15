@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/shadcn/dropdown-menu";
 import Searchbar from "@/src/components/Searchbar";
-import AvanzaSearchBar from "@/src/components/ui/avanzaSearchBar";
+import AvanzaSearchBar from "@/src/components/ui/AvanzaSearchBar";
 
 
 

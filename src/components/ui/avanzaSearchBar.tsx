@@ -5,7 +5,7 @@ import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import { fetchCompanyIdFromServer } from "@/src/lib/features/company/companyAPI";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 
-const avanzaSearchBar = () => {
+const AvanzaSearchBar = () => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
@@ -104,4 +104,4 @@ const avanzaSearchBar = () => {
   );
 };
 
-export default avanzaSearchBar;
+export default AvanzaSearchBar;
