@@ -9,6 +9,8 @@ import { selectHighlightedStocks } from "@/src/lib/features/highlightedStocks/hi
 
 const StockCarousel = () => {
     const highlightedStocks = useAppSelector(selectHighlightedStocks)
+    const companyData = useAppSelector((state) => state.company.companyData);
+
     const [carouselIndex, setCarouselIndex] = useState(0)
 
     const nextSlide = () => {
@@ -23,9 +25,9 @@ const StockCarousel = () => {
         <div className="relative">
             <AnimatePresence initial={false}>
                 <div className="flex space-x-4 overflow-hidden">
-                    {highlightedStocks.slice(carouselIndex, carouselIndex + 3).map((stock) => (
+                    {companyData?.companyEvents?.events.slice(carouselIndex, carouselIndex + 3).map((event:any) => (
                         <motion.div
-                            key={stock.id}
+                            key={"cl" + carouselIndex}
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -50 }}
@@ -34,12 +36,19 @@ const StockCarousel = () => {
                         >
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>{stock.name}</CardTitle>
+                                    <CardTitle>{event.type}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold">${stock.price.toFixed(2)}</div>
-                                    <div className={`text-sm ${stock.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                                        {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)}%
+                                    <div className="text-2xl font-bold">${
+                                    //stock.price.toFixed(2)
+                                    event.type
+                                        }</div>
+                                    <div className={`text-sm ${event?.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                        {event.change >= 0 ? '+' : ''}{
+                                        //event.change.toFixed(2)
+                                        event?.date
+                                        }
+                                        {/* % */}
                                     </div>
                                 </CardContent>
                             </Card>

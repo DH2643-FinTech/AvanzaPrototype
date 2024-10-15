@@ -41,7 +41,7 @@ const StockGraph = () => {
 
   const renderGraph = () => {
     const margin = { top: 70, right: 60, bottom: 50, left: 0 };
-    const width = 1500 - margin.left - margin.right;
+    const width = 1200 - margin.left - margin.right;
     const height = 800 - margin.top - margin.bottom;
     if (!stockData || stockData.length === 0) return; // Ensure data is available before rendering the graph
 
@@ -266,16 +266,16 @@ const StockGraph = () => {
       tooltip
         .style("display", "block")
         .style("position", "absolute")
-        .style("left", `${width + 50}px`)
-        .style("top", `${yPos + 68}px`)
+        .style("left", `${width + 270}px`)
+        .style("top", `${yPos +300}px`)
         .style("border", `2px solid red`)
         .html(`$${d.Close !== undefined ? d.Close.toFixed(2) : "N/A"}`);
 
       tooltipRawDate
         .style("display", "block")
         .style("position", "absolute")
-        .style("left", `${xPos + 60}px`)
-        .style("top", `${height + 200}px`)
+        .style("left", `${xPos + 220}px`)
+        .style("top", `${height + 320}px`)
         .style("border", `2px solid red`)
         .html(
           `${d.Date !== undefined ? d.Date.toISOString().slice(0, 10) : "N/A"}`
@@ -328,10 +328,10 @@ const StockGraph = () => {
 
 
   return (
-    <>
+    <div>
       <div className="w-full flex flex-col items-center justify-center">
        
-        <div className="max-w-[1500px] w-[1500px] h-[900px]  shadow-md">
+        <div className="max-w-[1500px] border relative left-[40px] w-[1300px] h-[900px]  shadow-md">
 
           <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="w-[180px] h-[40px] left-12 top-24 relative">
@@ -356,7 +356,7 @@ const StockGraph = () => {
         </div>
       </div>
 
-    </>
+    </div>
   );
 };
 
