@@ -3,7 +3,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/src/lib/store/store';
 import { mockWatchlistData } from './mockWatchlistData';
-import { Company } from '@/src/lib/features/company/companyTypes';
+import { Company } from '@/interfaces';
+
 
 interface WatchlistState {
     stocks: string[];  // Array of stock IDs
@@ -14,14 +15,8 @@ interface WatchlistState {
 }
 
 const initialState: WatchlistState = {
-    stocks: mockWatchlistData.map(item => item.stockData.id), // TODO: Change to [] when not using example
-    watchlistDetails: mockWatchlistData.map(item => ({
-        id: item.stockData.id,
-        name: item.companyData.name,
-        revenue: item.companyData.revenue,
-        profit: item.companyData.profit,
-        description: item.companyData.description
-    })), // TODO: Change to null when not using example
+    stocks: [],
+    watchlistDetails: null,
     loading: false,
     error: null,
     lastUpdated: new Date().toISOString(),
@@ -32,9 +27,12 @@ export const fetchWatchlist = createAsyncThunk(
     'watchlist/fetchWatchlist',
     async (_, { rejectWithValue }) => {
         try {
-            // Simulate API call with mock data
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return mockWatchlistData;
+            const data = await fetch('/api/watchlist');
+            if (!data.ok) {
+                return rejectWithValue('Failed to fetch watchlist');
+            }
+            const json = await data.json() ;
+            return json['watchlist'] as Company[];
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }
@@ -45,9 +43,19 @@ export const addToWatchlist = createAsyncThunk(
     'watchlist/addToWatchlist',
     async (stockId: string, { rejectWithValue }) => {
         try {
-            // TODO: Replace with actual API call
-            await new Promise(resolve => setTimeout(resolve, 500));
+          const res = await fetch(`/api/watchlist/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: stockId }),
+          });
+      
+          if (res.ok) {
+            console.log('Added to watchlist');
             return stockId;
+          }
+          rejectWithValue('Failed to add to watchlist');
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }
@@ -58,9 +66,18 @@ export const removeFromWatchlist = createAsyncThunk(
     'watchlist/removeFromWatchlist',
     async (stockId: string, { rejectWithValue }) => {
         try {
-            // TODO: Replace with actual API call
-            await new Promise(resolve => setTimeout(resolve, 500));
-            return stockId;
+            const res = await fetch(`/api/watchlist/`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ id: stockId }),
+            });
+        
+            if (res.ok) {
+              return stockId;
+            }
+            rejectWithValue('Failed to remove from watchlist');
         } catch (error) {
             return rejectWithValue((error as Error).message);
         }
@@ -89,14 +106,8 @@ const watchlistSlice = createSlice({
             })
             .addCase(fetchWatchlist.fulfilled, (state, action) => {
                 state.loading = false;
-                state.stocks = action.payload.map(item => item.stockData.id);
-                state.watchlistDetails = action.payload.map(item => ({
-                    id: item.stockData.id,
-                    name: item.companyData.name,
-                    revenue: item.companyData.revenue,
-                    profit: item.companyData.profit,
-                    description: item.companyData.description
-                }));
+                state.stocks = action.payload.map(item => item.name);
+                state.watchlistDetails = action.payload;
                 state.lastUpdated = new Date().toISOString();
             })
             .addCase(fetchWatchlist.rejected, (state, action) => {
@@ -104,8 +115,10 @@ const watchlistSlice = createSlice({
                 state.error = action.error.message || 'An error occurred';
             })
             .addCase(addToWatchlist.fulfilled, (state, action) => {
-                state.stocks.push(action.payload);
+                if(action.payload){
+                  state.stocks.push(action.payload);
                 state.lastUpdated = new Date().toISOString();
+                }
             })
             .addCase(removeFromWatchlist.fulfilled, (state, action) => {
                 state.stocks = state.stocks.filter(id => id !== action.payload);
