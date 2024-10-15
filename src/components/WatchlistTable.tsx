@@ -18,7 +18,7 @@ import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, X } from 'lucide-rea
 import { AnimatePresence, motion } from 'framer-motion';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/src/components/shadcn/tooltip";
 
-type SortField = 'id' | 'name' | 'revenue' | 'profit';
+type SortField = '_id' | 'name' | 'lastPrice' | 'change' | 'changePercent' | 'totalNumberOfShares';
 type SortOrder = 'asc' | 'desc';
 
 export default function WatchlistTable() {
@@ -26,21 +26,23 @@ export default function WatchlistTable() {
     const dispatch = useAppDispatch();
     const watchlistStocks = useAppSelector(selectWatchlistStocks);
     const companies = useAppSelector((state) => state.company.companies);
+    const watchlistDetails = useAppSelector((state) => state.watchlist.watchlistDetails);
     const currentStock = useAppSelector((state) => state.company.currentStock);
 
     const [expandedRow, setExpandedRow] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortField, setSortField] = useState<SortField>('id');
+    const [sortField, setSortField] = useState<SortField>('_id');
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
     const [currentPage, setCurrentPage] = useState(1);
     const rowsPerPage = 10;
-
+  
     useEffect(() => {
         dispatch(fetchWatchlist());
     }, [dispatch]);
 
     const watchlistCompanies = useMemo(() => {
-        return companies.filter(company => watchlistStocks.includes(company.id));
+      return watchlistDetails || companies;
+        //return companies.filter(company => watchlistStocks.includes(company._id));
     }, [companies, watchlistStocks]);
 
     const toggleRow = (id: string) => {
@@ -64,18 +66,21 @@ export default function WatchlistTable() {
         return watchlistCompanies
             .filter(company =>
                 company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                company.id.toLowerCase().includes(searchTerm.toLowerCase())
+                company._id.toLowerCase().includes(searchTerm.toLowerCase())
             )
             .sort((a, b) => {
-                if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
-                if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+           
+                if (a[sortField] !== undefined && b[sortField] !== undefined) {
+                    if (a[sortField] < b[sortField]) return sortOrder === 'asc' ? -1 : 1;
+                    if (a[sortField] > b[sortField]) return sortOrder === 'asc' ? 1 : -1;
+                }
                 return 0;
             });
     }, [watchlistCompanies, searchTerm, sortField, sortOrder]);
 
     const paginatedCompanies = useMemo(() => {
         const startIndex = (currentPage - 1) * rowsPerPage;
-        return filteredAndSortedCompanies.slice(startIndex, startIndex + rowsPerPage);
+        return filteredAndSortedCompanies.slice(startIndex, startIndex + rowsPerPage).map(company => watchlistDetails?.find(c => c._id === company._id) || company);
     }, [filteredAndSortedCompanies, currentPage]);
 
     const totalPages = Math.max(1, Math.ceil(filteredAndSortedCompanies.length / rowsPerPage));
@@ -100,6 +105,9 @@ export default function WatchlistTable() {
         </span>
     );
 
+    
+    
+
     return (
         <div className="space-y-4">
             <Input
@@ -115,9 +123,9 @@ export default function WatchlistTable() {
                         <TableRow>
                             <TableHead
                                 className="w-[100px] cursor-pointer"
-                                onClick={() => toggleSort('id')}
+                                onClick={() => toggleSort('_id')}
                             >
-                                ID <SortIcon field="id" />
+                                ID <SortIcon field="_id" />
                             </TableHead>
                             <TableHead
                                 className="cursor-pointer"
@@ -127,30 +135,30 @@ export default function WatchlistTable() {
                             </TableHead>
                             <TableHead
                                 className="cursor-pointer"
-                                onClick={() => toggleSort('revenue')}
+                                onClick={() => toggleSort('lastPrice')}
                             >
-                                Revenue <SortIcon field="revenue" />
+                                Last Price <SortIcon field="lastPrice" />
                             </TableHead>
                             <TableHead
                                 className="cursor-pointer"
-                                onClick={() => toggleSort('profit')}
+                                onClick={() => toggleSort('change')}
                             >
-                                Profit <SortIcon field="profit" />
+                                Change <SortIcon field="change" />
                             </TableHead>
                             <TableHead className="w-[100px]">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {paginatedCompanies.map((company) => (
-                            <React.Fragment key={company.id}>
+                            <React.Fragment key={company._id}>
                                 <TableRow
                                     className="cursor-pointer"
-                                    onClick={() => toggleRow(company.id)}
+                                    onClick={() => toggleRow(company._id)}
                                 >
-                                    <TableCell className="font-medium">{company.id}</TableCell>
+                                    <TableCell className="font-medium">{company._id}</TableCell>
                                     <TableCell>{company.name}</TableCell>
-                                    <TableCell>${company.revenue.toLocaleString()}</TableCell>
-                                    <TableCell>${company.profit.toLocaleString()}</TableCell>
+                                    <TableCell>${company.lastPrice?.toLocaleString() }</TableCell>
+                                    <TableCell>${company.change?.toLocaleString()}</TableCell>
                                     <TableCell>
                                         <div className="flex justify-between items-center">
                                             <TooltipProvider>
@@ -162,7 +170,7 @@ export default function WatchlistTable() {
                                                             className="p-0 hover:bg-gray-100 rounded-full w-8 h-8"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                handleRemoveFromWatchlist(company.id);
+                                                                handleRemoveFromWatchlist(company._id);
                                                             }}
                                                         >
                                                             <X className="h-4 w-4" />
@@ -179,16 +187,16 @@ export default function WatchlistTable() {
                                                 className="p-0 hover:bg-gray-100 rounded-full w-8 h-8"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    toggleRow(company.id);
+                                                    toggleRow(company._id);
                                                 }}
                                             >
-                                                {expandedRow === company.id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                                                {expandedRow === company._id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                                             </Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
                                 <AnimatePresence>
-                                    {expandedRow === company.id && (
+                                    {expandedRow === company._id && (
                                         <TableRow>
                                             <TableCell colSpan={5} className="p-0">
                                                 <motion.div
@@ -202,7 +210,7 @@ export default function WatchlistTable() {
                                                             <h4 className="font-semibold mb-2">Description</h4>
                                                             <p className="text-sm">{company.description}</p>
                                                         </div>
-                                                        {currentStock && currentStock.id === company.id && (
+                                                        {currentStock && currentStock.id === company._id && (
                                                             <div className="mb-4">
                                                                 <h4 className="font-semibold mb-2">Latest Stock Info</h4>
                                                                 <p>Open: ${currentStock.ohlc[currentStock.ohlc.length - 1].open}</p>
@@ -214,7 +222,7 @@ export default function WatchlistTable() {
                                                         <div className="mt-4">
                                                             <Button
                                                                 variant="outline"
-                                                                onClick={() => router.push(`/stock/${company.id}`)}
+                                                                onClick={() => router.push(`/stock/${company._id}`)}
                                                             >
                                                                 View Detailed Page
                                                             </Button>

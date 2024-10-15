@@ -1,11 +1,10 @@
 import { CompanyID } from "@/src/app/api/companies/dataTypes";
+import { Company as otherCompany } from "@/interfaces";
 
-export interface Company {
-  id: string;
-  name: string;
-  revenue: number;
-  profit: number;
-  description: string;
+
+//TODO Fix with other company type
+export interface Company extends otherCompany {
+  
 }
 
 export interface StockInfo{
