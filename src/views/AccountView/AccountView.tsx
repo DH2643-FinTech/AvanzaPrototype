@@ -1,9 +1,10 @@
 'use client';
+import { SignInComp } from '@/src/components/signInComp';
+import { SignUpComp } from '@/src/components/signUpComp';
 import {
   GoogleLogInButton,
   CredentialAuthButton,
   SignOutButton,
-  SignInComp
 } from '@/src/components/ui/authButtons';
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +16,7 @@ const AccountView = () => {
       {/* <GoogleLogInButton /> */}
       {/* <CredentialAuthButton /> */}
       <SignInComp />
+      {/* <SignUpComp /> */}
       {/* <SignOutButton /> */}
       <button onClick={() => router.push('/watchlist')}>Go to watchlist</button>
     </div>

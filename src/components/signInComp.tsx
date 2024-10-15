@@ -4,12 +4,12 @@
 // // import { useColorSchemeShim } from 'docs/src/modules/components/ThemeContext';
 // // import { getDesignTokens } from './brandingTheme';
 
+
 // const signIn: (provider: AuthProvider) => void = async (provider) => {
 //   const promise = new Promise<void>((resolve) => {
 //     setTimeout(() => {
 //       console.log(`Sign in with ${provider.id}`);
 //       console.log(provider);
-
 //       resolve();
 //     }, 500);
 //   });
@@ -45,3 +45,4 @@
 //     // preview-end
 //   );
 // }
+
