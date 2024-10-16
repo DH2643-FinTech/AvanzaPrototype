@@ -30,7 +30,6 @@ export default function WatchlistView() {
             
             </div>
           ) : (
-            
             <WatchlistTable />
           )}
         </main>
