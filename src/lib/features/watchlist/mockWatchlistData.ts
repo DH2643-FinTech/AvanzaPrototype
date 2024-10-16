@@ -13,7 +13,8 @@ export const mockWatchlistData: avanzaData[] = [
                 { timestamp: "2023-10-05", open: 176.65, high: 178.21, low: 175.12, close: 177.57, totalVolumeTraded: 49876543 },
             ],
             from: "2023-10-01",
-            to: "2023-10-05"
+            to: "2023-10-05",
+            name: ''
         },
         companyData: {
             id: "AAPL",
@@ -31,7 +32,8 @@ export const mockWatchlistData: avanzaData[] = [
                 { title: "Q3 2023 Earnings Report" },
                 { title: "Annual Report 2023" },
             ]
-        }
+        },
+        id: undefined
     },
     {
         stockData: {
@@ -43,7 +45,8 @@ export const mockWatchlistData: avanzaData[] = [
                 { timestamp: "2023-10-05", open: 316.65, high: 318.21, low: 315.12, close: 317.57, totalVolumeTraded: 29876543 },
             ],
             from: "2023-10-01",
-            to: "2023-10-05"
+            to: "2023-10-05",
+            name: ''
         },
         companyData: {
             id: "MSFT",
@@ -61,7 +64,8 @@ export const mockWatchlistData: avanzaData[] = [
                 { title: "Q1 2024 Earnings" },
                 { title: "Annual Report 2023" },
             ]
-        }
+        },
+        id: undefined
     }
 ];
 
