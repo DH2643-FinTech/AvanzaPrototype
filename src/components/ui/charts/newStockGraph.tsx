@@ -21,7 +21,7 @@ const NewStockGraph = () => {
   const startDate = useAppSelector(
     (state) => state.company.searchParams?.startDate
   );
-  const currentStock = useAppSelector((state)=> state.company.currentStock);
+  const currentStock = useAppSelector((state) => state.company.currentStock);
   const endDate = useAppSelector(
     (state) => state.company.searchParams?.endDate
   );
@@ -29,7 +29,16 @@ const NewStockGraph = () => {
   const setSearchParamStartDateHandler = (date: Date) => {
     dispatch(setSearchParamStartDate(String(date)));
     if (currentStock?.name && currentStock?.id) {
-      dispatch(fetchCompanyDetails({ name: currentStock.name, id: currentStock.id, fromDate: date, toDate: new Date(), defaultTimePeriod: false }));
+      dispatch(
+        fetchCompanyDetails({
+          name: currentStock.name,
+          id: currentStock.id,
+          fromDate: date,
+          toDate: new Date(),
+          resolution: "default",
+          defaultTimePeriod: false,
+        })
+      );
     }
   };
   const setSearchParamEndtDateHandler = (date: string) => {
@@ -115,29 +124,31 @@ const NewStockGraph = () => {
     y.domain([0, ((d3.max(data, (d) => d.High) ?? 0) + 1) * 2]);
     // const numTicks = Math.min(Math.floor(width / 100), 10); // For example, adjust based on chart width
     // const xAxis = d3.axisBottom(x).ticks(numTicks);
-    const timeRange = Math.ceil((xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24));
+    const timeRange = Math.ceil(
+      (xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24)
+    );
     console.log("timeRange", timeRange);
-    
-    let tickInterval: any;
-let tickFormat: any;
 
-if (timeRange > 365 * 2) {
-  // More than 2 years, show yearly ticks
-  tickInterval = d3.timeYear.every(1);
-  tickFormat = d3.timeFormat("%Y"); // Year only
-} else if (timeRange > 365 / 2) {
-  // Between 6 months and 2 years, show monthly ticks
-  tickInterval = d3.timeMonth.every(1);
-  tickFormat = d3.timeFormat("%b %Y"); // Month and Year
-} else if (timeRange > 30) {
-  // Between 30 days and 6 months, show weekly ticks
-  tickInterval = d3.timeWeek.every(1);
-  tickFormat = d3.timeFormat("%b %d"); // Month and day
-} else {
-  // Less than 30 days, show daily ticks
-  tickInterval = d3.timeDay.every(1);
-  tickFormat = d3.timeFormat("%b %d"); // Month and day
-}
+    let tickInterval: any;
+    let tickFormat: any;
+
+    if (timeRange > 365 * 2) {
+      // More than 2 years, show yearly ticks
+      tickInterval = d3.timeYear.every(1);
+      tickFormat = d3.timeFormat("%Y"); // Year only
+    } else if (timeRange > 365 / 2) {
+      // Between 6 months and 2 years, show monthly ticks
+      tickInterval = d3.timeMonth.every(1);
+      tickFormat = d3.timeFormat("%b %Y"); // Month and Year
+    } else if (timeRange > 30) {
+      // Between 30 days and 6 months, show weekly ticks
+      tickInterval = d3.timeWeek.every(1);
+      tickFormat = d3.timeFormat("%b %d"); // Month and day
+    } else {
+      // Less than 30 days, show daily ticks
+      tickInterval = d3.timeDay.every(1);
+      tickFormat = d3.timeFormat("%b %d"); // Month and day
+    }
 
     svg
       .append("g")
@@ -148,8 +159,7 @@ if (timeRange > 365 * 2) {
         d3
           .axisBottom(x)
           .ticks(tickInterval)
-          .tickFormat((domainValue, index) =>
-            d3.timeFormat("%b %d")(domainValue as Date)
+          .tickFormat(tickFormat
           )
       )
       .selectAll(".tick line")

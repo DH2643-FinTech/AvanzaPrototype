@@ -23,17 +23,8 @@ export const fetchCompanyDetails = createAsyncThunk(
     try {
       const { name, randomCount, timePeriod, id, fromDate, toDate, resolution, defaultTimePeriod  } = arg;
 
-      //TODO: It is needed when we fixed the database migration. It fetches IDs from the database
-      //   const url = serverUrlBuilderCompanies({ name, randomCount });
-      //   const responseFromServer = await fetch(url);
+      console.log("fetchCompanyDetails : ", name, randomCount, timePeriod, id, fromDate, toDate, resolution, defaultTimePeriod);
 
-      //   if (!responseFromServer.ok) {
-      //     throw new Error("Failed to fetch companies");
-      //   }
-
-      //   const companyIds = await responseFromServer.json();
-
-      //TODO: we may need to fetch details info about many companies at once!! Looping through all ids and fetch one by one or if we can solve it in a better way
 
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
@@ -75,7 +66,7 @@ export const fetchCompanyDetails = createAsyncThunk(
       } = resData;
       const stockInfo: avanzaData = {
         stockData: {
-          id: "1",
+          id: _id,
           name: name,
           availableResolutions,
           chartResolution,

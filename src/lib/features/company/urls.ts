@@ -61,6 +61,8 @@ export const detailUrlBuilder = (companyId: string): string => {
 
 export const avanzaUrlBuilderStockPriceTimePeriod = (companyId: string, fromDate:Date, toDate:Date, resolution = "default", defaultTimePeriod: boolean): string => {
 
+  console.log("avanzaUrlBuilderStockPriceTimePeriod : ", companyId, fromDate, toDate, resolution, defaultTimePeriod);
+
   if (!defaultTimePeriod && resolution !== "default") {
     return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=${fromDate.toISOString().slice(0,10)}&to=${toDate.toISOString().slice(0,10)}&resolution=${resolution}`;
   }
