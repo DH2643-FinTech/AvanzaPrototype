@@ -13,7 +13,7 @@ export const avanzaFetchGeneralInfo = async (companyId: string) => {
 export const avanzaFetchPrice = async (companyId: string) =>{
   const response = await fetch(`${avanzaBaseUrl}/market-guide/stock/${companyId}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch general info');
+    throw new Error('Failed to fetch price info');
   }
   return await response.json() as AvanzaCompanyPriceResponse;
 }
