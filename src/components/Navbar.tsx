@@ -33,8 +33,6 @@ const Navbar = () => {
       </div>
       <div className="flex-grow flex items-center justify-between p-4">
         <div className="flex-grow max-w-3xl">
-          {/* <Searchbar /> */}
-
         <AvanzaSearchBar/>
         </div>
         <div className="flex items-center">
@@ -75,10 +73,6 @@ const Navbar = () => {
               </DropdownMenu>
             </>
           ) : (
-            // <Link href="/sign-in" passHref>
-            //   <Button variant="ghost">Sign In</Button>
-            // </Link>
-
             <ToggleSingInSignUpForm/>
           )}
         </div>

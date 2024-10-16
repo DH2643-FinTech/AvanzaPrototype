@@ -10,6 +10,7 @@ interface FetchCompanyDetailsParams {
   toDate?: Date;
   resolution?: string;
   defaultTimePeriod: boolean;
+  fromDateValid: boolean;
 }
 
 export const fetchCompanyDetails = createAsyncThunk(
@@ -19,7 +20,7 @@ export const fetchCompanyDetails = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     try {
-      const { name, id, fromDate, toDate, resolution, defaultTimePeriod  } = arg;
+      const { name, id, fromDate, toDate, resolution, defaultTimePeriod,fromDateValid  } = arg;
 
       console.log("fetchCompanyDetails : ", name,  id, fromDate, toDate, resolution, defaultTimePeriod);
       const headers = new Headers();
@@ -33,7 +34,8 @@ export const fetchCompanyDetails = createAsyncThunk(
             fromDate: fromDate,
             toDate: toDate,
             resolution: resolution,
-            defaultTimePeriod: defaultTimePeriod
+            defaultTimePeriod: defaultTimePeriod,
+            fromDateValid: fromDateValid
           },
         )
       ); // Pass the companyIds as a comma-separated string

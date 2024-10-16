@@ -1,41 +1,7 @@
-import React, { useEffect } from "react";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import * as d3 from "d3";
 
-import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { DatePickerComp } from "../datePicker";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../shadcn/select";
 
-
-
-
-const StockGraph = () => {
-  const startDate = useAppSelector(
-    (state) => state.company.searchParams?.startDate
-  );
-  const endDate = useAppSelector(
-    (state) => state.company.searchParams?.endDate
-  );
-
-  const setSearchParamStartDateHandler = (date: string) => {
-    // dispatch(setSearchParamStartDate(String(date)));
-
-  };
-  const setSearchParamEndtDateHandler = (date: string) => {
-    // dispatch(setSearchParamEndDate(String(date)));
-  };
-
-  // Access the stock data from Redux store
-  const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
-  const dispatch = useAppDispatch();
-
-  const renderGraph = () => {
+export const renderGraph = (stockData: any) => {
     const margin = { top: 70, right: 60, bottom: 50, left: 0 };
     const width = 1200 - margin.left - margin.right;
     const height = 800 - margin.top - margin.bottom;
@@ -44,7 +10,7 @@ const StockGraph = () => {
     // Parse the timestamp to create Date objects and ensure other fields are numeric
     //const parseDate = d3.timeParse("%s"); // Parse timestamp in seconds
 
-    const data = stockData.map((d) => ({
+    const data = stockData.map((d:any) => ({
       ...d,
       Date: new Date(d.timestamp), // Convert timestamp to JS Date
       Open: +d.open,
@@ -104,9 +70,38 @@ const StockGraph = () => {
       .attr("stop-opacity", 0);
 
     // Set the domain for x (time) and y (price) scales
-    const xDomain = d3.extent(data, (d) => d.Date) as [Date, Date];
-    x.domain(xDomain || [new Date(), new Date()]);
-    y.domain([0, ((d3.max(data, (d) => d.High) ?? 0) + 1) * 2]);
+    const xDomain = d3.extent(data, (d: { Date: Date }) => d.Date) as [Date | undefined, Date | undefined];
+    if (!xDomain[0] || !xDomain[1]) return; // Ensure xDomain has valid dates
+    console.log("xDomain", xDomain);
+    x.domain(xDomain.filter((d): d is Date => d instanceof Date) || [new Date(), new Date()]);
+    y.domain([0, ((d3.max(data, (d: { High: number }) => +d.High) ?? 0) + 1) * 2]);
+    // const numTicks = Math.min(Math.floor(width / 100), 10); // For example, adjust based on chart width
+    // const xAxis = d3.axisBottom(x).ticks(numTicks);
+    const timeRange = Math.ceil(
+      (xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24)
+    );
+    console.log("timeRange", timeRange);
+
+    let tickInterval: any;
+    let tickFormat: any;
+
+    if (timeRange > 365 * 2) {
+      // More than 2 years, show yearly ticks
+      tickInterval = d3.timeYear.every(1);
+      tickFormat = d3.timeFormat("%Y"); // Year only
+    } else if (timeRange > 365 / 2) {
+      // Between 6 months and 2 years, show monthly ticks
+      tickInterval = d3.timeMonth.every(1);
+      tickFormat = d3.timeFormat("%b %Y"); // Month and Year
+    } else if (timeRange > 30) {
+      // Between 30 days and 6 months, show weekly ticks
+      tickInterval = d3.timeWeek.every(1);
+      tickFormat = d3.timeFormat("%b %d"); // Month and day
+    } else {
+      // Less than 30 days, show daily ticks
+      tickInterval = d3.timeDay.every(1);
+      tickFormat = d3.timeFormat("%b %d"); // Month and day
+    }
 
     svg
       .append("g")
@@ -116,9 +111,8 @@ const StockGraph = () => {
       .call(
         d3
           .axisBottom(x)
-          .ticks(d3.timeDay.every(1))
-          .tickFormat((domainValue, index) =>
-            d3.timeFormat("%b %d")(domainValue as Date)
+          .ticks(tickInterval)
+          .tickFormat(tickFormat
           )
       )
       .selectAll(".tick line")
@@ -264,7 +258,7 @@ const StockGraph = () => {
         .style("display", "block")
         .style("position", "absolute")
         .style("left", `${width + 270}px`)
-        .style("top", `${yPos +300}px`)
+        .style("top", `${yPos + 300}px`)
         .style("border", `2px solid red`)
         .html(`$${d.Close !== undefined ? d.Close.toFixed(2) : "N/A"}`);
 
@@ -307,54 +301,3 @@ const StockGraph = () => {
       .style("font-family", "sans-serif")
       .text("Powered by Avanza");
   };
-
-  const [resolution, setResolution] = React.useState("Day");
-
-  useEffect(() => {
-    return renderGraph();
-  }, [stockData]); // The effect depends on stockData, so it runs whenever stockData updates
-
-  const [selectedValue, setSelectedValue] = React.useState("");
-
-  // Step 3: Handle selection change
-  const handleSelectChange = (value: any) => {
-    setSelectedValue(value);
-    //console.log("Selected value:", value); // You can use this value as needed
-  };
-
-
-
-  return (
-    <div>
-      <div className="w-full flex flex-col items-center justify-center">
-       
-        <div className="max-w-[1500px] border relative left-[40px] w-[1300px] h-[900px]  shadow-md">
-
-          <Select onValueChange={handleSelectChange}>
-            <SelectTrigger className="w-[180px] h-[40px] left-12 top-24 relative">
-              <SelectValue placeholder="day" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem 
-                value="day">Day</SelectItem>
-              <SelectItem value="week">Week</SelectItem>
-              <SelectItem value="month">Month</SelectItem>
-            </SelectContent>
-          </Select>
-          <div className="w-[1440] h-[800px]" id="chart-container"></div>
-          <div className="relative justify-start items-center flex left-12 bottom-2 h-[60px] w-[1400px]">
-          <DatePickerComp
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setSearchParamStartDateHandler}
-          setEndDate={setSearchParamEndtDateHandler}
-        />
-      </div>
-        </div>
-      </div>
-
-    </div>
-  );
-};
-
-export default StockGraph;

@@ -1,5 +1,5 @@
 "use client";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/utils";
@@ -15,6 +15,7 @@ import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import { useState } from "react";
+import { setSearchParamTimeInterval } from "@/src/lib/features/company/companySlice";
 
 export const DatePickerComp = (props: any) => {
   const [from, setFrom] = useState(new Date());
@@ -23,12 +24,7 @@ export const DatePickerComp = (props: any) => {
   const dispatch = useAppDispatch();
   const currentStock = useAppSelector((state) => state.company.currentStock);
   const handleFetch = () =>{
-    if (currentStock) {
-      dispatch(fetchCompanyDetails({
-        id: currentStock.id, fromDate: from, toDate: to, defaultTimePeriod: false,
-        name: currentStock.name
-      }));
-    }
+    dispatch(setSearchParamTimeInterval({startDate: from.toString(), endDate: to.toString()}));
   }
 
   const DatePicker = (dProp: any) => {
@@ -68,12 +64,12 @@ export const DatePickerComp = (props: any) => {
     <div className="flex w-[240px] flex-col justify-between h-[100px]">
       <div className="flex flex-row justify-center items-center">
         <Label className="w-12">From</Label>
-        <DatePicker date={props.startDate} setLocal={setFrom} setDate={props.setStartDate} />
+        <DatePicker date={from} setLocal={setFrom} setDate={props.setStartDate} />
       </div>
       <div>
       <div className="flex flex-row justify-center items-center">
       <Label className="w-12">To</Label>
-        <DatePicker date={props.endDate} setLocal={setTo} setDate={props.setEndDate} />
+        <DatePicker date={to} setLocal={setTo} setDate={props.setEndDate} />
       </div>
       </div>
     </div>

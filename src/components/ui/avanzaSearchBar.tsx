@@ -31,7 +31,6 @@ const avanzaSearchBar = () => {
     else {
       dispatch(setCompanies(JSON.parse(storedCompanyIds)));
     }
-    // dispatch(fetchAllCompanyIds());
   }, []);
 
   useEffect(() => {
@@ -49,14 +48,13 @@ const avanzaSearchBar = () => {
   }, [search]);
 
   const handleSearch = (search: any) => {
-    // console.log(companies);
     const id = companies.find((company) => company.name === search)?.id;
-    // console.log("handle search now" + id)
     dispatch(
       fetchCompanyDetails({
         name: search,
         id: id,
-        defaultTimePeriod: true
+        defaultTimePeriod: true,
+        fromDateValid: false
       })
     );
   };
