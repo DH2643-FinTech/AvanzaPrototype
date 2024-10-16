@@ -105,4 +105,4 @@ const avanzaSearchBar = (props: any) => {
   );
 };
 
-export default AvanzaSearchBar;
+export default avanzaSearchBar;
