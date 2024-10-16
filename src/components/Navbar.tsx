@@ -17,9 +17,31 @@ import AvanzaSearchBar from "@/src/components/ui/avanzaSearchBar";
 
 
 import ToggleSingInSignUpForm from "./ui/toggleSingInSignUpForm";
+import { useAppDispatch } from "../lib/hooks/useAppDispatch";
+import { useEffect } from "react";
+import { fetchAllCompanyIds } from "../lib/features/company/companyAPI";
+import { setCompanies } from "../lib/features/company/companySlice";
 
-const Navbar = () => {
+const Navbar = (props: any) => {
   const { data: session, status } = useSession();
+
+
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    // console.log("fetching data from server !");
+    const storedCompanyIds = localStorage.getItem('allCompanyIds');
+    if (!storedCompanyIds) {
+      dispatch(fetchAllCompanyIds());
+    }
+    else {
+      dispatch(setCompanies(JSON.parse(storedCompanyIds)));
+    }
+  }, []);
+
+  const handleSearchParam = (searchParam: any) => {
+    props.setSearchParam(searchParam);
+  }
 
   return (
     <header className="border-b flex items-center">
@@ -33,7 +55,7 @@ const Navbar = () => {
       </div>
       <div className="flex-grow flex items-center justify-between p-4">
         <div className="flex-grow max-w-3xl">
-        <AvanzaSearchBar/>
+        <AvanzaSearchBar setSearchParam = {handleSearchParam}/>
         </div>
         <div className="flex items-center">
           {status === "authenticated" ? (

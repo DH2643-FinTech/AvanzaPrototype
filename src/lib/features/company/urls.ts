@@ -24,13 +24,6 @@ export const serverUrlBuilderCompanies = ({
   return url;
 };
 
-// export const avanzaUrlBuilder = (params: UrlParams): string =>{
-//   const { companyId, timePeriod = 'one_month' } = params;
-//   const baseUrl = 'https://cors-anywhere.herokuapp.com/https://www.avanza.se/_api/price-chart/stock/573878/compare';
-//   const url = `${baseUrl}/${companyId}?timePeriod=${encodeURIComponent(timePeriod)}`;
-//   return url;
-// }
-
 export const url =
   "https://www.avanza.se/_api/price-chart/stock/573878/compare/1002994?timePeriod=one_month";
 export const options: RequestInit = {
@@ -106,13 +99,9 @@ export const avanzaUrlBuilderStockPriceTimePeriod = ({
     return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=${fromDate?.toISOString().slice(0, 10)}&to=${toDate.toISOString().slice(0, 10)}`;
   }
 
-  // if(!defaultTimePeriod && resolution !== undefined && fromDate === undefined){
-  //   return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=infinity&to=${toDate.toISOString().slice(0, 10)}&resolution=${resolution}`;
-  // }
   if(!defaultTimePeriod && resolution === undefined && fromDateValid){
     return `https://www.avanza.se/_api/price-chart/stock/${companyId}?to=${toDate.toISOString().slice(0, 10)}&resolution=${resolution}`;
   }
-  // Default return statement if none of the conditions are met
   return `https://www.avanza.se/_api/price-chart/stock/${companyId}?timePeriod=infinity`;
 };
 

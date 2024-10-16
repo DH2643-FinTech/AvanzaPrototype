@@ -20,7 +20,6 @@ const initialState: CompanyState = {
   currentStock: mockAppleData.stockData, // TODO Change back to null when not using example
   companyData: mockAppleData.companyData, // TODO Change back to null when not using example
   searchParams: null,
-  currentStockId: "",
 };
 
 const companySlice = createSlice({
@@ -32,17 +31,16 @@ const companySlice = createSlice({
         state.companies.find((company) => company.id === action.payload) ||
         null;
     },
-    // setSearchParamStartDate: (state, action: PayloadAction<string>) => {
-    //   console.log(action.payload);
-    //   state.searchParams = { ...state.searchParams, startDate: action.payload };
-    // },
-    // setSearchParamEndDate: (state, action: PayloadAction<string>) => {
-    //   state.searchParams = { ...state.searchParams, endDate: action.payload };
-    // },
     setSearchParamResolution: (state, action: PayloadAction<string>) => {
       state.searchParams = {
         ...state.searchParams,
         resolution: action.payload,
+      };
+    },
+    setSearchParamName:(state, action: PayloadAction<string>) => {
+      state.searchParams = {
+        ...state.searchParams,
+        name: action.payload,
       };
     },
     setSearchParamTimeInterval: (
@@ -108,7 +106,9 @@ export const {
   setSearchParamResolution,
   setSearchParamTimeInterval,
   setCompanies,
+  setSearchParamName,
 } = companySlice.actions;
+
 export const selectCurrentCompany = (state: RootState) =>
   state.company.companyDetails;
 export default companySlice.reducer;

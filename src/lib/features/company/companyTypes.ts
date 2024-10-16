@@ -42,7 +42,6 @@ export interface CompanyState {
   currentStock: Stock | null;
   companyData: any;
   searchParams: any;
-  currentStockId: string;
 
 }
 

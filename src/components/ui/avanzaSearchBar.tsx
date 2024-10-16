@@ -6,7 +6,7 @@ import { fetchAllCompanyIds } from "@/src/lib/features/company/companyAPI";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 import { setCompanies } from "@/src/lib/features/company/companySlice";
 
-const avanzaSearchBar = () => {
+const avanzaSearchBar = (props: any) => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
@@ -22,16 +22,7 @@ const avanzaSearchBar = () => {
       name: company.name,
     })) || [];
 
-  useEffect(() => {
-    console.log("fetching data from server !");
-    const storedCompanyIds = localStorage.getItem('allCompanyIds');
-    if (!storedCompanyIds) {
-      dispatch(fetchAllCompanyIds());
-    }
-    else {
-      dispatch(setCompanies(JSON.parse(storedCompanyIds)));
-    }
-  }, []);
+
 
   useEffect(() => {
     if (search?.trim()) {
@@ -48,16 +39,18 @@ const avanzaSearchBar = () => {
   }, [search]);
 
   const handleSearch = (search: any) => {
-    const id = companies.find((company) => company.name === search)?.id;
-    dispatch(
-      fetchCompanyDetails({
-        name: search,
-        id: id,
-        defaultTimePeriod: true,
-        fromDateValid: false
-      })
-    );
+    // const id = companies.find((company) => company.name === search)?.id;
+    // dispatch(
+    //   fetchCompanyDetails({
+    //     name: search,
+    //     id: id,
+    //     defaultTimePeriod: true,
+    //     fromDateValid: false
+    //   })
+    // );
+   props.setSearchParam(search)
   };
+
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       setShowResults(false);

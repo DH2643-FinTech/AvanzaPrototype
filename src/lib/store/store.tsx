@@ -1,8 +1,7 @@
 import { configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import companyReducer, {
-  setSearchParamStartDate,
+  setSearchParamName,
   setSearchParamResolution,
-  setSearchParamEndDate,
   setSearchParamTimeInterval,
 } from "@/src/lib/features/company/companySlice";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
@@ -14,26 +13,48 @@ import { useAppSelector } from "../hooks/useAppSelector";
 
 const listenerMiddleware = createListenerMiddleware();
 
-  listenerMiddleware.startListening({
-    actionCreator: setSearchParamTimeInterval,
-    effect: (action, listenerApi) => {
-      console.log("Lister is listening to ", action.payload);
-      const currentStock = (listenerApi.getState() as RootState).company.currentStock;
-      if (currentStock) {
-        const { id, name } = currentStock;
-        listenerApi.dispatch(
-          fetchCompanyDetails({
-            id: String(id),
-            name: name,
-            toDate: new Date(action.payload.endDate),
-            defaultTimePeriod: false,
-            fromDate: new Date(action.payload.startDate),
-            fromDateValid: true,
-          })
-        );
-      }
-    },
-  });
+listenerMiddleware.startListening({
+  actionCreator: setSearchParamName,
+  effect: (action, listenerApi) => {
+    console.log("Lister is listening to ", action.payload);
+    const id = (listenerApi.getState() as RootState).company.companiesIds.find(
+      (company) => company.name === action.payload
+    )?._id;
+
+    listenerApi.dispatch(
+      fetchCompanyDetails({
+        name: action.payload,
+        id: id,
+        defaultTimePeriod: true,
+        fromDateValid: false,
+      })
+    );
+
+  },
+});
+
+listenerMiddleware.startListening({
+  actionCreator: setSearchParamTimeInterval,
+  effect: (action, listenerApi) => {
+    console.log("Lister is listening to ", action.payload);
+    const currentStock = (listenerApi.getState() as RootState).company
+      .currentStock;
+    if (currentStock) {
+      const { id, name } = currentStock;
+      listenerApi.dispatch(
+        fetchCompanyDetails({
+          id: String(id),
+          name: name,
+          toDate: new Date(action.payload.endDate),
+          defaultTimePeriod: false,
+          fromDate: new Date(action.payload.startDate),
+          fromDateValid: true,
+        })
+      );
+    }
+  },
+});
+
 
 export const makeStore = () => {
   return configureStore({

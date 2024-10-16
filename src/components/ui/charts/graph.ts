@@ -19,8 +19,6 @@ export const renderGraph = (stockData: any) => {
       High: +d.high,
       Volume: +d.totalVolumeTraded,
     }));
-    // console.log("chart stockData" + stockData);
-    // console.log("chart data" + data);
 
     // x and y scales
     const x = d3.scaleTime().range([0, width]);

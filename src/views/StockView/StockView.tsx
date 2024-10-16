@@ -2,7 +2,6 @@
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import Navbar from '@/src/components/Navbar';
 import Sidebar from '@/src/components/Sidebar';
-import StockGraph from '@/src/components/StockGraph';
 import StockInfo from '@/src/components/StockInfo';
 import StockRecentReports from '@/src/components/StockRecentReports';
 import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/shadcn/card";
@@ -40,7 +39,7 @@ const StockView = () => {
                                     {change >= 0 ? '+' : ''}{change.toFixed(2)} ({changePercentage.toFixed(2)}%)
                                 </p>
                             </div>
-                            <StockGraph />
+                            {/* <StockGraph /> */}
                         </CardContent>
                     </Card>
 
