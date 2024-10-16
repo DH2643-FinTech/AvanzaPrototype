@@ -46,7 +46,7 @@ export const fetchCompanyDetails = createAsyncThunk(
         headers.append("timePeriod", JSON.stringify(timePeriod));
       }
 
-      const response = await fetch("http://localhost:3000/api/avanzaProxy", {
+      const response = await fetch("api/avanzaProxy", {
         method: "GET",
         headers: headers,
       });
