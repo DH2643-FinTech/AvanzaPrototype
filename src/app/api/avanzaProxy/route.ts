@@ -21,9 +21,11 @@ export async function GET(req: Request) {
   });
   
   const detailUrls = detailUrlBuilder(companyIdsArray[0]);
-
+  console.log("making avanza request with urls: ", avanzaUrls);
+  
   try {
     const apiResponse = await fetch(avanzaUrls[0], options);
+    console.log("apiResponse: ", apiResponse);
     const data = await apiResponse.json();
     // console.log("apiResponse : ", data);
     const detailResponse = await fetch(detailUrls, detailOptions);
