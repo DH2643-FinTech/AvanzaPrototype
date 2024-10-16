@@ -6,7 +6,7 @@ import { fetchAllCompanyIds } from "@/src/lib/features/company/companyAPI";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 import { setCompanies } from "@/src/lib/features/company/companySlice";
 
-const avanzaSearchBar = (props: any) => {
+const AvanzaSearchBar2 = (props: any) => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
@@ -105,4 +105,4 @@ const avanzaSearchBar = (props: any) => {
   );
 };
 
-export default avanzaSearchBar;
+export default AvanzaSearchBar2;

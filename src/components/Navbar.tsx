@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/src/components/shadcn/dropdown-menu";
-import AvanzaSearchBar from "@/src/components/ui/avanzaSearchBar";
+import AvanzaSearchBar from "@/src/components/ui/AvanzaSearchBar2";
 
 
 

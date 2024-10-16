@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 import React from "react";
 import { useState } from "react";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
@@ -82,3 +82,12 @@ const ApiTest = () => {
 
 
 export default ApiTest;
+*/
+
+export default function ApiTest() {
+  return (
+    <div>
+      <h1>API Test</h1>
+    </div>
+  );
+}
