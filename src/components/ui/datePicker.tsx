@@ -25,7 +25,7 @@ export const DatePickerComp = (props: any) => {
   const handleFetch = () =>{
     if (currentStock) {
       dispatch(fetchCompanyDetails({
-        id: currentStock.id, randomCount: 5, timePeriod: "one_month", fromDate: from, toDate: to, defaultTimePeriod: false,
+        id: currentStock.id, fromDate: from, toDate: to, defaultTimePeriod: false,
         name: currentStock.name
       }));
     }

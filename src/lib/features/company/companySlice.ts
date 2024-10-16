@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { Company, CompanyState, Stock, StockInfo, avanzaData } from './companyTypes';
 import { CompanyID } from '@/src/app/api/companies/dataTypes';
-import { fetchCompanyDetails, fetchCompanyIdFromServer } from './companyAPI';
+import { fetchCompanyDetails, fetchAllCompanyIds } from './companyAPI';
 import { RootState } from '@/src/lib/store/store';
 import { mockAppleData } from './mockStockData';
 
@@ -34,6 +34,10 @@ const companySlice = createSlice(
             setSearchParamEndDate: (state, action: PayloadAction<string>) => {
                 state.searchParams = {...state.searchParams, endDate: action.payload};
             },
+            setCompanies: (state, action: PayloadAction<CompanyID[]>) => {
+                state.companiesIds = [];
+                state.companiesIds.push(...action.payload);
+            }
         },
         extraReducers: (builder) => {
             builder.addCase(fetchCompanyDetails.pending, (state) => {
@@ -46,26 +50,26 @@ const companySlice = createSlice(
                 } else {
                     state.currentStock = action.payload.stockData;
                     state.companyData = action.payload.companyData;
-                    state.currentStockId = action.payload.id;
                 }
             });
             builder.addCase(fetchCompanyDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
-            builder.addCase(fetchCompanyIdFromServer.pending, (state) => {
+            builder.addCase(fetchAllCompanyIds.pending, (state) => {
                 state.loading = true;
             });
-            builder.addCase(fetchCompanyIdFromServer.fulfilled, (state, action: PayloadAction<CompanyID[] | string>) => {
+            builder.addCase(fetchAllCompanyIds.fulfilled, (state, action: PayloadAction<CompanyID[] | string>) => {
                 state.loading = false;
                 if (typeof action.payload === 'string') {
                     state.error = action.payload;
                 } else {
                     state.companiesIds = [];
                     state.companiesIds.push(...action.payload);
+                    localStorage.setItem('allCompanyIds', JSON.stringify(action.payload));
                 }
             });
-            builder.addCase(fetchCompanyIdFromServer.rejected, (state, action) => {
+            builder.addCase(fetchAllCompanyIds.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || 'Failed to fetch company IDs';
             });
@@ -73,6 +77,6 @@ const companySlice = createSlice(
     }
 );
 
-export const {setCurrentCompany, setSearchParamStartDate, setSearchParamEndDate} = companySlice.actions;
+export const {setCurrentCompany, setSearchParamStartDate, setSearchParamEndDate, setCompanies} = companySlice.actions;
 export const selectCurrentCompany = (state: RootState) => state.company.companyDetails;
 export default companySlice.reducer;

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../shadcn/input";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
-import { fetchCompanyIdFromServer } from "@/src/lib/features/company/companyAPI";
+import { fetchAllCompanyIds } from "@/src/lib/features/company/companyAPI";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
+import { setCompanies } from "@/src/lib/features/company/companySlice";
 
 const avanzaSearchBar = () => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
-    { id: number; name: string }[]
+    { id: string; name: string }[]
   >([]);
 
   const dispatch = useAppDispatch();
@@ -17,13 +18,20 @@ const avanzaSearchBar = () => {
 
   const companies =
     result?.map((company) => ({
-      id: Number(company._id),
+      id: company._id,
       name: company.name,
     })) || [];
 
   useEffect(() => {
     console.log("fetching data from server !");
-    dispatch(fetchCompanyIdFromServer({ name: "AAK" }));
+    const storedCompanyIds = localStorage.getItem('allCompanyIds');
+    if (!storedCompanyIds) {
+      dispatch(fetchAllCompanyIds());
+    }
+    else {
+      dispatch(setCompanies(JSON.parse(storedCompanyIds)));
+    }
+    // dispatch(fetchAllCompanyIds());
   }, []);
 
   useEffect(() => {
@@ -41,14 +49,13 @@ const avanzaSearchBar = () => {
   }, [search]);
 
   const handleSearch = (search: any) => {
+    // console.log(companies);
     const id = companies.find((company) => company.name === search)?.id;
+    // console.log("handle search now" + id)
     dispatch(
       fetchCompanyDetails({
         name: search,
-        randomCount: 5,
-        timePeriod: "one_month",
-        id: id?.toString(),
-        resolution: "month",
+        id: id,
         defaultTimePeriod: true
       })
     );
@@ -62,6 +69,7 @@ const avanzaSearchBar = () => {
 
   const handleSelect = (companyName: any) => {
     setSearch(companyName);
+    handleSearch(companyName);
     setShowResults(false);
   };
 

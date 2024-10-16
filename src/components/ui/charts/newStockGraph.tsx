@@ -35,7 +35,6 @@ const NewStockGraph = () => {
           id: currentStock.id,
           fromDate: date,
           toDate: new Date(),
-          resolution: "default",
           defaultTimePeriod: false,
         })
       );
