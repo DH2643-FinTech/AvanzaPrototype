@@ -15,7 +15,8 @@ export const mockAppleData: avanzaData = {
             { timestamp: "2023-10-05", open: 176.65, high: 178.21, low: 175.12, close: 177.57, totalVolumeTraded: 49876543 },
         ],
         from: "2023-10-01",
-        to: "2023-10-05"
+        to: "2023-10-05",
+        name: ''
     },
     companyData: {
         id: "AAPL",
@@ -32,5 +33,6 @@ export const mockAppleData: avanzaData = {
             { title: "Annual Report 2023" },
             { title: "Q2 2023 Earnings Report" },
         ]
-    }
+    },
+    id: undefined
 };

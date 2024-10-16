@@ -7,14 +7,14 @@ import StockGraph from "@/src/components/ui/charts/stockGraph";
 // import DatePickerValue from "@/src/components/ui/datePicker";
 // import ThemeSignInPage from "@/src/components/signInComp";
 
-import { fetchCompanyDetails, fetchCompanyIdFromServer } from '../../lib/features/company/companyAPI'
+import { fetchCompanyDetails, fetchAllCompanyIds } from '../../lib/features/company/companyAPI'
 import Email from 'next-auth/providers/email';
 import {DatePickerComp} from "@/src/components/ui/datePicker";
 import {setSearchParamStartDate, setSearchParamEndDate} from "@/src/lib/features/company/companySlice";
 // import { SignUp } from "@/src/components/ui/signUpForm";
 // import { SignInForm } from "@/src/components/ui/signInForm";
 import {SheetSidebar} from "@/src/components/ui/sidebar";
-import Navbar from "@/src/components/ui/navbar";
+// import Navbar from "@/src/components/ui/navbar";
 
 
 const ApiTest = () => {
@@ -31,14 +31,7 @@ const ApiTest = () => {
   }
 
   const fetchCompanyDetailsHandler = (symbol: string) => {
-    dispatch(
-      fetchCompanyDetails({
-        name: "AAK",
-        randomCount: 5,
-        timePeriod: "one_month",
-      })
-    );
-    // dispatch(fetchCompanyIdFromServer({name: undefined, randomCount: undefined}))
+    console.log("fetchCompanyDetailsHandler")
   };
 
 
@@ -81,39 +74,8 @@ const ApiTest = () => {
   return (
     <div>
 
-    {/* <h2>Create Account</h2>
-    <form onSubmit={handleSubmit}>
-        <div>
-            <label htmlFor="email">Email:</label>
-            <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-        </div>
-        <div>
-            <label htmlFor="password">Password:</label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-        </div>
-        <button type="submit">Register</button>
-    </form>
-    {error && <p style={{ color: 'red' }}>{error}</p>}
-    {success && <p style={{ color: 'green' }}>{success}</p>} */}
    <button className="h-[40px] w-20 border p-20 ml-20" onClick={()=>fetchCompanyDetailsHandler("AAK")}>API Call</button> 
     <StockGraph />
-    {/* <Navbar/> */}
-    {/* <SheetSidebar side="left" /> */}
-    {/* <SignUp /> */}
-    {/* <SignInForm/> */}
-    {/* <ThemeSignInPage/> */}
 </div>
   )
 }

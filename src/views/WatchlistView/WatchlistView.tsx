@@ -5,6 +5,7 @@ import Navbar from '@/src/components/Navbar';
 import Sidebar from '@/src/components/Sidebar';
 import WatchlistTable from '@/src/components/WatchlistTable';
 import { Button } from "@/src/components/shadcn/button";
+import ToggleSingInSignUpForm from '@/src/components/ui/toggleSingInSignUpForm';
 
 export default function WatchlistView() {
   const router = useRouter();
@@ -22,7 +23,11 @@ export default function WatchlistView() {
           ) : status === 'unauthenticated' ? (
             <div className="text-center py-10">
               <h2 className="text-2xl font-bold mb-4">Please sign in to view your watchlist</h2>
-              <Button onClick={() => router.push('/sign-in')}>Sign In</Button>
+              {/* <Button onClick={() => router.push('/sign-in')}>Sign In</Button> */}
+              <div className='flex w-full justify-center justify-items-center'>
+              <ToggleSingInSignUpForm/>
+              </div>
+            
             </div>
           ) : (
             <WatchlistTable />

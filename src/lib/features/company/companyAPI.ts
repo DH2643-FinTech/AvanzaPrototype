@@ -5,9 +5,12 @@ import { CompanyID } from "@/src/app/api/companies/dataTypes";
 
 interface FetchCompanyDetailsParams {
   name: string;
-  timePeriod?: string;
-  randomCount?: number;
   id?: string;
+  fromDate?: Date;
+  toDate?: Date;
+  resolution?: string;
+  defaultTimePeriod: boolean;
+  fromDateValid: boolean;
 }
 
 export const fetchCompanyDetails = createAsyncThunk(
@@ -17,41 +20,31 @@ export const fetchCompanyDetails = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     try {
-      const { name, randomCount, timePeriod, id } = arg;
+      const { name, id, fromDate, toDate, resolution, defaultTimePeriod,fromDateValid  } = arg;
 
-      //TODO: It is needed when we fixed the database migration. It fetches IDs from the database
-      //   const url = serverUrlBuilderCompanies({ name, randomCount });
-      //   const responseFromServer = await fetch(url);
-
-      //   if (!responseFromServer.ok) {
-      //     throw new Error("Failed to fetch companies");
-      //   }
-
-      //   const companyIds = await responseFromServer.json();
-
-      //TODO: we may need to fetch details info about many companies at once!! Looping through all ids and fetch one by one or if we can solve it in a better way
-
+      console.log("fetchCompanyDetails : ", name,  id, fromDate, toDate, resolution, defaultTimePeriod);
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       headers.append(
-        "companyId",
-        JSON.stringify([
+        "companyInfo",
+        JSON.stringify(
           {
             _id: id,
             name: name,
+            fromDate: fromDate,
+            toDate: toDate,
+            resolution: resolution,
+            defaultTimePeriod: defaultTimePeriod,
+            fromDateValid: fromDateValid
           },
-        ])
+        )
       ); // Pass the companyIds as a comma-separated string
-      if (timePeriod) {
-        headers.append("timePeriod", JSON.stringify(timePeriod));
-      }
 
       const response = await fetch("api/avanzaProxy", {
         method: "GET",
         headers: headers,
       });
 
-      //TODO: return data
       const resData = await response.json();
       const {
         data: {
@@ -63,10 +56,12 @@ export const fetchCompanyDetails = createAsyncThunk(
           to,
         },
         detailData,
+        _id,
       } = resData;
       const stockInfo: avanzaData = {
         stockData: {
-          id: "1",
+          id: String(id),
+          name: name,
           availableResolutions,
           chartResolution,
           ohlc,
@@ -74,6 +69,7 @@ export const fetchCompanyDetails = createAsyncThunk(
           to,
         },
         companyData: detailData,
+        id,
       };
       return stockInfo as avanzaData;
     } catch (error: any) {
@@ -85,7 +81,7 @@ export const fetchCompanyDetails = createAsyncThunk(
 );
 
 /**
- * DEPRECATED: Can be used for testing purposes
+ * Is used for the initial fetch of company IDs from the server
  */
 
 interface FetchCompanyParams {
@@ -93,18 +89,10 @@ interface FetchCompanyParams {
   randomCount?: number;
 }
 
-export const fetchCompanyIdFromServer = createAsyncThunk<
-  CompanyID[] | string,
-  FetchCompanyParams
->("company/fetchCompanyIdFromServer", async (params: FetchCompanyParams) => {
-  const { name, randomCount } = params;
-  let url = "/api/companies";
-
-  if (name) {
-    url += `?name=${encodeURIComponent(name)}`;
-  } else if (randomCount) {
-    url += `?randomCount=${randomCount}`;
-  }
+export const fetchAllCompanyIds = createAsyncThunk<
+  CompanyID[] | string
+>("company/fetchAllCompanyIds", async () => {
+  const url = "/api/companies";
   try {
     const response = await fetch(url);
 
@@ -112,8 +100,6 @@ export const fetchCompanyIdFromServer = createAsyncThunk<
       throw new Error("Failed to fetch companies");
     }
     const data = await response.json();
-    // console.log("Response : ", data);
-
     return data as CompanyID[];
   } catch (error) {
     console.error("Fetch error:", error);

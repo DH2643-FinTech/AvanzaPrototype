@@ -9,12 +9,18 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { useEffect } from "react";
+import { dispatch } from "d3";
+import { fetchAllCompanyIds } from "../lib/features/company/companyAPI";
+import { setCompanies } from "../lib/features/company/companySlice";
+import { useAppDispatch } from "../lib/hooks/useAppDispatch";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <head>

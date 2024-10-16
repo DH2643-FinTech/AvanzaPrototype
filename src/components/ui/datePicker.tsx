@@ -1,5 +1,5 @@
 "use client";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/utils";
@@ -10,8 +10,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/shadcn/popover";
+import { Label } from "../shadcn/label";
+import { useState } from "react";
 
 export const DatePickerComp = (props: any) => {
+  const [from, setFrom] = useState(new Date());
+  const [to, setTo] = useState(new Date());
+  const handleFetch = () => {
+    props.setStockTimeInterval({
+      startDate: from.toString(),
+      endDate: to.toString(),
+    });
+  };
+
   const DatePicker = (dProp: any) => {
     return (
       <Popover>
@@ -33,8 +44,7 @@ export const DatePickerComp = (props: any) => {
             selected={dProp.date}
             onSelect={(date: Date | undefined) => {
               if (date) {
-                dProp.setDate(date);
-                //dProp.onClose(); // Close dropdown after selecting a date
+                dProp.setLocal(date);
               }
             }}
             initialFocus
@@ -44,13 +54,17 @@ export const DatePickerComp = (props: any) => {
     );
   };
 
-  const DatePickerPair = (props: any) => (
+  const DatePickerPair = () => (
     <div className="flex w-[240px] flex-col justify-between h-[100px]">
-      <div>
-        <DatePicker date={props.startDate} setDate={props.setStartDate} />
+      <div className="flex flex-row justify-center items-center">
+        <Label className="w-12">From</Label>
+        <DatePicker date={from} setLocal={setFrom} />
       </div>
       <div>
-        <DatePicker date={props.endDate} setDate={props.setEndDate} />
+        <div className="flex flex-row justify-center items-center">
+          <Label className="w-12">To</Label>
+          <DatePicker date={to} setLocal={setTo} />
+        </div>
       </div>
     </div>
   );
@@ -64,12 +78,12 @@ export const DatePickerComp = (props: any) => {
         <PopoverContent className="relative top-[20px] left-[60px]">
           <div className="relative">
             <div className="p-4">
-              <DatePickerPair
-                startDate={props.startDate}
-                setStartDate={props.setStartDate}
-                endDate={props.endDate}
-                setEndDate={props.setEndDate}
-              />
+              <DatePickerPair />
+              <div className="flex justify-center w-full">
+                <Button onClick={handleFetch} className="relative top-4 h-8 ">
+                  Save
+                </Button>
+              </div>
             </div>
           </div>
         </PopoverContent>

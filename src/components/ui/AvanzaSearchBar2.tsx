@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Input } from "../shadcn/input";
 import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
-import { fetchCompanyIdFromServer } from "@/src/lib/features/company/companyAPI";
+import { fetchAllCompanyIds } from "@/src/lib/features/company/companyAPI";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
+import { setCompanies } from "@/src/lib/features/company/companySlice";
 
-const AvanzaSearchBar = () => {
+const avanzaSearchBar = (props: any) => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
-    { id: number; name: string }[]
+    { id: string; name: string }[]
   >([]);
 
   const dispatch = useAppDispatch();
@@ -17,14 +18,11 @@ const AvanzaSearchBar = () => {
 
   const companies =
     result?.map((company) => ({
-      id: Number(company._id),
+      id: company._id,
       name: company.name,
     })) || [];
 
-  useEffect(() => {
-    console.log("fetching data from server !");
-    dispatch(fetchCompanyIdFromServer({ name: "AAK" }));
-  }, []);
+
 
   useEffect(() => {
     if (search?.trim()) {
@@ -41,16 +39,18 @@ const AvanzaSearchBar = () => {
   }, [search]);
 
   const handleSearch = (search: any) => {
-    const id = companies.find((company) => company.name === search)?.id;
-    dispatch(
-      fetchCompanyDetails({
-        name: search,
-        randomCount: 5,
-        timePeriod: "one_month",
-        id: id?.toString(),
-      })
-    );
+    // const id = companies.find((company) => company.name === search)?.id;
+    // dispatch(
+    //   fetchCompanyDetails({
+    //     name: search,
+    //     id: id,
+    //     defaultTimePeriod: true,
+    //     fromDateValid: false
+    //   })
+    // );
+   props.setSearchParam(search)
   };
+
   const handleKeyDown = (e: any) => {
     if (e.key === "Enter") {
       setShowResults(false);
@@ -60,6 +60,7 @@ const AvanzaSearchBar = () => {
 
   const handleSelect = (companyName: any) => {
     setSearch(companyName);
+    handleSearch(companyName);
     setShowResults(false);
   };
 

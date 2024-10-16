@@ -18,6 +18,7 @@ export interface StockInfo{
 
 export interface Stock{
     id: string;
+    name: string;
     availableResolutions: string[];
     chartResolution: string;
     ohlc: StockInfo[];
@@ -28,6 +29,7 @@ export interface Stock{
 export interface avanzaData {
     stockData: Stock;
     companyData: any;
+    id: any;
 }
 
 export interface CompanyState {

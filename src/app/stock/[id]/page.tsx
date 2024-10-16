@@ -15,7 +15,8 @@ const StockPage = () => {
 
     useEffect(() => {
         if (id) {
-            dispatch(fetchCompanyDetails({ name: id as string }));
+            //dispatch(fetchCompanyDetails({ name: id as string }));
+            console.log("fetchCompanyDetailsHandler")
         }
     }, [id, dispatch]);
 
