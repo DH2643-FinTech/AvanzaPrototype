@@ -28,7 +28,7 @@ const companySlice = createSlice({
   reducers: {
     setCurrentCompany: (state, action: PayloadAction<string>) => {
       state.companyDetails =
-        state.companies.find((company) => company.id === action.payload) ||
+        state.companies.find((company) => company._id === action.payload) ||
         null;
     },
     setSearchParamResolution: (state, action: PayloadAction<string>) => {
