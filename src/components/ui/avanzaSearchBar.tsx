@@ -48,6 +48,8 @@ const avanzaSearchBar = () => {
         randomCount: 5,
         timePeriod: "one_month",
         id: id?.toString(),
+        resolution: "month",
+        defaultTimePeriod: true
       })
     );
   };

@@ -14,6 +14,7 @@ const initialState: CompanyState = {
     currentStock: mockAppleData.stockData,  // TODO Change back to null when not using example
     companyData: mockAppleData.companyData, // TODO Change back to null when not using example
     searchParams: null,
+    currentStockId: '',
 };
 
 
@@ -45,6 +46,7 @@ const companySlice = createSlice(
                 } else {
                     state.currentStock = action.payload.stockData;
                     state.companyData = action.payload.companyData;
+                    state.currentStockId = action.payload.id;
                 }
             });
             builder.addCase(fetchCompanyDetails.rejected, (state, action) => {

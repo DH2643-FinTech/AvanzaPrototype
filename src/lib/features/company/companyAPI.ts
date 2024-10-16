@@ -8,6 +8,10 @@ interface FetchCompanyDetailsParams {
   timePeriod?: string;
   randomCount?: number;
   id?: string;
+  fromDate?: Date;
+  toDate?: Date;
+  resolution?: string;
+  defaultTimePeriod: boolean;
 }
 
 export const fetchCompanyDetails = createAsyncThunk(
@@ -17,7 +21,7 @@ export const fetchCompanyDetails = createAsyncThunk(
     { dispatch, rejectWithValue, getState }
   ) => {
     try {
-      const { name, randomCount, timePeriod, id } = arg;
+      const { name, randomCount, timePeriod, id, fromDate, toDate, resolution, defaultTimePeriod  } = arg;
 
       //TODO: It is needed when we fixed the database migration. It fetches IDs from the database
       //   const url = serverUrlBuilderCompanies({ name, randomCount });
@@ -35,12 +39,16 @@ export const fetchCompanyDetails = createAsyncThunk(
       headers.append("Content-Type", "application/json");
       headers.append(
         "companyId",
-        JSON.stringify([
+        JSON.stringify(
           {
             _id: id,
             name: name,
+            fromDate: fromDate,
+            toDate: toDate,
+            resolution: resolution,
+            defaultTimePeriod: defaultTimePeriod
           },
-        ])
+        )
       ); // Pass the companyIds as a comma-separated string
       if (timePeriod) {
         headers.append("timePeriod", JSON.stringify(timePeriod));
@@ -63,10 +71,12 @@ export const fetchCompanyDetails = createAsyncThunk(
           to,
         },
         detailData,
+        _id,
       } = resData;
       const stockInfo: avanzaData = {
         stockData: {
           id: "1",
+          name: name,
           availableResolutions,
           chartResolution,
           ohlc,
@@ -74,6 +84,7 @@ export const fetchCompanyDetails = createAsyncThunk(
           to,
         },
         companyData: detailData,
+        id,
       };
       return stockInfo as avanzaData;
     } catch (error: any) {

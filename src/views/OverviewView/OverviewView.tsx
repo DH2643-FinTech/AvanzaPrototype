@@ -5,6 +5,7 @@ import Sidebar from "@/src/components/Sidebar";
 import StockCarousel from "@/src/components/StockCarousel";
 import RecentFinancialReports from "@/src/components/RecentFinancialReports";
 import StockGraph from "@/src/components/ui/charts/stockGraph";
+import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 
 const OverviewView = () => {
@@ -25,7 +26,8 @@ const OverviewView = () => {
           </h2>
           <div className="mb-6">
             {/* <RecentFinancialReports /> */}
-            <StockGraph />
+            {/* <StockGraph /> */}
+            <NewStockGraph />
           </div>
           <div>
             <div>

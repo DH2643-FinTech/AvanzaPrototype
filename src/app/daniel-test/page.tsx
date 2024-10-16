@@ -31,13 +31,14 @@ const ApiTest = () => {
   }
 
   const fetchCompanyDetailsHandler = (symbol: string) => {
-    dispatch(
-      fetchCompanyDetails({
-        name: "AAK",
-        randomCount: 5,
-        timePeriod: "one_month",
-      })
-    );
+    // dispatch(
+    //   fetchCompanyDetails({
+    //     name: "AAK",
+    //     randomCount: 5,
+    //     timePeriod: "one_month",
+    //   })
+    // );
+    console.log("fetchCompanyDetailsHandler")
     // dispatch(fetchCompanyIdFromServer({name: undefined, randomCount: undefined}))
   };
 

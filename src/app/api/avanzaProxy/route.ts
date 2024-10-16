@@ -1,34 +1,42 @@
 // app/api/proxy/route.js
 import { NextResponse } from "next/server";
-import { avanzaUrlBuilder } from "@/src/lib/features/company/urls";
+import { avanzaUrlBuilder, avanzaUrlBuilderStockPriceTimePeriod } from "@/src/lib/features/company/urls";
 import { options, detailOptions, detailUrlBuilder } from "@/src/lib/features/company/urls";
 
 
 export async function GET(req: Request) {
   const companyIdsHeader = req.headers.get("companyId");
-  const timePeriod = req.headers.get("timePeriod");
+  const headerArg = companyIdsHeader ? JSON.parse(companyIdsHeader) : null;
+  const {_id, name, fromDate, toDate, resolution, defaultTimePeriod} = headerArg;
 
-  const companyIdsArray = companyIdsHeader
-    ? JSON.parse(companyIdsHeader).map((item: { _id: number }) => item._id)
-    : [];
+  // const timePeriod = req.headers.get("timePeriod");
+  // console.log("companyIdsHeader : ", companyIdsHeader);
+  // const companyIdsArray = headerArg
+  //   ? headerArg.map((item: { _id: number }) => item._id)
+  //   : [];
 
-  if (!companyIdsArray || !timePeriod) {
-    return NextResponse.error();
-  }
-  const avanzaUrls = avanzaUrlBuilder({
-    companyIds: companyIdsArray,
-    timePeriod: JSON.parse(timePeriod),
-  });
+  // if (!companyIdsArray || !timePeriod) {
+  //   return NextResponse.error();
+  // }
+  // console.log("companyIdsArray : ", companyIdsArray);
+  // const avanzaUrls = avanzaUrlBuilder({
+  //   companyIds: companyIdsArray,
+  //   timePeriod: timePeriod ? JSON.parse(timePeriod) : null,
+  // });
+  console.log("headerArg : ", defaultTimePeriod);
+  console.log(_id, fromDate, toDate, resolution, defaultTimePeriod);
+  const avanzaUrls = avanzaUrlBuilderStockPriceTimePeriod(_id, new Date(fromDate), new Date(toDate), resolution, defaultTimePeriod);
   
-  const detailUrls = detailUrlBuilder(companyIdsArray[0]);
+  const detailUrls = detailUrlBuilder(_id);
 
   try {
-    const apiResponse = await fetch(avanzaUrls[0], options);
+    console.log("avanzaUrls : ", avanzaUrls);
+    const apiResponse = await fetch(avanzaUrls, options);
     const data = await apiResponse.json();
-    // console.log("apiResponse : ", data);
+    // console.log("proxy apiResponse : ", data);
     const detailResponse = await fetch(detailUrls, detailOptions);
     const detailData = await detailResponse.json();
-    // console.log("Data : ", data);
+    // console.log("proxy Data : ", data);
 
     return NextResponse.json({data, detailData});
   } catch (error) {

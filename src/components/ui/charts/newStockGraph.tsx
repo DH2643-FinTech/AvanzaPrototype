@@ -15,21 +15,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../shadcn/select";
+import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 
-
-
-
-const StockGraph = () => {
+const NewStockGraph = () => {
   const startDate = useAppSelector(
     (state) => state.company.searchParams?.startDate
   );
+  const currentStock = useAppSelector((state)=> state.company.currentStock);
   const endDate = useAppSelector(
     (state) => state.company.searchParams?.endDate
   );
 
-  const setSearchParamStartDateHandler = (date: string) => {
+  const setSearchParamStartDateHandler = (date: Date) => {
     dispatch(setSearchParamStartDate(String(date)));
-
+    if (currentStock?.name && currentStock?.id) {
+      dispatch(fetchCompanyDetails({ name: currentStock.name, id: currentStock.id, fromDate: date, toDate: new Date(), defaultTimePeriod: false }));
+    }
   };
   const setSearchParamEndtDateHandler = (date: string) => {
     dispatch(setSearchParamEndDate(String(date)));
@@ -109,8 +110,34 @@ const StockGraph = () => {
 
     // Set the domain for x (time) and y (price) scales
     const xDomain = d3.extent(data, (d) => d.Date) as [Date, Date];
+    console.log("xDomain", xDomain);
     x.domain(xDomain || [new Date(), new Date()]);
     y.domain([0, ((d3.max(data, (d) => d.High) ?? 0) + 1) * 2]);
+    // const numTicks = Math.min(Math.floor(width / 100), 10); // For example, adjust based on chart width
+    // const xAxis = d3.axisBottom(x).ticks(numTicks);
+    const timeRange = Math.ceil((xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24));
+    console.log("timeRange", timeRange);
+    
+    let tickInterval: any;
+let tickFormat: any;
+
+if (timeRange > 365 * 2) {
+  // More than 2 years, show yearly ticks
+  tickInterval = d3.timeYear.every(1);
+  tickFormat = d3.timeFormat("%Y"); // Year only
+} else if (timeRange > 365 / 2) {
+  // Between 6 months and 2 years, show monthly ticks
+  tickInterval = d3.timeMonth.every(1);
+  tickFormat = d3.timeFormat("%b %Y"); // Month and Year
+} else if (timeRange > 30) {
+  // Between 30 days and 6 months, show weekly ticks
+  tickInterval = d3.timeWeek.every(1);
+  tickFormat = d3.timeFormat("%b %d"); // Month and day
+} else {
+  // Less than 30 days, show daily ticks
+  tickInterval = d3.timeDay.every(1);
+  tickFormat = d3.timeFormat("%b %d"); // Month and day
+}
 
     svg
       .append("g")
@@ -120,7 +147,7 @@ const StockGraph = () => {
       .call(
         d3
           .axisBottom(x)
-          .ticks(d3.timeDay.every(1))
+          .ticks(tickInterval)
           .tickFormat((domainValue, index) =>
             d3.timeFormat("%b %d")(domainValue as Date)
           )
@@ -268,7 +295,7 @@ const StockGraph = () => {
         .style("display", "block")
         .style("position", "absolute")
         .style("left", `${width + 270}px`)
-        .style("top", `${yPos +300}px`)
+        .style("top", `${yPos + 300}px`)
         .style("border", `2px solid red`)
         .html(`$${d.Close !== undefined ? d.Close.toFixed(2) : "N/A"}`);
 
@@ -326,39 +353,33 @@ const StockGraph = () => {
     //console.log("Selected value:", value); // You can use this value as needed
   };
 
-
-
   return (
     <div>
       <div className="w-full flex flex-col items-center justify-center">
-       
         <div className="max-w-[1500px] border relative left-[40px] w-[1300px] h-[900px]  shadow-md">
-
           <Select onValueChange={handleSelectChange}>
             <SelectTrigger className="w-[180px] h-[40px] left-12 top-24 relative">
               <SelectValue placeholder="day" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem 
-                value="day">Day</SelectItem>
+              <SelectItem value="day">Day</SelectItem>
               <SelectItem value="week">Week</SelectItem>
               <SelectItem value="month">Month</SelectItem>
             </SelectContent>
           </Select>
           <div className="w-[1440] h-[800px]" id="chart-container"></div>
           <div className="relative justify-start items-center flex left-12 bottom-2 h-[60px] w-[1400px]">
-          <DatePickerComp
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setSearchParamStartDateHandler}
-          setEndDate={setSearchParamEndtDateHandler}
-        />
-      </div>
+            <DatePickerComp
+              startDate={startDate}
+              endDate={endDate}
+              setStartDate={setSearchParamStartDateHandler}
+              setEndDate={setSearchParamEndtDateHandler}
+            />
+          </div>
         </div>
       </div>
-
     </div>
   );
 };
 
-export default StockGraph;
+export default NewStockGraph;
