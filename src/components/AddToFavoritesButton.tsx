@@ -6,7 +6,8 @@ import { addToWatchlist, fetchWatchlist, removeFromWatchlist, selectWatchlistSto
 import { useAppSelector } from "../lib/hooks/useAppSelector";
 import { useAppDispatch } from "../lib/hooks/useAppDispatch";
 
-export default function AddToFavoritesButton(props: { stockId: string }) {
+export default function AddToFavoritesButton(props: { stockId: string | undefined }) {
+ 
   const dispatch = useAppDispatch();
   const watchlistStocks = useAppSelector(state => state.watchlist.stocks);
   const companies = useAppSelector(state => state.watchlist.watchlistDetails);
@@ -22,16 +23,21 @@ export default function AddToFavoritesButton(props: { stockId: string }) {
   );
 
   const toggleFavorites = async () => {
-
+    if(props.stockId === undefined) {
+      return null;
+    }
     if (isFavorite) {
       await dispatch(removeFromWatchlist(props.stockId));
     } else {
       await dispatch(addToWatchlist(props.stockId));
     }
 
-    // Optional: Manually trigger fetching the updated watchlist, if necessary
     dispatch(fetchWatchlist());
   };
+
+  if(props.stockId === undefined) {
+    return <Button disabled>invalid stock id...</Button>;
+  }
 
   if (isFavorite === undefined) {
     return <Button disabled>Loading...</Button>;
