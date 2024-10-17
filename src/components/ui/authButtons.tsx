@@ -35,7 +35,7 @@ export default function BasicTextFields() {
 export const GoogleLogInButton = () => {
   const handleSignIn = () => {
     const response = signIn("google");
-    console.log("success", response);
+    // console.log("success", response);
   };
 
   return (
@@ -78,6 +78,127 @@ export const GoogleLogInButton = () => {
   );
 };
 
+export const SignInComp = () => {
+  return (
+    <div className=" h-[600px] justify-center items-center border border-black flex flex-col">
+      <div>
+        <GoogleLogInButton />
+      </div>
+      <div className="mt-10 flex flex-col justify-center items-center">
+        <div className="flex justify-between items-center">
+          <div className="border border-blue-600 w-[200px]"></div>
+          <div className="w-[100px] justify-center items-center text-center">
+            OR
+          </div>
+          <div className="border border-blue-600 w-[200px]"></div>
+        </div>
+        <CredentialAuthButton />
+      </div>
+    </div>
+  );
+};
+
+export const SignUpComp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  // const router = useRouter();
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    const data = new FormData(e.currentTarget as HTMLFormElement);
+    const res = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      // console.log(data);
+    } else {
+      // console.log("error");
+    }
+  };
+
+  return (
+    <div>
+      <form
+        className="min-w-[500px] flex-col flex py-4 border border-blue-400 justify-center items-center"
+        onSubmit={handleSubmit}
+      >
+        <div className="mb-2">
+          <TextField
+            sx={{ width: 500 }}
+            onChange={(e) => setEmail(e.target.value)}
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+          />
+        </div>
+        <div>
+          <FormControl sx={{ width: 500 }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              onChange={(e) => setPassword(e.target.value)}
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    onMouseUp={handleMouseUpPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+        </div>
+        <button
+          className="border border-slate-300 w-[500px] py-2 mt-2 bg-blue-400 text-white font-bold"
+          type="submit"
+        >
+          Register
+        </button>
+      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+    </div>
+  );
+};
 
 export const CredentialAuthButton = () => {
   const [email, setEmail] = useState("");
@@ -119,9 +240,9 @@ export const CredentialAuthButton = () => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
     } else {
-      console.log("error");
+      // console.log("error");
     }
   };
 
@@ -142,11 +263,11 @@ export const CredentialAuthButton = () => {
       setSuccess("User logged in successfully!");
       setEmail("");
       setPassword("");
-      console.log("success", signInResponse);
+      // console.log("success", signInResponse);
     } else {
       // const errorData = await res.json();
       // setError(errorData.message || 'An error occurred.');
-      console.log("error");
+      // console.log("error");
     }
   };
 

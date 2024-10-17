@@ -1,7 +1,6 @@
 "use client";
-
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { Bell, ChevronDown } from "lucide-react";
 import { Button } from "@/src/components/shadcn/button";
 import {
@@ -13,23 +12,62 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/shadcn/dropdown-menu";
 import AvanzaSearchBar from "@/src/components/ui/AvanzaSearchBar2";
-
-
-
 import ToggleSingInSignUpForm from "./ui/toggleSingInSignUpForm";
 import { useAppDispatch } from "../lib/hooks/useAppDispatch";
 import { useEffect } from "react";
 import { fetchAllCompanyIds } from "../lib/features/company/companyAPI";
-import { setCompanies } from "../lib/features/company/companySlice";
+import { setCompanies, setSearchParamName } from "../lib/features/company/companySlice";
 
 const Navbar = (props: any) => {
   const { data: session, status } = useSession();
 
-
-
   const dispatch = useAppDispatch();
+  const handleSearchParam = (searchParam: any) => {
+    // console.log("dispatch: " + searchParam);
+    dispatch(setSearchParamName(searchParam));
+  };
+
+  const handleSignIn = async (credProps: any) => {
+    if(credProps.method === "google"){
+      const response = await signIn("google");
+      // console.log("success", response);
+      return response;
+    }
+    else{
+      const signInResponse = await signIn("credentials", {
+        email: credProps.email,
+        password: credProps.password,
+        redirect: false,
+      });
+      return signInResponse;
+    }
+  };
+
+  const handleSignUp = async (credProps: any) => {
+    if (credProps.method === "google") {
+      const response = await signIn("google");
+      // console.log("success", response);
+      return response;
+    }
+    else {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify({
+          email: credProps.email,
+          password: credProps.password,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return res;
+    }
+  }
+
+
+
+  // const dispatch = useAppDispatch();
   useEffect(() => {
-    // console.log("fetching data from server !");
     const storedCompanyIds = localStorage.getItem('allCompanyIds');
     if (!storedCompanyIds) {
       dispatch(fetchAllCompanyIds());
@@ -39,9 +77,9 @@ const Navbar = (props: any) => {
     }
   }, []);
 
-  const handleSearchParam = (searchParam: any) => {
-    props.setSearchParam(searchParam);
-  }
+  // const handleSearchParam = (searchParam: any) => {
+  //   props.setSearchParam(searchParam);
+  // }
 
   return (
     <header className="border-b flex items-center">
@@ -95,7 +133,7 @@ const Navbar = (props: any) => {
               </DropdownMenu>
             </>
           ) : (
-            <ToggleSingInSignUpForm/>
+            <ToggleSingInSignUpForm signIn={handleSignIn} singUp={handleSignUp}/>
           )}
         </div>
       </div>
