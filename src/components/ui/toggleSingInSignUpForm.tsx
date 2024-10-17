@@ -43,6 +43,29 @@ const ToggleSingInSignUpForm = () => {
       console.log("error");
     }
   };
+  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false);
+
+
+  const handlePasswordResetRequest = async () => {
+  try {
+    const res = await fetch("/api/password-reset", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: { "Content-Type": "application/json" },
+    });
+    
+    if (res.ok) {
+     
+      console.log("Password reset link sent");
+    } else {
+      
+      console.log("Error sending password reset link");
+    }
+  } catch (error) {
+    console.error("Request failed", error);
+  }
+};
+
 
 
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false); 
@@ -121,10 +144,15 @@ const ToggleSingInSignUpForm = () => {
               </div>
               <Link
                 href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsLoginDialogOpen(false);
+                  setIsPasswordResetDialogOpen(true);
+                }}
                 className="ml-auto p-1 inline-block text-sm underline"
-              >
+                >
                 Forgot your password?
-              </Link>
+                </Link>
             </div>
             <DialogFooter>
               <div className="w-full">
@@ -231,6 +259,34 @@ const ToggleSingInSignUpForm = () => {
           </DialogContent>
         </Dialog>
       </div>
+      <Dialog open={isPasswordResetDialogOpen} onOpenChange={setIsPasswordResetDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]"> 
+          <DialogHeader>
+            <DialogTitle>Reset Password</DialogTitle>
+            <DialogDescription>
+              Enter your email address, and we will send you a link to reset your password.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col py-2">
+            <div className="flex flex-row p-1 justify-center items-center">
+              <Label htmlFor="reset-email" className="text-left w-24">Email</Label>
+              <Input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                id="reset-email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={handlePasswordResetRequest} className="w-full">
+              Send Reset Link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+     </Dialog>
     </div>
   );
 };
