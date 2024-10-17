@@ -70,16 +70,16 @@ export const avanzaUrlBuilderStockPriceTimePeriod = ({
   fromDate: Date,
   fromDateValid: boolean,
 }): string => {
-  console.log(
-    "avanzaUrlBuilderStockPriceTimePeriod : ",
-    companyId,
-    fromDate,
-    toDate,
-    resolution,
-    defaultTimePeriod
-  );
+  // console.log(
+  //   "avanzaUrlBuilderStockPriceTimePeriod : ",
+  //   companyId,
+  //   fromDate,
+  //   toDate,
+  //   resolution,
+  //   defaultTimePeriod
+  // );
 
-  console.log("fromDate :", fromDate)
+  // console.log("fromDate :", fromDate)
   if (!defaultTimePeriod && resolution !== undefined && fromDateValid) {
     return `https://www.avanza.se/_api/price-chart/stock/${companyId}?from=${fromDate?.toISOString().slice(0, 10)}&to=${toDate.toISOString().slice(0, 10)}&resolution=${resolution}`;
   }

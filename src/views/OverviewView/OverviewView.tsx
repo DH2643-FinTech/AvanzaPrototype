@@ -1,22 +1,15 @@
 "use client";
 import React from "react";
-import Navbar from "@/src/components/Navbar";
-import Sidebar from "@/src/components/Sidebar";
 import StockCarousel from "@/src/components/StockCarousel";
 import RecentFinancialReports from "@/src/components/RecentFinancialReports";
 import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 
 const OverviewView = (props:any) => {
-  const handleSearchParam = (searchParam: any) => {
-    props.setSearchParam(searchParam);
-  };
+
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      <Navbar setSearchParam = {handleSearchParam} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
         <main className="flex-1 p-6 overflow-auto">
           <h1 className="text-3xl font-bold mb-6">Overview</h1>
           <div className="mb-8">

@@ -1,7 +1,6 @@
 import { configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import companyReducer, {
   setSearchParamName,
-  setSearchParamResolution,
   setSearchParamTimeInterval,
 } from "@/src/lib/features/company/companySlice";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
@@ -9,14 +8,13 @@ import watchlistReducer from "@/src/lib/features/watchlist/watchlistSlice";
 import recentlyVisitedReducer from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice";
 import highlightedStocksReducer from "@/src/lib/features/highlightedStocks/highlightedStocksSlice";
 import financialReportsReducer from "@/src/lib/features/financialReports/financialReportsSlice";
-import { useAppSelector } from "../hooks/useAppSelector";
 
 const listenerMiddleware = createListenerMiddleware();
 
 listenerMiddleware.startListening({
   actionCreator: setSearchParamName,
   effect: (action, listenerApi) => {
-    console.log("Lister is listening to ", action.payload);
+    // console.log("Lister is listening to ", action.payload);
     const id = (listenerApi.getState() as RootState).company.companiesIds.find(
       (company) => company.name === action.payload
     )?._id;
@@ -36,7 +34,7 @@ listenerMiddleware.startListening({
 listenerMiddleware.startListening({
   actionCreator: setSearchParamTimeInterval,
   effect: (action, listenerApi) => {
-    console.log("Lister is listening to ", action.payload);
+    // console.log("Lister is listening to ", action.payload);
     const currentStock = (listenerApi.getState() as RootState).company
       .currentStock;
     if (currentStock) {

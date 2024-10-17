@@ -14,20 +14,20 @@ import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
 
-const ToggleSingInSignUpForm = () => {
-    
+const ToggleSingInSignUpForm = (props: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
 
   const handleSignInWithGoogle = () => {
-    console.log("Sign up with Google");
-    const response = signIn("google");
-    console.log("success", response);
+    const response = props.signIn({ method: "google" });
   };
 
   const handleSignInWithCredentials = async () => {
-    const signInResponse = await signIn("credentials", {
+    const signInResponse = await props.signIn({
+      mthod: "credentials",
       email: email,
       password: password,
       redirect: false,
@@ -36,46 +36,31 @@ const ToggleSingInSignUpForm = () => {
     if (signInResponse && !signInResponse.error) {
       setEmail("");
       setPassword("");
-      console.log("success", signInResponse);
     } else {
-      // const errorData = await res.json();
-      // setError(errorData.message || 'An error occurred.');
-      console.log("error");
+      // console.log("error");
     }
   };
-
-
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false); 
-  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false); 
-
 
   const handleSignUpWithCredentials = async () => {
-    console.log("Sign up with credentials");
-    const res = await fetch("/api/register", {
-      method: "POST",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const response = await props.signUp({
+      method: "credentials",
+      email: email,
+      password: password,
     });
-    if (res.ok) {
-      const data = await res.json();
-      console.log(data);
+    if (response.ok) {
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      const data = await response.json();
+      // console.log(data);
     } else {
-      console.log("error");
+      alert("error");
     }
   };
 
-  const handleSignUpWithGoogle = () => {
-    console.log("Sign up with Google");
-    const response = signIn("google");
-    console.log("success", response);
+  const handleSignUpWithGoogle = async () => {
+    const response = await props.signUp({ method: "google" });
   };
-
-
 
   return (
     <div>

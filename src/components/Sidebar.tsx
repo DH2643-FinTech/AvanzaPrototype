@@ -10,7 +10,6 @@ import { selectRecentlyVisited } from "@/src/lib/features/recentlyVisited/recent
 const Sidebar = () => {
     const pathname = usePathname()
     const recentlyVisited = useAppSelector(selectRecentlyVisited)
-
     const isActive = (path: string) => pathname === path
 
     return (

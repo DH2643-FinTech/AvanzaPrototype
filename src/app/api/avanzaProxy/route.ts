@@ -1,7 +1,6 @@
 // app/api/proxy/route.js
 import { NextResponse } from "next/server";
 import {
-  avanzaUrlBuilder,
   avanzaUrlBuilderStockPriceTimePeriod,
 } from "@/src/lib/features/company/urls";
 import {
@@ -32,7 +31,7 @@ export async function GET(req: Request) {
     fromDateValid: fromDateValid,
   });
 
-  console.log("avanzaUrls : ", avanzaUrls);
+  // console.log("avanzaUrls : ", avanzaUrls);
 
   const detailUrls = detailUrlBuilder(_id);
 
