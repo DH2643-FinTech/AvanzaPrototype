@@ -35,7 +35,7 @@ export default function BasicTextFields() {
 export const GoogleLogInButton = () => {
   const handleSignIn = () => {
     const response = signIn("google");
-    console.log("success", response);
+    // console.log("success", response);
   };
 
   return (
@@ -140,9 +140,9 @@ export const SignUpComp = () => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
     } else {
-      console.log("error");
+      // console.log("error");
     }
   };
 
@@ -240,9 +240,9 @@ export const CredentialAuthButton = () => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
     } else {
-      console.log("error");
+      // console.log("error");
     }
   };
 
@@ -263,11 +263,11 @@ export const CredentialAuthButton = () => {
       setSuccess("User logged in successfully!");
       setEmail("");
       setPassword("");
-      console.log("success", signInResponse);
+      // console.log("success", signInResponse);
     } else {
       // const errorData = await res.json();
       // setError(errorData.message || 'An error occurred.');
-      console.log("error");
+      // console.log("error");
     }
   };
 
