@@ -14,20 +14,20 @@ import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
 
-const ToggleSingInSignUpForm = (props: any) => {
+const ToggleSingInSignUpForm = () => {
+    
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
 
   const handleSignInWithGoogle = () => {
-    const response = props.signIn({ method: "google" });
+    console.log("Sign up with Google");
+    const response = signIn("google");
+    console.log("success", response);
   };
 
   const handleSignInWithCredentials = async () => {
-    const signInResponse = await props.signIn({
-      mthod: "credentials",
+    const signInResponse = await signIn("credentials", {
       email: email,
       password: password,
       redirect: false,
@@ -36,31 +36,69 @@ const ToggleSingInSignUpForm = (props: any) => {
     if (signInResponse && !signInResponse.error) {
       setEmail("");
       setPassword("");
+      console.log("success", signInResponse);
     } else {
-      // console.log("error");
+      // const errorData = await res.json();
+      // setError(errorData.message || 'An error occurred.');
+      console.log("error");
     }
   };
+  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false);
+
+
+  const handlePasswordResetRequest = async () => {
+  try {
+    const res = await fetch("/api/password-reset", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: { "Content-Type": "application/json" },
+    });
+    
+    if (res.ok) {
+     
+      console.log("Password reset link sent");
+    } else {
+      
+      console.log("Error sending password reset link");
+    }
+  } catch (error) {
+    console.error("Request failed", error);
+  }
+};
+
+
+
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false); 
+  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false); 
+
 
   const handleSignUpWithCredentials = async () => {
-    const response = await props.signUp({
-      method: "credentials",
-      email: email,
-      password: password,
+    console.log("Sign up with credentials");
+    const res = await fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-    if (response.ok) {
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      const data = await response.json();
-      // console.log(data);
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
     } else {
-      alert("error");
+      console.log("error");
     }
   };
 
-  const handleSignUpWithGoogle = async () => {
-    const response = await props.signUp({ method: "google" });
+  const handleSignUpWithGoogle = () => {
+    console.log("Sign up with Google");
+    const response = signIn("google");
+    console.log("success", response);
   };
+
+
 
   return (
     <div>
