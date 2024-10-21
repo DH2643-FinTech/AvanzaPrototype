@@ -23,7 +23,6 @@ import {
 
 const Navbar = (props: any) => {
 	const { data: session, status } = useSession();
-	console.log("session: ", session);
 
 	const dispatch = useAppDispatch();
 	const handleSearchParam = (searchParam: any) => {
