@@ -165,6 +165,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
                                 e.preventDefault();
                                 setIsLoginDialogOpen(false);
                                 setIsPasswordResetDialogOpen(true);
+								setStatus('');
                                 }}
                                 className="ml-auto p-1 inline-block text-sm underline"
                             >
@@ -296,7 +297,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
                             />
                         </div>
                     </div>
-					{status && <p className="text-center text-green-500">{status}</p>}  {/* Show success message */}
+					{status && <p className={`text-center mt-2 ${status === 'Password reset email sent!' ? 'text-green-600' : 'text-red-600'}`}>{status}</p>} 
                     <DialogFooter>
                         <Button onClick={handlePasswordResetRequest} className="w-full">
                         Send Reset Link
