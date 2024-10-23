@@ -12,9 +12,9 @@ const OverviewView = (props:any) => {
   const dispatch = useAppDispatch();
   const financialReports = useAppSelector((state) => state.financialReports.reports);
 
-  useEffect(() =>{
-    dispatch(fetchFinancialReports({random: true}))
-  }, [])
+  // useEffect(() =>{
+  //   dispatch(fetchFinancialReports({random: true}))
+  // }, [])
 
 
   return (
@@ -29,7 +29,7 @@ const OverviewView = (props:any) => {
             Recent Financial Reports
           </h2>
           <div className="mb-6">
-            <RecentFinancialReports reports = {financialReports} /> 
+            <RecentFinancialReports setSearchParam={props.setSearchParam} reports = {financialReports} /> 
             {/* <StockGraph />
             {/* <NewStockGraph setStockTimeInterval = {props.setStockTimeInterval}/>
           </div>

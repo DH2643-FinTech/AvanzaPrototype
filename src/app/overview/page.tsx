@@ -7,6 +7,7 @@ import { fetchFinancialReports } from "@/src/lib/features/financialReports/finan
 import OverviewView from '@/src/views/OverviewView/OverviewView';
 import { setSearchParamTimeInterval } from '@/src/lib/features/company/companySlice';
 import { useAppSelector } from '@/src/lib/hooks/useAppSelector';
+import { setSearchParamName } from '@/src/lib/features/company/companySlice';
 export default function OverviewPage() {
 
     const dispatch = useAppDispatch();
@@ -16,12 +17,16 @@ export default function OverviewPage() {
       );
     };
 
+    const handleSetSearchParam = (searchParam: string) => {
+        dispatch(setSearchParamName(searchParam));
+    };
+
     const companyData = useAppSelector((state) => state.company.companyData);
 
     useEffect(() => {
         dispatch(fetchHighlightedStocks());
-        dispatch(fetchFinancialReports());
-    }, [dispatch]);
+        dispatch(fetchFinancialReports({ random: true }));
+    }, []);
 
-    return <OverviewView setStockTimeInterval = {handleSetStockTimeInterval} companyData={companyData}/>;
+    return <OverviewView setSearchParam={handleSetSearchParam} setStockTimeInterval = {handleSetStockTimeInterval} companyData={companyData}/>;
 }
