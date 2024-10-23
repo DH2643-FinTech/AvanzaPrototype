@@ -13,6 +13,7 @@ import { Button } from "../shadcn/button";
 import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
+import emailjs from '@emailjs/browser';
 interface Props {
 	signIn: (credProps: any) => Promise<any>;
 	signUp: (credProps: any) => Promise<any>;
@@ -21,6 +22,8 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [emailForgetPassword, setEmailForgetPassword] = useState('');
+    const [status, setStatus] = useState('');
 
 	const handleSignInWithGoogle = () => {
 		console.log("Sign up with Google");
@@ -48,23 +51,34 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
 		useState(false);
 
-	const handlePasswordResetRequest = async () => {
-		try {
-			const res = await fetch("/api/password-reset", {
-				method: "POST",
+		const handleSubmit = async (e: any) => {
+			e.preventDefault();
+			try {
+			  emailjs.init('9Q600vKX9f68s1yZd');
+			  const response = await fetch('/api/password-reset', {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json',
+				},
 				body: JSON.stringify({ email }),
-				headers: { "Content-Type": "application/json" },
-			});
-
-			if (res.ok) {
-				console.log("Password reset link sent");
-			} else {
-				console.log("Error sending password reset link");
+			  });
+			  if (!response.ok) {
+				alert('Failed to initiate password reset');
+			  }
+			  const { resetLink } = await response.json();
+			  const templateParams = {
+				to_email: email,
+				reset_link: resetLink,
+			  };
+			  const serviceID = 'service_us3vp1r'; 
+			  const templateID = 'template_q029h7e'; 
+			  await emailjs.send(serviceID, templateID, templateParams);
+			  setStatus('Password reset email sent!');
+			} catch (error) {
+			  console.error('Error sending password reset email:', error);
+			  setStatus('Failed to send password reset email');
 			}
-		} catch (error) {
-			console.error("Request failed", error);
-		}
-	};
+		  };
 
 	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
