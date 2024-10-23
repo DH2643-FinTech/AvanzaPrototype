@@ -52,6 +52,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 		useState(false);
 
 		const handlePasswordResetRequest = async (e: any) => {
+			setStatus('');
 			e.preventDefault();
 			try {
 			  emailjs.init('9Q600vKX9f68s1yZd');
@@ -62,9 +63,10 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				},
 				body: JSON.stringify({ email }),
 			  });
-			  if (!response.ok) {
-				alert('Failed to initiate password reset');
-			  }
+			if (!response.ok) {
+			    setStatus('Failed to send reset email. Please check the email address.');
+				return;
+			}
 			  const { resetLink } = await response.json();
 			  const templateParams = {
 				to_email: email,
@@ -72,11 +74,17 @@ const ToggleSingInSignUpForm = (props: Props) => {
 			  };
 			  const serviceID = 'service_us3vp1r'; 
 			  const templateID = 'template_q029h7e'; 
-			  await emailjs.send(serviceID, templateID, templateParams);
-			  setStatus('Password reset email sent!');
+			  const emailRes = await emailjs.send(serviceID, templateID, templateParams);
+			  if (emailRes.status === 200) {
+				setStatus('Password reset email sent!');
+				//alert('A link has been sent to your email.');
+			  } else {
+				setStatus('Failed to send reset email. Please check the email address.');
+				console.error('EmailJS response not successful:', emailRes);
+			  }
 			} catch (error) {
-			  console.error('Error sending password reset email:', error);
-			  setStatus('Failed to send password reset email');
+			  console.log('Error sending password reset email:', error);
+			  setStatus('Failed to send reset email. Please check the email address.');
 			}
 		  };
 
@@ -152,11 +160,16 @@ const ToggleSingInSignUpForm = (props: Props) => {
 								/>
 							</div>
 							<Link
-								href="#"
-								className="ml-auto p-1 inline-block text-sm underline"
-							>
-								Forgot your password?
-							</Link>
+                                href="#"
+                                onClick={(e) => {
+                                e.preventDefault();
+                                setIsLoginDialogOpen(false);
+                                setIsPasswordResetDialogOpen(true);
+                                }}
+                                className="ml-auto p-1 inline-block text-sm underline"
+                            >
+                            Forgot your password?
+                            </Link>
 						</div>
 						<DialogFooter>
 							<div className="w-full">
@@ -283,6 +296,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
                             />
                         </div>
                     </div>
+					{status && <p className="text-center text-green-500">{status}</p>}  {/* Show success message */}
                     <DialogFooter>
                         <Button onClick={handlePasswordResetRequest} className="w-full">
                         Send Reset Link
