@@ -13,6 +13,7 @@ import { Button } from "../shadcn/button";
 import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
+import emailjs from '@emailjs/browser';
 interface Props {
 	signIn: (credProps: any) => Promise<any>;
 	signUp: (credProps: any) => Promise<any>;
@@ -21,6 +22,8 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [emailForgetPassword, setEmailForgetPassword] = useState('');
+    const [status, setStatus] = useState('');
 
 	const handleSignInWithGoogle = () => {
 		console.log("Sign up with Google");
@@ -48,23 +51,42 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
 		useState(false);
 
-	const handlePasswordResetRequest = async () => {
-		try {
-			const res = await fetch("/api/password-reset", {
-				method: "POST",
+		const handlePasswordResetRequest = async (e: any) => {
+			setStatus('');
+			e.preventDefault();
+			try {
+			  emailjs.init('9Q600vKX9f68s1yZd');
+			  const response = await fetch('/api/password-reset', {
+				method: 'POST',
+				headers: {
+				  'Content-Type': 'application/json',
+				},
 				body: JSON.stringify({ email }),
-				headers: { "Content-Type": "application/json" },
-			});
-
-			if (res.ok) {
-				console.log("Password reset link sent");
-			} else {
-				console.log("Error sending password reset link");
+			  });
+			if (!response.ok) {
+			    setStatus('Failed to send reset email. Please check the email address.');
+				return;
 			}
-		} catch (error) {
-			console.error("Request failed", error);
-		}
-	};
+			  const { resetLink } = await response.json();
+			  const templateParams = {
+				to_email: email,
+				reset_link: resetLink,
+			  };
+			  const serviceID = 'service_us3vp1r'; 
+			  const templateID = 'template_q029h7e'; 
+			  const emailRes = await emailjs.send(serviceID, templateID, templateParams);
+			  if (emailRes.status === 200) {
+				setStatus('Password reset email sent!');
+				//alert('A link has been sent to your email.');
+			  } else {
+				setStatus('Failed to send reset email. Please check the email address.');
+				console.error('EmailJS response not successful:', emailRes);
+			  }
+			} catch (error) {
+			  console.log('Error sending password reset email:', error);
+			  setStatus('Failed to send reset email. Please check the email address.');
+			}
+		  };
 
 	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
@@ -138,11 +160,17 @@ const ToggleSingInSignUpForm = (props: Props) => {
 								/>
 							</div>
 							<Link
-								href="#"
-								className="ml-auto p-1 inline-block text-sm underline"
-							>
-								Forgot your password?
-							</Link>
+                                href="#"
+                                onClick={(e) => {
+                                e.preventDefault();
+                                setIsLoginDialogOpen(false);
+                                setIsPasswordResetDialogOpen(true);
+								setStatus('');
+                                }}
+                                className="ml-auto p-1 inline-block text-sm underline"
+                            >
+                            Forgot your password?
+                            </Link>
 						</div>
 						<DialogFooter>
 							<div className="w-full">
@@ -248,6 +276,35 @@ const ToggleSingInSignUpForm = (props: Props) => {
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
+				<Dialog open={isPasswordResetDialogOpen} onOpenChange={setIsPasswordResetDialogOpen}>
+                    <DialogContent className="sm:max-w-[425px]"> 
+                        <DialogHeader>
+                            <DialogTitle>Reset Password</DialogTitle>
+                            <DialogDescription>
+                                Enter your email address, and we will send you a link to reset your password.
+                            </DialogDescription>
+                        </DialogHeader>
+                    <div className="flex flex-col py-2">
+                        <div className="flex flex-row p-1 justify-center items-center">
+                            <Label htmlFor="reset-email" className="text-left w-24">Email</Label>
+                            <Input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                id="reset-email"
+                                type="email"
+                                placeholder="email@example.com"
+                                required
+                            />
+                        </div>
+                    </div>
+					{status && <p className={`text-center mt-2 ${status === 'Password reset email sent!' ? 'text-green-600' : 'text-red-600'}`}>{status}</p>} 
+                    <DialogFooter>
+                        <Button onClick={handlePasswordResetRequest} className="w-full">
+                        Send Reset Link
+                        </Button>
+                    </DialogFooter>
+                    </DialogContent>
+                </Dialog>
 			</div>
 		</div>
 	);
