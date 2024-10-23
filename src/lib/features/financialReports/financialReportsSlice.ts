@@ -16,23 +16,86 @@ interface FinancialReport {
     verdict: string;
 }
 
+interface FinancialReportsResponse {
+    incomeStatment:{
+        revenues: number;
+        costOfGoodsSold: number;
+        grossProfit: number;
+        operatingExpenses: number;
+        operatingProfit: number;
+        netProfit: number;
+    }
+    balanceSheet:{
+        assets: number;
+        currentAssets:{
+            cash: number;
+            accountsReceivable: number;
+            inventory: number;
+        }
+        fixedAssets:{
+            properties: number;
+            machinery: number;
+            other: number;
+        }
+        liabilities: {
+            shortTerm: number;
+            longTerm: number;
+        };
+        equity: number;
+    }
+    cashFlow:{
+        operatingActivities: number;
+        investmentActivities: number;
+        financingActivities: number;
+    }
+    stockId: string;
+    stockName: string;
+    eventDate: Date;
+    eventTitle: string;
+    url: string;
+}
+
 interface FinancialReportsState {
-    reports: FinancialReport[];
+    reports: {
+        message : string;
+        data: FinancialReportsResponse[];
+    };
     loading: boolean;
     error: string | null;
 }
 
 const initialState: FinancialReportsState = {
-    reports: [],
+    reports: {
+        message: '',
+        data: [],
+    },
     loading: false,
     error: null,
 };
 
 export const fetchFinancialReports = createAsyncThunk(
     'financialReports/fetchFinancialReports',
-    async () => {
+    async ({random, numOfRandom, ids} : {random: boolean, numOfRandom?: number, ids?: number[]}) => {
         // Replace with actual API call
-        const response = await fetch('/api/financial-reports');
+        const url = "/api/financial-reports";
+        const searchParams = new URLSearchParams();
+        
+        if (random) {
+            searchParams.set('random', 'true');
+            numOfRandom && searchParams.set('numberOfRandomRecords', numOfRandom.toString());
+        }
+        else if (ids) {
+            searchParams.set('ids', ids.join(','));
+        }
+        else {
+            throw new Error('Invalid fetchFinancialReports arguments');
+        }
+        const response = await fetch(`${url}?${searchParams.toString()}`, {
+            method: 'GET', 
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
         const data = await response.json();
         return data;
     }
@@ -46,9 +109,11 @@ const financialReportsSlice = createSlice({
         builder
             .addCase(fetchFinancialReports.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(fetchFinancialReports.fulfilled, (state, action) => {
                 state.loading = false;
+                state.error = null;
                 state.reports = action.payload;
             })
             .addCase(fetchFinancialReports.rejected, (state, action) => {
@@ -58,6 +123,6 @@ const financialReportsSlice = createSlice({
     },
 });
 
-export const selectFinancialReports = (state: RootState) => state.financialReports.reports;
+export const selectFinancialReports = (state: RootState) => state.financialReports;
 
 export default financialReportsSlice.reducer;

@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import StockCarousel from "@/src/components/StockCarousel";
 import RecentFinancialReports from "@/src/components/RecentFinancialReports";
 import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
+import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
+import { fetchFinancialReports } from "@/src/lib/features/financialReports/financialReportsSlice";
+import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 
 const OverviewView = (props:any) => {
+
+  const dispatch = useAppDispatch();
+  const financialReports = useAppSelector((state) => state.financialReports.reports);
+
+  useEffect(() =>{
+    dispatch(fetchFinancialReports({random: true}))
+  }, [])
 
 
   return (
@@ -19,9 +29,9 @@ const OverviewView = (props:any) => {
             Recent Financial Reports
           </h2>
           <div className="mb-6">
-            {/* <RecentFinancialReports /> */}
-            {/* <StockGraph /> */}
-            <NewStockGraph setStockTimeInterval = {props.setStockTimeInterval}/>
+            <RecentFinancialReports reports = {financialReports} /> 
+            {/* <StockGraph />
+            {/* <NewStockGraph setStockTimeInterval = {props.setStockTimeInterval}/>
           </div>
           <div>
             <div>
@@ -47,8 +57,8 @@ const OverviewView = (props:any) => {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            </div> */}
+          </div> 
         </main>
       </div>
     </div>
