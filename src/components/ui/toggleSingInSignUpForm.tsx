@@ -51,7 +51,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
 		useState(false);
 
-		const handleSubmit = async (e: any) => {
+		const handlePasswordResetRequest = async (e: any) => {
 			e.preventDefault();
 			try {
 			  emailjs.init('9Q600vKX9f68s1yZd');
@@ -262,6 +262,34 @@ const ToggleSingInSignUpForm = (props: Props) => {
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
+				<Dialog open={isPasswordResetDialogOpen} onOpenChange={setIsPasswordResetDialogOpen}>
+                    <DialogContent className="sm:max-w-[425px]"> 
+                        <DialogHeader>
+                            <DialogTitle>Reset Password</DialogTitle>
+                            <DialogDescription>
+                                Enter your email address, and we will send you a link to reset your password.
+                            </DialogDescription>
+                        </DialogHeader>
+                    <div className="flex flex-col py-2">
+                        <div className="flex flex-row p-1 justify-center items-center">
+                            <Label htmlFor="reset-email" className="text-left w-24">Email</Label>
+                            <Input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                id="reset-email"
+                                type="email"
+                                placeholder="email@example.com"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button onClick={handlePasswordResetRequest} className="w-full">
+                        Send Reset Link
+                        </Button>
+                    </DialogFooter>
+                    </DialogContent>
+                </Dialog>
 			</div>
 		</div>
 	);
