@@ -20,6 +20,8 @@ import {
 	setCompanies,
 	setSearchParamName,
 } from "../lib/features/company/companySlice";
+import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
+import ProfileAvatar from "./ProfileAvatar"
 
 const Navbar = (props: any) => {
 	const { data: session, status } = useSession();
@@ -129,6 +131,7 @@ const Navbar = (props: any) => {
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
+              <ProfileAvatar />            
 						</>
 					) : (
 						<ToggleSingInSignUpForm
