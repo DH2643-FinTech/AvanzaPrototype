@@ -41,7 +41,17 @@ const companySlice = createSlice({
       state.searchParams = {
         ...state.searchParams,
         name: action.payload,
+
       };
+      const companyIds = state.companiesIds;
+      if(companyIds.length > 0){
+        const id = companyIds.find(
+          (company) => company.name === action.payload
+        )?._id;
+        if(id){
+          localStorage.setItem("searchParams", JSON.stringify({id:id, name: action.payload}));
+        }
+      }
     },
     setSearchParamTimeInterval: (
       state,

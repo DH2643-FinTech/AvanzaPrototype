@@ -29,7 +29,7 @@ const StockView = (props: any) => {
     <div className="flex flex-col h-screen bg-white">
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 p-6 overflow-auto">
-                <NewStockGraph setStockTimeInterval = {props.setStockTimeInterval} />
+                <NewStockGraph currentStock={currentStock} setStockTimeInterval = {props.setStockTimeInterval} />
           <div className="flex items-center mb-6">
             <h1 className="text-3xl font-bold mr-3">{companyData.name}</h1>
             <Badge variant="secondary" className="text-lg py-1">
