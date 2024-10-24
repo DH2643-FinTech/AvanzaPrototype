@@ -9,17 +9,14 @@ import {
   SelectValue,
 } from "../../shadcn/select";
 import { renderGraph } from "./graph";
-
+import AddToFavoritesButton from "../../AddToFavoritesButton";
 const NewStockGraph = (props: any) => {
-
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
   const reports = useAppSelector((state) => state.financialReports);
-
 
   useEffect(() => {
     return renderGraph(stockData, reports || []);
   }, [stockData]);
-
 
   const handleSelectChange = (value: any) => {
     // setSelectedValue(value);
@@ -41,7 +38,14 @@ const NewStockGraph = (props: any) => {
           </Select>
           <div className="w-[1440] h-[800px]" id="chart-container"></div>
           <div className="relative justify-start items-center flex left-12 bottom-2 h-[60px] w-[1400px]">
-            <DatePickerComp setStockTimeInterval={props.setStockTimeInterval} />
+            <div className="relative">
+              <DatePickerComp
+                setStockTimeInterval={props.setStockTimeInterval}
+              />
+            </div>
+            <div className="left-4 relative">
+              <AddToFavoritesButton stockId={props.currentStock.id} />
+            </div>
           </div>
         </div>
       </div>

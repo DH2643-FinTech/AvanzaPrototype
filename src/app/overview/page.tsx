@@ -5,10 +5,10 @@ import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
 import { fetchHighlightedStocks } from "@/src/lib/features/highlightedStocks/highlightedStocksSlice";
 import { fetchFinancialReports, fetchRecentCompanyReports } from "@/src/lib/features/financialReports/financialReportsSlice";
 import OverviewView from '@/src/views/OverviewView/OverviewView';
-import { setSearchParamTimeInterval } from '@/src/lib/features/company/companySlice';
 import { useAppSelector } from '@/src/lib/hooks/useAppSelector';
 import { setSearchParamName } from '@/src/lib/features/company/companySlice';
 import { useRouter } from 'next/navigation';
+
 export default function OverviewPage() {
 
     const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ export default function OverviewPage() {
 
     useEffect(() => {
         dispatch(fetchHighlightedStocks());
-        dispatch(fetchFinancialReports({ random: true }));
+        dispatch(fetchFinancialReports({ random: false, recent: true, numberOfYears: 1, limit: 50 }));
     }, []);
 
     return <OverviewView navigateToStockPage ={handleNavigateToStockPage} setSearchParam={handleSetSearchParam} reports={financialReports}/>;

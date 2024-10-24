@@ -17,16 +17,35 @@ export const GET = async (request: NextRequest) => {
 
         const stockIds = queryParams.get("ids")?.split(",");
         const randomCompany = queryParams.get("random");
-        const numberOfRandomRecords = queryParams.get("numberOfRandomRecords");
-        // console.log(headers, pathName, body);
+        const recentReport = queryParams.get("recent");
+        const numberOfYears = queryParams.get("numberOfYears");
+        const limit = queryParams.get("limit");
         if (randomCompany == "true") {
-            const randomDocuments = await reportCollection.aggregate([{ $sample: { size: numberOfRandomRecords ?? 50 } }]).toArray();
+            const parsedLimit = parseInt(limit ?? "50");
+            const randomDocuments = await reportCollection.aggregate([{ $sample: { size: parsedLimit } }]).toArray();
             return NextResponse.json({ data: randomDocuments, message: "Random records fetched" }, { status: 200 });
+        }
+        else if(recentReport == "true") {
+            const yearsToSubtract = parseInt(numberOfYears ?? "1");
+            const parsedLimit = parseInt(limit ?? "50");
+            const yearsAgo = new Date();
+            yearsAgo.setFullYear(yearsAgo.getFullYear() - yearsToSubtract);
+            const records = await reportCollection.find({
+                $expr: {
+                    $and: [
+                      { $gte: [{ $toDate: "$eventDate" }, yearsAgo] },
+                      { $lt: [{ $toDate: "$eventDate" }, new Date()] }
+                    ]
+                  }
+              })
+              .limit(parsedLimit) 
+              .toArray();
+            
+            return NextResponse.json({ data: records, message: "Records fetched" }, { status: 200 });
         }
         else {
             const records = await reportCollection.find({ stockId: { $in: stockIds } }).toArray();
-            return NextResponse.json({ data: records, message: "Records fetched" }, { status: 200 });
-            
+            return NextResponse.json({ data: records, message: "Records fetched" }, { status: 200 }); 
         }
     } catch (error) {
         console.error("Failed to fetch stocks:", error);
