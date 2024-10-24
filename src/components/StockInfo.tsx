@@ -9,8 +9,6 @@ import {
 
 const StockInfo = () => {
   const { companyData } = useAppSelector((state) => state.company);
-  console.log("StockInfo");
-  console.log(companyData);
 
   if (!companyData) return null;
 

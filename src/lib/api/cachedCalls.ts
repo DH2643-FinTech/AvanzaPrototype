@@ -4,7 +4,7 @@ import { avanzaFetchGeneralInfo, avanzaFetchPrice } from "./avanzaCalls";
 
 export const getCachedCompany = async (companyId: string, collection: Collection<Company>) => {
   let updatedCompany = null;
-  console.log('Fetching company', companyId);
+  // console.log('Fetching company', companyId);
   
   const company = await collection.findOne({ _id: companyId });
   if(!company) {

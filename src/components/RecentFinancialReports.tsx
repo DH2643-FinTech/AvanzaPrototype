@@ -17,8 +17,8 @@ import { Skeleton } from "@/src/components/shadcn/skeleton";
 import { useRouter } from "next/navigation";
 
 const RecentFinancialReports = (props: any) => {
-  const router = useRouter();
-  const { reports, loading, error } = useAppSelector(selectFinancialReports);
+  // const router = useRouter();
+  const { reports, loading, error } = props.reports;
   const [currentPage, setCurrentPage] = useState(1);
   const reportsPerPage = 5;
 
@@ -36,9 +36,9 @@ const RecentFinancialReports = (props: any) => {
   };
 
   const handleRecentReport = (report: any) => {
-    router.push(`/stock/${report.stockId}`);
+    // router.push(`/stock/${report.stockId}`);
+    props.navigateToStockPage(report.stockId);
     props.setSearchParam(report.stockName);
-    // console.log(report);
   };
 
   return loading ? (

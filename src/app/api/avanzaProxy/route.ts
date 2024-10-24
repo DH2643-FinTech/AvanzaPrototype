@@ -34,16 +34,13 @@ export async function GET(req: Request) {
   // console.log("avanzaUrls : ", avanzaUrls);
 
   const detailUrls = detailUrlBuilder(_id);
-  console.log("detailUrls : ", detailUrls);
-  console.log("avanzaUrls : ", avanzaUrls);
+
 
   try {
     const apiResponse = await fetch(avanzaUrls, options);
     const data = await apiResponse.json();
-    console.log("data : ", data);
     const detailResponse = await fetch(detailUrls, detailOptions);
     const detailData = await detailResponse.json();
-    console.log("detailData : ", detailData);
     return NextResponse.json({ data, detailData });
   } catch (error) {
     console.error("Error fetching from Avanza API:", error);

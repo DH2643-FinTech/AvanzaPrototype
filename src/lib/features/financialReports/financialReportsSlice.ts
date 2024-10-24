@@ -101,6 +101,28 @@ export const fetchFinancialReports = createAsyncThunk(
     }
 );
 
+export const fetchRecentCompanyReports = createAsyncThunk('financialReports/fetchRecentCompanyReports', async (companyId: number, thunkAPI) => {
+    
+    const searchParams = new URLSearchParams();
+    searchParams.set('id', companyId.toString());
+
+    const response = await fetch(`/api/financial-reports/${companyId}?${searchParams.toString()}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+       return thunkAPI.rejectWithValue({message: data.message, status: response.status});
+    }
+    else {
+        return data;
+    }
+
+});
+
 const financialReportsSlice = createSlice({
     name: 'financialReports',
     initialState,
@@ -119,6 +141,23 @@ const financialReportsSlice = createSlice({
             .addCase(fetchFinancialReports.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || 'Failed to fetch financial reports';
+            }).addCase(fetchRecentCompanyReports.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+
+            }).addCase(fetchRecentCompanyReports.fulfilled, (state, action) => {
+                    state.loading = false;
+                    state.error = null;
+                    state.reports = action.payload;
+                
+            })
+            .addCase(fetchRecentCompanyReports.rejected, (state, action) => {
+                state.loading = false;
+                if (action.payload && typeof action.payload === 'object' && 'message' in action.payload) {
+                    state.error = (action.payload as { message: string }).message || 'Failed to fetch recent company reports';
+                } else {
+                    state.error = 'Network error or unknown issue';
+                }
             });
     },
 });

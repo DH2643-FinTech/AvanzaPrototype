@@ -25,25 +25,19 @@ import { useRouter } from "next/navigation";
 
 const Navbar = (props: any) => {
 	const { data: session, status } = useSession();
-	// const id = (listenerApi.getState() as RootState).company.companiesIds.find(
-	// 	(company) => company.name === action.payload
-	//   )?._id;
 	  const companyIds = useAppSelector((state) => state.company.companiesIds);
 	  const router = useRouter();
 
 	const dispatch = useAppDispatch();
 	const handleSearchParam = (searchParam: any) => {
-		// console.log("dispatch: " + searchParam);
 		dispatch(setSearchParamName(searchParam));
 		const id = companyIds.find((company) => company.name === searchParam)?._id;
-		console.log(" mayber here:"+ id)
 		router.push(`/stock/${id}`);
 	};
 
 	const handleSignIn = async (credProps: any) => {
 		if (credProps.method === "google") {
 			const response = await signIn("google");
-			// console.log("success", response);
 			return response;
 		} else {
 			const signInResponse = await signIn("credentials", {
@@ -58,7 +52,6 @@ const Navbar = (props: any) => {
 	const handleSignUp = async (credProps: any) => {
 		if (credProps.method === "google") {
 			const response = await signIn("google");
-			// console.log("success", response);
 			return response;
 		} else {
 			const res = await fetch("/api/register", {
@@ -75,7 +68,6 @@ const Navbar = (props: any) => {
 		}
 	};
 
-	// const dispatch = useAppDispatch();
 	useEffect(() => {
 		const storedCompanyIds = localStorage.getItem("allCompanyIds");
 		if (!storedCompanyIds) {
@@ -84,12 +76,6 @@ const Navbar = (props: any) => {
 			dispatch(setCompanies(JSON.parse(storedCompanyIds)));
 		}
 	}, []);
-
-
-
-	// const handleSearchParam = (searchParam: any) => {
-	//   props.setSearchParam(searchParam);
-	// }
 
 	return (
 		<header className="border-b flex items-center">

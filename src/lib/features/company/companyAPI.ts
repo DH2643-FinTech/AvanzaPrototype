@@ -22,7 +22,7 @@ export const fetchCompanyDetails = createAsyncThunk(
     try {
       const { name, id, fromDate, toDate, resolution, defaultTimePeriod,fromDateValid  } = arg;
 
-      console.log("fetchCompanyDetails : ", name,  id, fromDate, toDate, resolution, defaultTimePeriod);
+      // console.log("fetchCompanyDetails : ", name,  id, fromDate, toDate, resolution, defaultTimePeriod);
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       headers.append(

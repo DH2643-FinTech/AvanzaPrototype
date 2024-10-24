@@ -1,29 +1,35 @@
 import * as d3 from "d3";
 
-export const renderGraph = (stockData: any, pastEvent: any) => {
+export const renderGraph = (stockData: any, report: any) => {
   const margin = { top: 70, right: 60, bottom: 50, left: 0 };
   const width = 1200 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
   if (!stockData || stockData.length === 0) return;
 
-  const pastEventStockPair = pastEvent.map((d: any) => {
-    const findStock = () => {
-      for (let i = 0, j = 1; j < stockData.length; i++, j++) {
-        if (
-          new Date(stockData[i].timestamp) <= new Date(d.exDate) &&
-          new Date(stockData[j].timestamp) >= new Date(d.exDate)
-        ) {
-          return (stockData[i].high + stockData[j].high) / 2;
-        }
-      }
-    };
-    return {
-      event: d.exDate,
-      stock: findStock()?.toFixed(2) || 0,
-      eventDetails: { ...d },
-    };
-  });
+  const {reports: {data: reportData, message}, loading, error} = report;
 
+  if(!loading){
+  }
+
+    
+    const pastEventStockPair = reportData.map((d: any) => {
+      const findStock = () => {
+        for (let i = 0, j = 1; j < stockData.length; i++, j++) {
+          if (
+            new Date(stockData[i].timestamp) <= new Date(d.eventDate) &&
+            new Date(stockData[j].timestamp) >= new Date(d.eventDate)
+          ) {
+            return (stockData[i].high + stockData[j].high) / 2;
+          }
+        }
+      };
+      return {
+        event: d.eventDate,
+        stock: findStock()?.toFixed(2) || 0,
+        eventDetails: { ...d },
+      };
+    });
+    
   const data = stockData.map((d: any) => ({
     ...d,
     Date: new Date(d.timestamp),
@@ -302,9 +308,9 @@ export const renderGraph = (stockData: any, pastEvent: any) => {
             .style("font-size", "12px")
             .style("box-shadow", "0px 0px 10px rgba(0, 0, 0, 0.2)")
             .style("pointer-events", "none").html(`
-          <strong>Payment Date: </strong>${data.eventDetails.paymentDate.toString()}<br>
-          <strong>Dividend Type: </strong> ${data.eventDetails.dividendType} <br>
-          <strong>Date: </strong> ${eventDate.toISOString().slice(0, 10)} 
+          <strong>Report Title: </strong>${data.eventDetails?.eventTitle?.toString()}<br>
+          <strong>Revenue: </strong> ${data.eventDetails?.incomeStatement?.revenues} <br>
+          <strong>Net profit: </strong> ${data.eventDetails?.incomeStatement?.netProfit} 
         `);
         })
         .on("mousemove", function (event) {
