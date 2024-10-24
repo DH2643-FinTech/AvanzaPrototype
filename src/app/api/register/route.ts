@@ -29,8 +29,8 @@ export const POST = async (request: Request) => {
 	} catch (error) {
 		console.error("Error creating user:", error);
 		return NextResponse.json(
-			{ error: "Failed to create user" },
-			{ status: 500 }
+			{ error: "The user is not verified" },
+			{ status: 400 }
 		);
 	}
 };
