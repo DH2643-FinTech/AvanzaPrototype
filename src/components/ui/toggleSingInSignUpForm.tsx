@@ -23,9 +23,9 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 
 	const handleSignInWithGoogle = () => {
-		console.log("Sign up with Google");
+		// console.log("Sign up with Google");
 		const response = signIn("google");
-		console.log("success", response);
+		// console.log("success", response);
 	};
 
 	const handleSignInWithCredentials = async () => {

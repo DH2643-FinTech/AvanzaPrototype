@@ -13,12 +13,11 @@ import { renderGraph } from "./graph";
 const NewStockGraph = (props: any) => {
 
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
-  const pastEvent = useAppSelector((state) => state.company.companyData?.dividends?.pastEvents);
-  // const [resolution, setResolution] = React.useState("Day");
-  // const [selectedValue, setSelectedValue] = React.useState("");
+  const reports = useAppSelector((state) => state.financialReports);
+
 
   useEffect(() => {
-    return renderGraph(stockData, pastEvent || []);
+    return renderGraph(stockData, reports || []);
   }, [stockData]);
 
 

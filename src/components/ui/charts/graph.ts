@@ -1,24 +1,33 @@
 import * as d3 from "d3";
 
-export const renderGraph = (stockData: any, pastEvent: any) => {
+export const renderGraph = (stockData: any, report: any) => {
   const margin = { top: 70, right: 60, bottom: 50, left: 0 };
   const width = 1200 - margin.left - margin.right;
   const height = 800 - margin.top - margin.bottom;
   if (!stockData || stockData.length === 0) return;
 
-  const pastEventStockPair = pastEvent.map((d: any) => {
+  const {
+    reports: { data: reportData, message },
+    loading,
+    error,
+  } = report;
+
+  if (!loading) {
+  }
+
+  const pastEventStockPair = reportData.map((d: any) => {
     const findStock = () => {
       for (let i = 0, j = 1; j < stockData.length; i++, j++) {
         if (
-          new Date(stockData[i].timestamp) <= new Date(d.exDate) &&
-          new Date(stockData[j].timestamp) >= new Date(d.exDate)
+          new Date(stockData[i].timestamp) <= new Date(d.eventDate) &&
+          new Date(stockData[j].timestamp) >= new Date(d.eventDate)
         ) {
           return (stockData[i].high + stockData[j].high) / 2;
         }
       }
     };
     return {
-      event: d.exDate,
+      event: d.eventDate,
       stock: findStock()?.toFixed(2) || 0,
       eventDetails: { ...d },
     };
@@ -81,7 +90,6 @@ export const renderGraph = (stockData: any, pastEvent: any) => {
     Date | undefined,
   ];
   if (!xDomain[0] || !xDomain[1]) return;
-  // console.log("xDomain", xDomain);
   x.domain(
     xDomain.filter((d): d is Date => d instanceof Date) || [
       new Date(),
@@ -96,7 +104,7 @@ export const renderGraph = (stockData: any, pastEvent: any) => {
   const timeRange = Math.ceil(
     (xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24)
   );
-  // console.log("timeRange", timeRange);
+
 
   let tickInterval: any;
   let tickFormat: any;
@@ -295,17 +303,31 @@ export const renderGraph = (stockData: any, pastEvent: any) => {
             .style("left", `${event.pageX + 10}px`)
             .style("top", `${event.pageY - 20}px`)
             .style("position", "absolute")
-            .style("background-color", "rgba(255, 255, 255, 0.9)")
+            .style("background-color", "#f9f9f9") 
             .style("border", "1px solid #ccc")
-            .style("padding", "8px")
-            .style("border-radius", "4px")
-            .style("font-size", "12px")
-            .style("box-shadow", "0px 0px 10px rgba(0, 0, 0, 0.2)")
-            .style("pointer-events", "none").html(`
-          <strong>Payment Date: </strong>${data.eventDetails.paymentDate.toString()}<br>
-          <strong>Dividend Type: </strong> ${data.eventDetails.dividendType} <br>
-          <strong>Date: </strong> ${eventDate.toISOString().slice(0, 10)} 
-        `);
+            .style("padding", "12px")
+            .style("border-radius", "6px")
+            .style("font-size", "13px")
+            .style("box-shadow", "0 4px 8px rgba(0, 0, 0, 0.1)")
+            .style("pointer-events", "none")
+            .style("width", "280px") 
+            .style("color", "#333") 
+            .style("line-height", "1.6").html(`
+    <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">
+      ${data.eventDetails?.eventTitle || "No Title"}
+    </div>
+    <div>
+      <strong>Date:</strong> ${new Date(data.eventDetails?.eventDate).toLocaleDateString()}<br>
+      <strong>Revenue:</strong> $${data.eventDetails?.incomeStatement?.revenues || "N/A"}M<br>
+      <strong>Net Profit:</strong> $${data.eventDetails?.incomeStatement?.netProfit || "N/A"}M<br>
+      <strong>Assets:</strong> $${data.eventDetails?.balanceSheet?.assets || "N/A"}M<br>
+      <strong>Equity:</strong> $${data.eventDetails?.balanceSheet?.equity || "N/A"}M<br>
+      <strong>Operating Activities:</strong> $${data.eventDetails?.cashFlow?.operatingActivities || "N/A"}M<br>
+    </div>
+    <div style="margin-top: 10px;">
+        <h1>Click to Download PDF</h1>
+    </div>
+  `);
         })
         .on("mousemove", function (event) {
           d3.select(".report-tooltip")
@@ -319,7 +341,12 @@ export const renderGraph = (stockData: any, pastEvent: any) => {
             .attr("r", 5)
             .attr("fill", "blue");
           d3.select(".report-tooltip").remove();
-        });
+        }).on("click", function () {
+          const url = data.eventDetails?.url;
+          if (url) {
+            window.open(url, '_blank');
+          }
+        });;
     });
 
     listeningRect.on("mouseleave", () => {
