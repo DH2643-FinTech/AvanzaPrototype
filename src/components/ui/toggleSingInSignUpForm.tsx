@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -24,6 +24,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [emailForgetPassword, setEmailForgetPassword] = useState('');
     const [status, setStatus] = useState('');
+	const [verificationCode, setVerificationCode] = useState('');
 
 	const handleSignInWithGoogle = () => {
 		// console.log("Sign up with Google");
@@ -32,24 +33,47 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	};
 
 	const handleSignInWithCredentials = async () => {
-		const signInResponse = await signIn("credentials", {
-			email: email,
-			password: password,
-			redirect: false,
-		});
-
-		if (signInResponse && !signInResponse.error) {
-			setEmail("");
-			setPassword("");
-			console.log("success", signInResponse);
-		} else {
-			// const errorData = await res.json();
-			// setError(errorData.message || 'An error occurred.');
-			console.log("error");
+		try {
+			const response = await fetch('/api/verify-controll', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email }), // send email to API
+			});
+	
+			console.log("Verification response:", response);
+			if (response.status === 200) {
+				const signInResponse = await signIn("credentials", {
+					email: email,
+					password: password,
+					redirect: false,
+				});
+	
+				if (signInResponse && !signInResponse.error) {
+					setEmail("");
+					setPassword("");
+					console.log("Login successful:", signInResponse);
+				} else {
+					console.log("Sign-in error:", signInResponse.error);
+					setStatus('Invalid email or password.');
+				}
+			} else if (response.status === 201) {
+				setStatus('You are not a verified user, please signup again!');
+				console.log('Verification failed:', status);
+			} else {
+				setStatus('An error occurred while verifying your account.');
+				console.log('Unexpected verification response:', response.status);
+			}
+		} catch (error) {
+			console.error("Error during sign-in process:", error);
+			setStatus('An error occurred during the sign-in process. Please try again.');
 		}
 	};
+	
 	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
 		useState(false);
+	const [isVerificationDialogOpen, setIsVerificationDialogOpen] = useState(false);
 
 		const handlePasswordResetRequest = async (e: any) => {
 			setStatus('');
@@ -77,7 +101,6 @@ const ToggleSingInSignUpForm = (props: Props) => {
 			  const emailRes = await emailjs.send(serviceID, templateID, templateParams);
 			  if (emailRes.status === 200) {
 				setStatus('Password reset email sent!');
-				//alert('A link has been sent to your email.');
 			  } else {
 				setStatus('Failed to send reset email. Please check the email address.');
 				console.error('EmailJS response not successful:', emailRes);
@@ -91,23 +114,43 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
 
-	const handleSignUpWithCredentials = async () => {
+	const handleSignUpWithCredentials = async (e: any) => {
+		e.preventDefault();
 		console.log("Sign up with credentials");
-		const res = await fetch("/api/register", {
-			method: "POST",
-			body: JSON.stringify({
-				email: email,
-				password: password,
-			}),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		if (res.ok) {
-			const data = await res.json();
-			console.log(data);
-		} else {
-			console.log("error");
+		try {
+			console.log("Sign up with credentials");
+			const res = await fetch("/api/register-verify", {
+				method: "POST",
+				body: JSON.stringify({
+					email: email,
+					password: password,
+				}),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			emailjs.init('9Q600vKX9f68s1yZd');
+			if (!res.ok) {
+				setStatus('Sign up failed. Please check your details and try again.');
+				console.log('Error: ', res.statusText);
+				return;
+			}
+			const {verificationLink} = await res.json();
+			console.log(verificationLink);
+
+			const templateParams = {
+				to_email: email,
+				reset_link: verificationLink,
+			  };
+			  const serviceID = 'service_us3vp1r'; 
+			  const templateID = 'template_kmg9wjd'; 
+			  const emailRes = await emailjs.send(serviceID, templateID, templateParams);
+			  setStatus('Password reset email sent! If you do not receive the email, please check your email address for any errors.');
+		      setIsSignUpDialogOpen(false);
+			  setIsVerificationDialogOpen(true);
+		} catch (error) {
+			console.error('Error during sign up:', error);
+			setStatus('An error occurred during sign up. Please try again.');
 		}
 	};
 
@@ -116,6 +159,82 @@ const ToggleSingInSignUpForm = (props: Props) => {
 		const response = signIn("google");
 		console.log("success", response);
 	};
+
+	const handleVerifyCode = async () => {
+		try {
+			const res = await fetch("/api/verify", {
+				method: "POST",
+				body: JSON.stringify({ email, code: verificationCode }),
+				headers: { "Content-Type": "application/json" },
+			});
+			if (res.ok) {
+				setStatus('Verification successful! You can now log in.');
+				setIsVerificationDialogOpen(false);
+			} else {
+				setStatus('Invalid verification code. Please try again.');
+			}
+		} catch (error) {
+			console.error('Error verifying code:', error);
+			setStatus('An error occurred during verification. Please try again.');
+		}
+	};
+
+	const [timer, setTimer] = useState(120);
+    const [canResend, setCanResend] = useState(false);
+
+    useEffect(() => {
+        if (timer > 0) {
+            const countdown = setInterval(() => setTimer(timer - 1), 1000);
+            return () => clearInterval(countdown); 
+        } else {
+            setCanResend(true); 
+        }
+}, [timer]);
+
+const handleResendCode = async () => {
+    try {
+		try {
+			console.log("Sign up with credentials");
+			const res = await fetch("/api/register-verify", {
+				method: "POST",
+				body: JSON.stringify({
+					email: email,
+					password: password,
+				}),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			emailjs.init('9Q600vKX9f68s1yZd');
+			if (!res.ok) {
+				setStatus('Sign up failed. Please check your details and try again.');
+				console.log('Error: ', res.statusText);
+				return;
+			}
+			const {verificationLink} = await res.json();
+			console.log(verificationLink);
+
+			const templateParams = {
+				to_email: email,
+				reset_link: verificationLink,
+			  };
+			  const serviceID = 'service_us3vp1r'; 
+			  const templateID = 'template_kmg9wjd'; 
+			  const emailRes = await emailjs.send(serviceID, templateID, templateParams);
+			  setStatus('Password reset email sent! If you do not receive the email, please check your email address for any errors.');
+		      setIsSignUpDialogOpen(false);
+			  setIsVerificationDialogOpen(true);
+		} catch (error) {
+			console.error('Error during sign up:', error);
+			setStatus('An error occurred during sign up. Please try again.');
+		}
+        setTimer(120); 
+        setCanResend(false); 
+    } catch (error) {
+        console.error("Error resending verification code:", error);
+        setStatus("Failed to resend the code. Please try again.");
+    }
+};
 
 	return (
 		<div>
@@ -195,8 +314,8 @@ const ToggleSingInSignUpForm = (props: Props) => {
 									<button
 										className="underline"
 										onClick={() => {
-											setIsLoginDialogOpen(false); // Close the login dialog
-											setIsSignUpDialogOpen(true); // Open the signup dialog
+											setIsLoginDialogOpen(false);
+											setIsSignUpDialogOpen(true); 
 										}}
 									>
 										Sign up
@@ -257,6 +376,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 								/>
 							</div>
 						</div>
+						
 						<DialogFooter>
 							<Button
 								onClick={handleSignUpWithCredentials}
@@ -305,9 +425,65 @@ const ToggleSingInSignUpForm = (props: Props) => {
                     </DialogFooter>
                     </DialogContent>
                 </Dialog>
+				<Dialog open={isVerificationDialogOpen} onOpenChange={setIsVerificationDialogOpen}>
+                     <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Verify Your Email</DialogTitle>
+                            <DialogDescription>
+                                Please enter the 6-digit code sent to {email}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="border border-slate-100"></div>
+                        <div className="flex flex-col py-2">
+                            <div className="flex flex-row p-1 justify-center items-center">
+                                <Label htmlFor="verification-code" className="text-left w-36">
+                                    Verification Code
+                                </Label>
+                                <Input
+                                    value={verificationCode}
+                                    onChange={(e) => setVerificationCode(e.target.value)}
+                                    id="verification-code"
+                                    type="text"
+                                    placeholder="Enter 6-digit code"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        {status && (
+                            <p className={`text-center mt-2 ${status.includes('successful') ? 'text-green-600' : 'text-red-600'}`}>
+                                {status}
+                            </p>
+                        )}
+                        <div className="text-center mt-4">
+                        {timer > 0 ? (
+                            <p>Resend code in {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</p>
+                            ) : (
+                            <Button variant="outline" onClick={handleResendCode} className="mt-2">
+                                Resend Verification Code
+                            </Button>
+                        )}
+                        </div>
+                        <DialogFooter>
+                            <div className="w-full flex justify-between">
+                                <Button onClick={handleVerifyCode} className="w-full mr-2">
+                                    Verify
+                                </Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setIsVerificationDialogOpen(false);
+                                    setIsSignUpDialogOpen(true);
+                                }}
+                                className="w-full"
+                            >
+                            Edit Email
+                            </Button>
+                            </div>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
 			</div>
 		</div>
 	);
 };
-
 export default ToggleSingInSignUpForm;
