@@ -35,6 +35,7 @@ export async function GET(req: Request) {
 
   const detailUrls = detailUrlBuilder(_id);
 
+
   try {
     const apiResponse = await fetch(avanzaUrls, options);
     const data = await apiResponse.json();

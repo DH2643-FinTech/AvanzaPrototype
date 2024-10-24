@@ -14,28 +14,35 @@ import {
 import AvanzaSearchBar from "@/src/components/ui/AvanzaSearchBar2";
 import ToggleSingInSignUpForm from "./ui/toggleSingInSignUpForm";
 import { useAppDispatch } from "../lib/hooks/useAppDispatch";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { fetchAllCompanyIds } from "../lib/features/company/companyAPI";
 import {
 	setCompanies,
 	setSearchParamName,
 } from "../lib/features/company/companySlice";
+
+import { useAppSelector } from "../lib/hooks/useAppSelector";
+import { useRouter } from "next/navigation";
+
 import { Avatar, AvatarFallback, AvatarImage } from "./shadcn/avatar";
 import ProfileAvatar from "./ProfileAvatar"
 
+
 const Navbar = (props: any) => {
 	const { data: session, status } = useSession();
+	  const companyIds = useAppSelector((state) => state.company.companiesIds);
+	  const router = useRouter();
 
 	const dispatch = useAppDispatch();
 	const handleSearchParam = (searchParam: any) => {
-		// console.log("dispatch: " + searchParam);
 		dispatch(setSearchParamName(searchParam));
+		const id = companyIds.find((company) => company.name === searchParam)?._id;
+		router.push(`/stock/${id}`);
 	};
 
 	const handleSignIn = async (credProps: any) => {
 		if (credProps.method === "google") {
 			const response = await signIn("google");
-			// console.log("success", response);
 			return response;
 		} else {
 			const signInResponse = await signIn("credentials", {
@@ -50,7 +57,6 @@ const Navbar = (props: any) => {
 	const handleSignUp = async (credProps: any) => {
 		if (credProps.method === "google") {
 			const response = await signIn("google");
-			// console.log("success", response);
 			return response;
 		} else {
 			const res = await fetch("/api/register", {
@@ -67,7 +73,6 @@ const Navbar = (props: any) => {
 		}
 	};
 
-	// const dispatch = useAppDispatch();
 	useEffect(() => {
 		const storedCompanyIds = localStorage.getItem("allCompanyIds");
 		if (!storedCompanyIds) {
@@ -76,10 +81,6 @@ const Navbar = (props: any) => {
 			dispatch(setCompanies(JSON.parse(storedCompanyIds)));
 		}
 	}, []);
-
-	// const handleSearchParam = (searchParam: any) => {
-	//   props.setSearchParam(searchParam);
-	// }
 
 	return (
 		<header className="border-b flex items-center">
