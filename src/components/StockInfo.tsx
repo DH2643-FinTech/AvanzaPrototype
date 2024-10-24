@@ -1,5 +1,4 @@
 // @/src/components/StockInfo.tsx
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 import {
   Card,
   CardContent,
@@ -7,9 +6,8 @@ import {
   CardTitle,
 } from "@/src/components/shadcn/card";
 
-const StockInfo = () => {
-  const { companyData } = useAppSelector((state) => state.company);
-
+const StockInfo = (props: any) => {
+  const { companyData } = props.company;
   if (!companyData) return null;
 
   return (
@@ -49,8 +47,6 @@ const StockInfo = () => {
                 {companyData.company?.homepage || "N/A"}
               </a>
             </p>
-
-            {/* <p>{`$${companyData.company || 'N/A'} - $${companyData.company.homepage || 'N/A'}`}</p> */}
           </div>
         </div>
       </CardContent>

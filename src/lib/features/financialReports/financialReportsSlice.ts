@@ -4,18 +4,6 @@ import { RootState } from '@/src/lib/store/store';
 
 // TODO: Use this slice for recent reports inside the company page as well
 
-interface FinancialReport {
-    company: string;
-    title: string;
-    date: string;
-    metrics: {
-        revenue: string;
-        profit: string;
-        eps: string;
-    };
-    verdict: string;
-}
-
 interface FinancialReportsResponse {
     incomeStatment:{
         revenues: number;
@@ -76,7 +64,6 @@ const initialState: FinancialReportsState = {
 export const fetchFinancialReports = createAsyncThunk(
     'financialReports/fetchFinancialReports',
     async ({random, numOfRandom, ids} : {random: boolean, numOfRandom?: number, ids?: number[]}) => {
-        // Replace with actual API call
         const url = "/api/financial-reports";
         const searchParams = new URLSearchParams();
         

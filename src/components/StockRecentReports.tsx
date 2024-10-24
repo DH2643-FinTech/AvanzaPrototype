@@ -8,16 +8,10 @@ import {
 import { Badge } from "@/src/components/shadcn/badge";
 import { FileText } from "lucide-react";
 
-const RecentStockReports = () => {
-  const {
-    reports: recentReports,
-    loading,
-    error,
-  } = useAppSelector((state) => state.financialReports);
+const RecentStockReports = (props: any) => {
 
+  const { reports: recentReports, loading, error } = props.reports;
   if (!recentReports) return null;
-
-  //TODO: Implement a way to show the most recent reports - start with endpoints
 
   return (
     <Card className="mt-6">
@@ -25,14 +19,15 @@ const RecentStockReports = () => {
         <CardTitle>Recent Financial Reports</CardTitle>
       </CardHeader>
       <CardContent>
-        {/* <div className="space-y-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {" "}
           {recentReports.data && recentReports.data.length > 0 ? (
             recentReports.data.map((report: any, index: number) => (
               <a
                 key={index}
-                href={report.url} // Link to the report URL
-                target="_blank" // Opens the link in a new tab
-                rel="noopener noreferrer" // Ensures security by preventing access to window.opener
+                href={report.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
               >
                 <Badge
                   key={index}
@@ -47,30 +42,7 @@ const RecentStockReports = () => {
           ) : (
             <p>No recent reports available.</p>
           )}
-        </div> */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"> {/* Use grid and responsive columns */}
-        {recentReports.data && recentReports.data.length > 0 ? (
-            recentReports.data.map((report: any, index: number) => (
-                <a
-                    key={index}
-                    href={report.url} // Link to the report URL
-                    target="_blank" // Opens the link in a new tab
-                    rel="noopener noreferrer" // Ensures security by preventing access to window.opener
-                >
-                    <Badge
-                        key={index}
-                        variant="secondary"
-                        className="flex items-center w-full justify-start p-2"
-                    >
-                        <FileText className="mr-2 h-4 w-4" />
-                        {report.eventTitle}
-                    </Badge>
-                </a>
-            ))
-        ) : (
-            <p>No recent reports available.</p>
-        )}
-    </div>
+        </div>
       </CardContent>
     </Card>
   );

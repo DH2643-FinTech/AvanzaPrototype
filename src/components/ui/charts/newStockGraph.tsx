@@ -14,8 +14,7 @@ const NewStockGraph = (props: any) => {
 
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
   const reports = useAppSelector((state) => state.financialReports);
-  // const [resolution, setResolution] = React.useState("Day");
-  // const [selectedValue, setSelectedValue] = React.useState("");
+
 
   useEffect(() => {
     return renderGraph(stockData, reports || []);

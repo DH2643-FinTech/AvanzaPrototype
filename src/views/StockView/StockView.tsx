@@ -12,17 +12,18 @@ import { Badge } from "@/src/components/shadcn/badge";
 import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
 
 const StockView = (props: any) => {
-  const { companyData, currentStock } = useAppSelector(
-    (state) => state.company
-  );
 
-  if (!companyData || !currentStock) return null;
-
+  const { companyData, currentStock, loading, error } = props.company;
   const latestPrice = currentStock.ohlc[currentStock.ohlc.length - 1].close;
   const previousClose =
     currentStock.ohlc[currentStock.ohlc.length - 2]?.close || latestPrice;
   const change = latestPrice - previousClose;
   const changePercentage = (change / previousClose) * 100;
+
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!companyData || !currentStock) return <div>No data available</div>;
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -52,8 +53,8 @@ const StockView = (props: any) => {
               </div>
             </CardContent>
           </Card>
-          <StockInfo />
-          <StockRecentReports />
+          <StockInfo company = {props.company} />
+          <StockRecentReports reports={props.reports} />
         </main>
       </div>
     </div>
