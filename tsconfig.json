@@ -34,7 +34,7 @@
     ".next/types/**/*.ts",
     "src/lib/database/test.js",
     "build/types/**/*.ts"
-  ],
+, "src/app/uploadImage"  ],
   "exclude": [
     "node_modules"
   ]
