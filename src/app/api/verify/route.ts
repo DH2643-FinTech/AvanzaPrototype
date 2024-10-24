@@ -20,13 +20,14 @@ export const POST = async (request: Request) => {
     const user = await db.collection('users').findOne({
       email: email,    
     });
-    const verificationToken = user.verificationToken;
-    const tokenExpireDate = user.verificationToken;
+  
     if (!user) {
       return NextResponse.json({ message: 'Invalid or expired verification code' }, { status: 400 });
     }
-    if (verificationToken != code || tokenExpireDate > Date.now()) {
+    if(user){
+    if (user.verificationToken != code || user.verificationToken > Date.now()) {
       return NextResponse.json({ message: 'Invalid or expired verification code' }, { status: 400 });
+    }
     }
     await db.collection('users').updateOne(
       { email: user.email },

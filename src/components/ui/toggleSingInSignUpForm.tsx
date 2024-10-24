@@ -55,7 +55,6 @@ const ToggleSingInSignUpForm = (props: Props) => {
 					setPassword("");
 					console.log("Login successful:", signInResponse);
 				} else {
-					console.log("Sign-in error:", signInResponse.error);
 					setStatus('Invalid email or password.');
 				}
 			} else if (response.status === 201) {
