@@ -27,13 +27,13 @@ const StockPage = () => {
     }, [id, dispatch]);
 
     useEffect(() => {
-        // if (companyData && currentStock) {
-        //     dispatch(addRecentlyVisited({
-        //         id: id as string,
-        //         name: companyData.name,
-        //         price: currentStock.ohlc[currentStock.ohlc.length - 1].close
-        //     }));
-        // }
+        if (companyData && currentStock) {
+            dispatch(addRecentlyVisited({
+                id: id as string,
+                name: companyData.name,
+                price: currentStock.ohlc[currentStock.ohlc.length - 1].close
+            }));
+        }
     }, [companyData, currentStock, dispatch, id]);
 
     if (loading) return <div>Loading...</div>;

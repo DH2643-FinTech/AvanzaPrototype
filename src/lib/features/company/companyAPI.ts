@@ -40,7 +40,7 @@ export const fetchCompanyDetails = createAsyncThunk(
         )
       ); // Pass the companyIds as a comma-separated string
 
-      const response = await fetch("api/avanzaProxy", {
+      const response = await fetch("/api/avanzaProxy", {
         method: "GET",
         headers: headers,
       });
