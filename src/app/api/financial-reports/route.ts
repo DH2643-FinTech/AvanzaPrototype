@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import clientPromise from "@/src/lib/database/mongodb";
-
+export const dynamic = 'force-dynamic';
 export const GET = async (request: NextRequest) => {
     try {
 

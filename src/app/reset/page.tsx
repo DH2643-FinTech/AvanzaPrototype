@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation"; // Import useSearchParams and useRouter
 
-import { useSearchParams, useRouter } from 'next/navigation'; // Import useSearchParams and useRouter
-
-const PasswordResetPage = () => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [status, setStatus] = useState('');
-  const searchParams = useSearchParams(); 
-  const router = useRouter(); 
-  const token = searchParams.get('token');
+const PasswordReset = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [status, setStatus] = useState("");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -21,23 +20,23 @@ const PasswordResetPage = () => {
     }
 
     try {
-      const response = await fetch('/api/password-change', {
-        method: 'POST',
+      const response = await fetch("/api/password-change", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ token, newPassword }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to reset password');
+        throw new Error("Failed to reset password");
       }
 
-      setStatus('Password reset successful!');
-      router.push('/login'); 
+      setStatus("Password reset successful!");
+      router.push("/login");
     } catch (error) {
-      console.error('Error resetting password:', error);
-      setStatus('Failed to reset password');
+      console.error("Error resetting password:", error);
+      setStatus("Failed to reset password");
     }
   };
 
@@ -65,6 +64,14 @@ const PasswordResetPage = () => {
       </form>
       {status && <p>{status}</p>}
     </div>
+  );
+};
+
+const PasswordResetPage = () => {
+  return (
+    <Suspense>
+      <PasswordReset />
+    </Suspense>
   );
 };
 
