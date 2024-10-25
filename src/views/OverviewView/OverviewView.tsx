@@ -10,9 +10,9 @@ import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
 const OverviewView = (props:any) => {
 
   return (
-    <div className="flex flex-col h-screen bg-white">
-      <div className="flex flex-1 overflow-hidden">
-        <main className="flex-1 p-6 overflow-auto">
+    <div className="flex flex-col min-h-screen bg-white">
+      <div className=" flex-1 overflow-auto">
+        <main className=" p-4 ">
           <h1 className="text-3xl font-bold mb-6">Overview</h1>
           {/* <div className="mb-8">
             <StockCarousel />

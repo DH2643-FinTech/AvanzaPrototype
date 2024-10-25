@@ -63,7 +63,7 @@ const AboutUsView = () => {
   return (
     <div className="flex flex-col h-screen bg-white">
       <div className="flex flex-1 overflow-hidden">
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1  overflow-auto">
           <h1 className="text-3xl font-bold mb-6">About Us</h1>
 
           <Card className="mb-8">
