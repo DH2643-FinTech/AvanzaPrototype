@@ -13,7 +13,7 @@ const Sidebar = () => {
     const isActive = (path: string) => pathname === path
 
     return (
-        <div className="w-64 border-r p-4 overflow-auto flex-shrink-0">
+        <div className="w-1/5 border-r p-4 overflow-auto flex-shrink-0">
             <nav className="space-y-2">
                 <h2 className="text-lg font-semibold mb-2">Main Menu</h2>
                 <Button
