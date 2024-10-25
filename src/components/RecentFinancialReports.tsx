@@ -1,7 +1,7 @@
-// @/src/components/RecentFinancialReports.tsx
+// @/components/RecentFinancialReports.tsx
 import React, { useState } from "react";
-import { Card, CardContent } from "@/src/components/shadcn/card";
-import { Badge } from "@/src/components/shadcn/badge";
+import { Card, CardContent } from "@/components/shadcn/card";
+import { Badge } from "@/components/shadcn/badge";
 import {
   Pagination,
   PaginationContent,
@@ -9,11 +9,11 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/src/components/shadcn/pagination";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
-import { selectFinancialReports } from "@/src/lib/features/financialReports/financialReportsSlice";
+} from "@/components/shadcn/pagination";
+import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { selectFinancialReports } from "@/lib/features/financialReports/financialReportsSlice";
 
-import { Skeleton } from "@/src/components/shadcn/skeleton";
+import { Skeleton } from "@/components/shadcn/skeleton";
 import { useRouter } from "next/navigation";
 
 const RecentFinancialReports = (props: any) => {
@@ -85,9 +85,10 @@ const RecentFinancialReports = (props: any) => {
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
-              href="#"
-              onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-              aria-disabled={currentPage === 1}
+                href="#"
+                className="w-18 pr-6"
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                aria-disabled={currentPage === 1} size={undefined}              // size="smal"
             />
           </PaginationItem>
           {[...Array(totalPages)].map((_, index) => (
@@ -95,7 +96,7 @@ const RecentFinancialReports = (props: any) => {
               <PaginationLink
                 href="#"
                 onClick={() => handlePageChange(index + 1)}
-                isActive={currentPage === index + 1}
+                isActive={currentPage === index + 1} size={undefined}                // size="medium"
               >
                 {index + 1}
               </PaginationLink>
@@ -103,11 +104,10 @@ const RecentFinancialReports = (props: any) => {
           ))}
           <PaginationItem>
             <PaginationNext
-              href="#"
-              onClick={() =>
-                handlePageChange(Math.min(totalPages, currentPage + 1))
-              }
-              aria-disabled={currentPage === totalPages}
+                href="#"
+                className=" pl-4 w-18"
+                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                aria-disabled={currentPage === totalPages} size={undefined}              // size="medium"
             />
           </PaginationItem>
         </PaginationContent>

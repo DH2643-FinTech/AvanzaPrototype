@@ -1,6 +1,6 @@
 'use client';
 
-import WatchlistView from '@/src/views/WatchlistView/WatchlistView';
+import WatchlistView from '@/views/WatchlistView/WatchlistView';
 
 export default function WatchlistPage() {
   return <WatchlistView />;

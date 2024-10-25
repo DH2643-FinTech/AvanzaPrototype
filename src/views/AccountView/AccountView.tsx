@@ -1,11 +1,11 @@
 'use client';
-//import { SignInComp } from '@/src/components/signInComp';
-import { SignUpComp } from '@/src/components/signUpComp';
+//import { SignInComp } from '@/components/signInComp';
+import { SignUpComp } from '@/components/signUpComp';
 import {
   GoogleLogInButton,
   CredentialAuthButton,
   SignOutButton,
-} from '@/src/components/ui/authButtons';
+} from '@/components/ui/authButtons';
 import { useRouter } from 'next/navigation';
 
 const AccountView = () => {

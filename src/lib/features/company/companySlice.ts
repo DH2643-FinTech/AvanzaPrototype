@@ -6,9 +6,9 @@ import {
   StockInfo,
   avanzaData,
 } from "./companyTypes";
-import { CompanyID } from "@/src/app/api/companies/dataTypes";
+import { CompanyID } from "@/app/api/companies/dataTypes";
 import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyAPI";
-import { RootState } from "@/src/lib/store/store";
+import { RootState } from "@/lib/store/store";
 import { mockAppleData } from "./mockStockData";
 
 const initialState: CompanyState = {
@@ -28,7 +28,7 @@ const companySlice = createSlice({
   reducers: {
     setCurrentCompany: (state, action: PayloadAction<string>) => {
       state.companyDetails =
-        state.companies.find((company) => company._id === action.payload) ||
+        state.companies.find((company:any) => company._id === action.payload) ||
         null;
     },
     setSearchParamResolution: (state, action: PayloadAction<string>) => {
@@ -46,7 +46,7 @@ const companySlice = createSlice({
       const companyIds = state.companiesIds;
       if(companyIds.length > 0){
         const id = companyIds.find(
-          (company) => company.name === action.payload
+          (company:any) => company.name === action.payload
         )?._id;
         if(id){
           localStorage.setItem("searchParams", JSON.stringify({id:id, name: action.payload}));
@@ -120,6 +120,6 @@ export const {
   setSearchParamName,
 } = companySlice.actions;
 
-export const selectCurrentCompany = (state: RootState) =>
-  state.company.companyDetails;
+// export const selectCurrentCompany = (state: RootState) =>
+//   state.company.companyDetails;
 export default companySlice.reducer;

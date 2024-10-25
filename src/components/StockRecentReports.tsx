@@ -1,11 +1,11 @@
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
+import { useAppSelector } from "@/lib/hooks/useAppSelector";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/src/components/shadcn/card";
-import { Badge } from "@/src/components/shadcn/badge";
+} from "@/components/shadcn/card";
+import { Badge } from "@/components/shadcn/badge";
 import { FileText } from "lucide-react";
 
 const RecentStockReports = (props: any) => {

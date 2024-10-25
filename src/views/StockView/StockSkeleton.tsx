@@ -1,4 +1,4 @@
-import { Skeleton } from "@/src/components/shadcn/skeleton";
+import { Skeleton } from "@/components/shadcn/skeleton";
 
 const StockSkeleton = () =>{
     return (

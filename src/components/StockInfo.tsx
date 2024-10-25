@@ -1,10 +1,10 @@
-// @/src/components/StockInfo.tsx
+// @/components/StockInfo.tsx
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/src/components/shadcn/card";
+} from "@/components/shadcn/card";
 
 const StockInfo = (props: any) => {
   const { companyData } = props.company;

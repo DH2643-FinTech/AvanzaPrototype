@@ -1,6 +1,6 @@
 //Check if user already favorited the stock
 
-import clientPromise from "@/src/lib/database/mongodb";
+import clientPromise from "@/lib/database/mongodb";
 import { getServerSession } from "next-auth";
 
 export const POST = async (request: Request) => {

@@ -1,11 +1,11 @@
-// @/src/components/StockCarousel.tsx
+// @/components/StockCarousel.tsx
 import React, { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from "@/src/components/shadcn/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/src/components/shadcn/card"
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector"
-import { selectHighlightedStocks } from "@/src/lib/features/highlightedStocks/highlightedStocksSlice"
+import { Button } from "@/components/shadcn/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcn/card"
+import { useAppSelector } from "@/lib/hooks/useAppSelector"
+import { selectHighlightedStocks } from "@/lib/features/highlightedStocks/highlightedStocksSlice"
 
 const StockCarousel = () => {
     const highlightedStocks = useAppSelector(selectHighlightedStocks)

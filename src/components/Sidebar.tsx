@@ -3,9 +3,9 @@
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { TrendingUp, Eye, Info } from 'lucide-react'
-import { Button } from "@/src/components/shadcn/button"
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector"
-import { selectRecentlyVisited } from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice"
+import { Button } from "@/components/shadcn/button"
+import { useAppSelector } from "@/lib/hooks/useAppSelector"
+import { selectRecentlyVisited } from "@/lib/features/recentlyVisited/recentlyVisitedSlice"
 import { useAppDispatch } from '../lib/store/store'
 import { fetchRecentCompanyReports } from '../lib/features/financialReports/financialReportsSlice'
 import { setSearchParamName } from '../lib/features/company/companySlice'
@@ -63,7 +63,7 @@ const Sidebar = () => {
             <div className="mt-8">
                 <h2 className="text-lg font-semibold mb-2">Recently Visited</h2>
                 <div className="space-y-2">
-                    {recentlyVisited.map((stock) => (
+                    {recentlyVisited.map((stock: { id: string, name: string, price: number }) => (
                         <Button onClick={() => navigateToStock({stockId: parseInt(stock.id), searchParam: stock.name})} key={stock.id} variant="ghost" className="w-full justify-between text-left" >
                             {/* <Link href={`/stock/${stock.id}`} className="flex items-center px-4 py-2"> */}
                                 <div className="flex items-center">

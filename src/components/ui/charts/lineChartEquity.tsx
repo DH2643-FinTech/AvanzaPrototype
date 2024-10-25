@@ -10,13 +10,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/src/components/shadcn/card";
+} from "@/components/shadcn/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/src/components/shadcn/chart";
+} from "@/components/shadcn/chart";
 
 export const description = "A line chart with a label";
 

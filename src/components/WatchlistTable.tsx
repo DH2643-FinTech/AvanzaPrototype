@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
+import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
+import { useAppSelector } from "@/lib/hooks/useAppSelector";
 import {
   fetchWatchlist,
   removeFromWatchlist,
   selectWatchlistStocks,
-} from "@/src/lib/features/watchlist/watchlistSlice";
+} from "@/lib/features/watchlist/watchlistSlice";
 import {
   Table,
   TableBody,
@@ -15,9 +15,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/src/components/shadcn/table";
-import { Button } from "@/src/components/shadcn/button";
-import { Input } from "@/src/components/shadcn/input";
+} from "@/components/shadcn/table";
+import { Button } from "@/components/shadcn/button";
+import { Input } from "@/components/shadcn/input";
 import {
   ChevronDown,
   ChevronUp,
@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/src/components/shadcn/tooltip";
+} from "@/components/shadcn/tooltip";
 
 type SortField =
   | "_id"
@@ -88,11 +88,11 @@ export default function WatchlistTable() {
   const filteredAndSortedCompanies = useMemo(() => {
     return watchlistCompanies
       .filter(
-        (company) =>
+        (company: any) =>
           company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           company._id.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      .sort((a, b) => {
+      .sort((a: any, b: any) => {
         if (a[sortField] !== undefined && b[sortField] !== undefined) {
           if (a[sortField] < b[sortField]) return sortOrder === "asc" ? -1 : 1;
           if (a[sortField] > b[sortField]) return sortOrder === "asc" ? 1 : -1;
@@ -106,8 +106,8 @@ export default function WatchlistTable() {
     return filteredAndSortedCompanies
       .slice(startIndex, startIndex + rowsPerPage)
       .map(
-        (company) =>
-          watchlistDetails?.find((c) => c._id === company._id) || company
+        (company: any) =>
+          watchlistDetails?.find((c:any) => c._id === company._id) || company
       );
   }, [filteredAndSortedCompanies, currentPage]);
 
@@ -182,7 +182,7 @@ export default function WatchlistTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedCompanies.map((company) => (
+            {paginatedCompanies.map((company:any) => (
               <React.Fragment key={company._id}>
                 <TableRow
                   className="cursor-pointer"

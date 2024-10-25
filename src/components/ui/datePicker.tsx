@@ -2,14 +2,14 @@
 import { format, set } from "date-fns";
 import { CalendarDays, Calendar as CalendarIcon } from "lucide-react";
 
-import { cn } from "@/src/lib/utils/utils";
-import { Button } from "@/src/components/shadcn/button";
-import { Calendar } from "@/src/components/shadcn/calendar";
+import { cn } from "@/lib/utils/utils";
+import { Button } from "@/components/shadcn/button";
+import { Calendar } from "@/components/shadcn/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/src/components/shadcn/popover";
+} from "@/components/shadcn/popover";
 import { Label } from "../shadcn/label";
 import { useState } from "react";
 

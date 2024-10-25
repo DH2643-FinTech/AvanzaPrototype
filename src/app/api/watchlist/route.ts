@@ -1,6 +1,6 @@
-import { Company } from "@/interfaces";
-import { getCachedCompany } from "@/src/lib/api/cachedCalls";
-import clientPromise from "@/src/lib/database/mongodb";
+import { Company } from "@/../interfaces";
+import { getCachedCompany } from "@/lib/api/cachedCalls";
+import clientPromise from "@/lib/database/mongodb";
 import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";

@@ -1,16 +1,16 @@
-// @/src/views/StockView/StockView.tsx
-import StockInfo from "@/src/components/StockInfo";
-import StockRecentReports from "@/src/components/StockRecentReports";
+// @/views/StockView/StockView.tsx
+import StockInfo from "@/components/StockInfo";
+import StockRecentReports from "@/components/StockRecentReports";
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/src/components/shadcn/card";
-import { Badge } from "@/src/components/shadcn/badge";
-import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
-import { BarChartRevenue } from "@/src/components/ui/charts/barChartRevenue";
-import { LineChartEquity } from "@/src/components/ui/charts/lineChartEquity";
+} from "@/components/shadcn/card";
+import { Badge } from "@/components/shadcn/badge";
+import NewStockGraph from "@/components/ui/charts/newStockGraph";
+import { BarChartRevenue } from "@/components/ui/charts/barChartRevenue";
+import { LineChartEquity } from "@/components/ui/charts/lineChartEquity";
 
 const StockView = (props: any) => {
   const { companyData, currentStock, loading, error, companiesIds } =

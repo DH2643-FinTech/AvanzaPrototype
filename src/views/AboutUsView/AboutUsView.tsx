@@ -4,12 +4,12 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/src/components/shadcn/card";
+} from "@/components/shadcn/card";
 import {
   Avatar,
   AvatarFallback,
-} from "@/src/components/shadcn/avatar";
-import { Button } from "@/src/components/shadcn/button";
+} from "@/components/shadcn/avatar";
+import { Button } from "@/components/shadcn/button";
 import { Mail, Github, Linkedin, User } from "lucide-react";
 
 const recentlyVisited = [

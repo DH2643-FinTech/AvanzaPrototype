@@ -2,21 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
-import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { addRecentlyVisited } from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice";
-import StockView from "@/src/views/StockView/StockView";
+import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
+import { addRecentlyVisited } from "@/lib/features/recentlyVisited/recentlyVisitedSlice";
+import StockView from "@/views/StockView/StockView";
 import {
   setSearchParamName,
   setSearchParamTimeInterval,
-} from "@/src/lib/features/company/companySlice";
-import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
-import { fetchRecentCompanyReports } from "@/src/lib/features/financialReports/financialReportsSlice";
-import { Skeleton } from "@/src/components/shadcn/skeleton";
-import { Card, CardHeader } from "@/src/components/shadcn/card";
+} from "@/lib/features/company/companySlice";
+import { fetchCompanyDetails } from "@/lib/features/company/companyAPI";
+import { fetchRecentCompanyReports } from "@/lib/features/financialReports/financialReportsSlice";
+import { Skeleton } from "@/components/shadcn/skeleton";
+import { Card, CardHeader } from "@/components/shadcn/card";
 import CardContent from "@mui/material/CardContent/CardContent";
 
-import StockSkeleton from "@/src/views/StockView/StockSkeleton";
+import StockSkeleton from "@/views/StockView/StockSkeleton";
 
 
 const StockPage = () => {

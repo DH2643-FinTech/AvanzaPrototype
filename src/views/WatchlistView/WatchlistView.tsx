@@ -1,8 +1,8 @@
-// @/src/views/WatchlistView/WatchlistView.tsx
+// @/views/WatchlistView/WatchlistView.tsx
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import WatchlistTable from "@/src/components/WatchlistTable";
-import ToggleSingInSignUpForm from "@/src/components/ui/toggleSingInSignUpForm";
+import WatchlistTable from "@/components/WatchlistTable";
+import ToggleSingInSignUpForm from "@/components/ui/toggleSingInSignUpForm";
 import { signIn } from "next-auth/react";
 
 export default function WatchlistView() {

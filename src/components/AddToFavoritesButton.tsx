@@ -20,7 +20,7 @@ export default function AddToFavoritesButton(props: { stockId: string | undefine
   }, [dispatch, watchlistStocks]);
 
   const isFavorite = watchlistStocks.includes(
-    companies?.find(company => company._id === props.stockId)?.name || ""
+    companies?.find((company: { _id: string; name: string }) => company._id === props.stockId)?.name || ""
   );
 
   const toggleFavorites = async () => {

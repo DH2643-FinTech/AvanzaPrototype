@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../shadcn/input";
-import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { useAppSelector } from "@/src/lib/hooks/useAppSelector";
-import { fetchAllCompanyIds } from "@/src/lib/features/company/companyAPI";
-import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
-import { setCompanies } from "@/src/lib/features/company/companySlice";
+import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
+import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { fetchAllCompanyIds } from "@/lib/features/company/companyAPI";
+import { fetchCompanyDetails } from "@/lib/features/company/companyAPI";
+import { setCompanies } from "@/lib/features/company/companySlice";
 
 const AvanzaSearchBar2 = (props: any) => {
   const [search, setSearch] = useState("");
@@ -17,7 +17,7 @@ const AvanzaSearchBar2 = (props: any) => {
   const result = useAppSelector((state) => state.company.companiesIds);
 
   const companies =
-    result?.map((company) => ({
+    result?.map((company:any) => ({
       id: company._id,
       name: company.name,
     })) || [];
@@ -26,7 +26,7 @@ const AvanzaSearchBar2 = (props: any) => {
 
   useEffect(() => {
     if (search?.trim()) {
-      const results = companies.filter((company) =>
+      const results = companies.filter((company:any) =>
         company.name.toLowerCase().includes(search?.toLowerCase())
       );
 

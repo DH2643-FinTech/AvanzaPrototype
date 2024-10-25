@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/src/components/shadcn/button";
-import { Input } from "@/src/components/shadcn/input";
-import { Label } from "@/src/components/shadcn/label";
+import { Button } from "@/components/shadcn/button";
+import { Input } from "@/components/shadcn/input";
+import { Label } from "@/components/shadcn/label";
 import {
   Sheet,
   SheetClose,
@@ -12,7 +12,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/src/components/shadcn/sheet";
+} from "@/components/shadcn/sheet";
 
 interface SheetSidebarProps {
   side: 'left' | 'right';

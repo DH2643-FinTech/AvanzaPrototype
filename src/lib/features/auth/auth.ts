@@ -12,7 +12,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import clientPromise from "../../database/mongodb";
 import bcrypt from "bcrypt";
-import { User } from "@/interfaces";
+import { User } from "@/../interfaces";
 import { ObjectId } from "mongodb";
 
 declare module "next-auth" {

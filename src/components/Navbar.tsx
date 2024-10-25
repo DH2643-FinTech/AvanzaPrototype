@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useSession, signOut, signIn } from "next-auth/react";
 import { Bell, ChevronDown } from "lucide-react";
-import { Button } from "@/src/components/shadcn/button";
+import { Button } from "@/components/shadcn/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +10,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/src/components/shadcn/dropdown-menu";
-import AvanzaSearchBar from "@/src/components/ui/AvanzaSearchBar2";
+} from "@/components/shadcn/dropdown-menu";
+import AvanzaSearchBar from "@/components/ui/AvanzaSearchBar2";
 import ToggleSingInSignUpForm from "./ui/toggleSingInSignUpForm";
 import { useAppDispatch } from "../lib/hooks/useAppDispatch";
 import { use, useEffect } from "react";
@@ -35,7 +35,7 @@ const Navbar = (props: any) => {
   const dispatch = useAppDispatch();
   const handleSearchParam = (searchParam: any) => {
     dispatch(setSearchParamName(searchParam));
-    const id = companyIds.find((company) => company.name === searchParam)?._id;
+    const id = companyIds.find((company: { name: string; _id: string }) => company.name === searchParam)?._id;
     router.push(`/stock/${id}`);
   };
 

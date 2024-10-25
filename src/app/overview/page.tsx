@@ -1,35 +1,37 @@
 // src/app/overview/page.tsx
 'use client';
 import React, { useEffect } from 'react';
-import { useAppDispatch } from "@/src/lib/hooks/useAppDispatch";
-import { fetchHighlightedStocks } from "@/src/lib/features/highlightedStocks/highlightedStocksSlice";
-import { fetchFinancialReports, fetchRecentCompanyReports } from "@/src/lib/features/financialReports/financialReportsSlice";
-import OverviewView from '@/src/views/OverviewView/OverviewView';
-import { useAppSelector } from '@/src/lib/hooks/useAppSelector';
-import { setSearchParamName } from '@/src/lib/features/company/companySlice';
+import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
+import { fetchHighlightedStocks } from "@/lib/features/highlightedStocks/highlightedStocksSlice";
+import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/features/financialReports/financialReportsSlice";
+// import OverviewView from '@/app/overview/overviewView';
+import { useAppSelector } from '@/lib/hooks/useAppSelector';
+import { setSearchParamName } from '@/lib/features/company/companySlice';
 import { useRouter } from 'next/navigation';
+import OverviewPresenter from './overviewPresenter';
 
 export default function OverviewPage() {
 
-    const dispatch = useAppDispatch();
-    const router = useRouter();
+    // const dispatch = useAppDispatch();
+    // const router = useRouter();
 
-    const handleNavigateToStockPage = (stockId:number) =>{
-      router.push(`/stock/${stockId}`);
-      dispatch(fetchRecentCompanyReports(stockId));
-    }
+    // const handleNavigateToStockPage = (stockId:number) =>{
+    //   router.push(`/stock/${stockId}`);
+    //   dispatch(fetchRecentCompanyReports(stockId));
+    // }
 
-    const handleSetSearchParam = (searchParam: string) => {
-        dispatch(setSearchParamName(searchParam));
-    };
+    // const handleSetSearchParam = (searchParam: string) => {
+    //     dispatch(setSearchParamName(searchParam));
+    // };
 
-    const financialReports = useAppSelector((state) => state.financialReports);
+    // const financialReports = useAppSelector((state) => state.financialReports);
 
-    useEffect(() => {
-        //TODO: highlighted stocks are not implemented yet - server needs to be able to find highlighted stocks. Maybe in future we can use this.
-        // dispatch(fetchHighlightedStocks());
-        dispatch(fetchFinancialReports({ random: false, recent: true, numberOfYears: 1, limit: 50 }));
-    }, []);
+    // useEffect(() => {
+    //     //TODO: highlighted stocks are not implemented yet - server needs to be able to find highlighted stocks. Maybe in future we can use this.
+    //     // dispatch(fetchHighlightedStocks());
+    //     dispatch(fetchFinancialReports({ random: false, recent: true, numberOfYears: 1, limit: 50 }));
+    // }, []);
 
-    return <OverviewView navigateToStockPage ={handleNavigateToStockPage} setSearchParam={handleSetSearchParam} reports={financialReports}/>;
+    // return <OverviewView navigateToStockPage ={handleNavigateToStockPage} setSearchParam={handleSetSearchParam} reports={financialReports}/>;
+    return <OverviewPresenter />;
 }

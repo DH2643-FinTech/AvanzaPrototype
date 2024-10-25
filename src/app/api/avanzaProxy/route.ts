@@ -2,12 +2,12 @@
 import { NextResponse } from "next/server";
 import {
   avanzaUrlBuilderStockPriceTimePeriod,
-} from "@/src/lib/features/company/urls";
+} from "@/lib/features/company/urls";
 import {
   options,
   detailOptions,
   detailUrlBuilder,
-} from "@/src/lib/features/company/urls";
+} from "@/lib/features/company/urls";
 
 export async function GET(req: Request) {
   const companyIdsHeader = req.headers.get("companyInfo");

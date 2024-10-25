@@ -1,5 +1,5 @@
-import { CompanyID } from "@/src/app/api/companies/dataTypes";
-import { Company as otherCompany } from "@/interfaces";
+import { CompanyID } from "@/app/api/companies/dataTypes";
+import { Company as otherCompany } from "@/../interfaces";
 
 
 //TODO Fix with other company type

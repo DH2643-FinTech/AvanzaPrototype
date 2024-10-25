@@ -1,9 +1,9 @@
 // app/company/[id]/page.tsx
 
-import { Company } from "@/interfaces";
-import AddToFavoritesButton from "@/src/components/AddToFavoritesButton";
-import { getCachedCompany } from "@/src/lib/api/cachedCalls";
-import clientPromise from "@/src/lib/database/mongodb";
+import { Company } from "@/../interfaces";
+import AddToFavoritesButton from "@/components/AddToFavoritesButton";
+import { getCachedCompany } from "@/lib/api/cachedCalls";
+import clientPromise from "@/lib/database/mongodb";
 
 interface CompanyPageProps {
   params: { id: string };

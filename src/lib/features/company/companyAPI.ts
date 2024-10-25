@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { avanzaUrlBuilder, options, serverUrlBuilderCompanies } from "./urls";
 import { avanzaData, Company, Stock, StockInfo } from "./companyTypes";
-import { CompanyID } from "@/src/app/api/companies/dataTypes";
+import { CompanyID } from "@/app/api/companies/dataTypes";
 
 interface FetchCompanyDetailsParams {
   name: string;
