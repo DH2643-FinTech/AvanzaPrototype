@@ -44,7 +44,7 @@ const StockPage = () => {
       dispatch(
         addRecentlyVisited({
           id: id as string,
-          name: companyData.name,
+          name: currentStock?.name,
           price: currentStock.ohlc[currentStock.ohlc.length - 1].close,
         })
       );
