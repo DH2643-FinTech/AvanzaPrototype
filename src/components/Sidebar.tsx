@@ -1,16 +1,29 @@
 "use client"
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { TrendingUp, Eye, Info } from 'lucide-react'
 import { Button } from "@/src/components/shadcn/button"
 import { useAppSelector } from "@/src/lib/hooks/useAppSelector"
 import { selectRecentlyVisited } from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice"
+import { useAppDispatch } from '../lib/store/store'
+import { fetchRecentCompanyReports } from '../lib/features/financialReports/financialReportsSlice'
+import { setSearchParamName } from '../lib/features/company/companySlice'
 
 const Sidebar = () => {
     const pathname = usePathname()
     const recentlyVisited = useAppSelector(selectRecentlyVisited)
-    const isActive = (path: string) => pathname === path
+    const isActive = (path: string) => pathname === path;
+
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+
+    const navigateToStock = ({stockId, searchParam}: {stockId:number, searchParam:string}) => {
+            router.push(`/stock/${stockId}`);
+            dispatch(fetchRecentCompanyReports(stockId));
+              dispatch(setSearchParamName(searchParam));
+          
+    }
 
     return (
         <div className="w-1/5 border-r p-4 overflow-auto flex-shrink-0">
@@ -51,14 +64,14 @@ const Sidebar = () => {
                 <h2 className="text-lg font-semibold mb-2">Recently Visited</h2>
                 <div className="space-y-2">
                     {recentlyVisited.map((stock) => (
-                        <Button key={stock.id} variant="ghost" className="w-full justify-between text-left" asChild>
-                            <Link href={`/stock/${stock.id}`} className="flex items-center px-4 py-2">
+                        <Button onClick={() => navigateToStock({stockId: parseInt(stock.id), searchParam: stock.name})} key={stock.id} variant="ghost" className="w-full justify-between text-left" >
+                            {/* <Link href={`/stock/${stock.id}`} className="flex items-center px-4 py-2"> */}
                                 <div className="flex items-center">
                                     <TrendingUp className="mr-2 h-4 w-4" />
-                                    {stock.name}
+                                    {stock.name.length > 15 ? `${stock.name.slice(0, 20)} ...` : stock.name}
                                 </div>
                                 <span className="text-green-500">${stock.price.toFixed(2)}</span>
-                            </Link>
+                            {/* </Link> */}
                         </Button>
                     ))}
                 </div>

@@ -26,7 +26,8 @@ export default function OverviewPage() {
     const financialReports = useAppSelector((state) => state.financialReports);
 
     useEffect(() => {
-        dispatch(fetchHighlightedStocks());
+        //TODO: highlighted stocks are not implemented yet - server needs to be able to find highlighted stocks. Maybe in future we can use this.
+        // dispatch(fetchHighlightedStocks());
         dispatch(fetchFinancialReports({ random: false, recent: true, numberOfYears: 1, limit: 50 }));
     }, []);
 

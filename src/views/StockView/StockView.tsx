@@ -35,10 +35,10 @@ const StockView = (props: any) => {
           <div className="flex my-6 items-center justify-between">
             {/* <h1 className="text-3xl border border-red-500 font-bold mr-3">{}</h1> */}
             <Badge variant="secondary" className="text-lg py-1">
-              {companyData?.company?.searchParams?.name}
+              {currentStock?.name}
             </Badge>
             <Badge variant="secondary" className="text-lg py-1">
-              {companyData?.company?.companyId}
+              {currentStock?.id}
             </Badge>
           </div>
 
