@@ -90,8 +90,8 @@ const AboutUsView = () => {
 
           <h2 className="text-2xl font-semibold mb-4">Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {teamMembers.map((member) => (
-              <Card key={member.name}>
+            {teamMembers.map((member, index:number) => (
+              <Card key={'about-us' + index + member.name}>
                 <CardContent className="flex items-center p-6">
                   <Avatar className="h-24 w-24 mr-6">
                     <AvatarFallback>

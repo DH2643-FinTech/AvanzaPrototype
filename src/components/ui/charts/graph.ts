@@ -237,7 +237,7 @@ export const renderGraph = (stockData: any, report: any) => {
     const d0 = data[i - 1];
     const d1 = data[i];
 
-    const d = +x0 - +d0.Date > +d1.Date - +x0 ? d1 : d0;
+    const d = +x0 - +d0?.Date > +d1?.Date - +x0 ? d1 : d0;
 
     const xPos = x(d.Date);
     const yPos = y(d.Close);

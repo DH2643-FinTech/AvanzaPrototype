@@ -53,9 +53,9 @@ const RecentFinancialReports = (props: any) => {
     ))
   ) : (
     <div className="space-y-4">
-      {currentReports.map((report: any) => (
+      {currentReports.map((report: any, index:number) => (
         <Card
-          key={report.id}
+          key={'rep' +index}
           className="hover:bg-gray-50 transition-colors duration-200"
         >
           <CardContent onClick={()=>handleRecentReport(report)} className="p-4">

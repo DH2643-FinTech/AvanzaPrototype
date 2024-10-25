@@ -59,7 +59,7 @@ export const SignUpComp = () => {
   
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
       } else {
         console.log("error");
       }

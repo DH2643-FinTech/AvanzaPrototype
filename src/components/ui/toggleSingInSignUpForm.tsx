@@ -42,7 +42,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				body: JSON.stringify({ email }), // send email to API
 			});
 	
-			console.log("Verification response:", response);
+			// console.log("Verification response:", response);
 			if (response.status === 200) {
 				const signInResponse = await signIn("credentials", {
 					email: email,
@@ -53,19 +53,19 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				if (signInResponse && !signInResponse.error) {
 					setEmail("");
 					setPassword("");
-					console.log("Login successful:", signInResponse);
+					// console.log("Login successful:", signInResponse);
 				} else {
 					setStatus('Invalid email or password.');
 				}
 			} else if (response.status === 201) {
 				setStatus('You are not a verified user, please signup again!');
-				console.log('Verification failed:', status);
+				// console.log('Verification failed:', status);
 			} else {
 				setStatus('An error occurred while verifying your account.');
-				console.log('Unexpected verification response:', response.status);
+				// console.log('Unexpected verification response:', response.status);
 			}
 		} catch (error) {
-			console.error("Error during sign-in process:", error);
+			// console.error("Error during sign-in process:", error);
 			setStatus('An error occurred during the sign-in process. Please try again.');
 		}
 	};
@@ -113,11 +113,14 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
 	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
 
+
+	// SIGN UP PROCESS
+
 	const handleSignUpWithCredentials = async (e: any) => {
 		e.preventDefault();
-		console.log("Sign up with credentials");
+		// console.log("Sign up with credentials");
 		try {
-			console.log("Sign up with credentials");
+			// console.log("Sign up with credentials");
 			const res = await fetch("/api/register-verify", {
 				method: "POST",
 				body: JSON.stringify({
@@ -135,7 +138,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				return;
 			}
 			const {verificationLink} = await res.json();
-			console.log(verificationLink);
+			// console.log(verificationLink);
 
 			const templateParams = {
 				to_email: email,
@@ -154,9 +157,9 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	};
 
 	const handleSignUpWithGoogle = () => {
-		console.log("Sign up with Google");
+		// console.log("Sign up with Google");
 		const response = signIn("google");
-		console.log("success", response);
+		// console.log("success", response);
 	};
 
 	const handleVerifyCode = async () => {
@@ -193,7 +196,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 const handleResendCode = async () => {
     try {
 		try {
-			console.log("Sign up with credentials");
+			// console.log("Sign up with credentials");
 			const res = await fetch("/api/register-verify", {
 				method: "POST",
 				body: JSON.stringify({
@@ -207,11 +210,11 @@ const handleResendCode = async () => {
 			emailjs.init('9Q600vKX9f68s1yZd');
 			if (!res.ok) {
 				setStatus('Sign up failed. Please check your details and try again.');
-				console.log('Error: ', res.statusText);
+				// console.log('Error: ', res.statusText);
 				return;
 			}
 			const {verificationLink} = await res.json();
-			console.log(verificationLink);
+			// console.log(verificationLink);
 
 			const templateParams = {
 				to_email: email,

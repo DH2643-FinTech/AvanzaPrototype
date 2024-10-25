@@ -15,7 +15,7 @@ export const POST = async (request: Request) => {
     const db = client.db('database');
 
     const existingUser = await db.collection('users').findOne({ email });
-    console.log(existingUser);
+    // console.log(existingUser);
    
     const hashedPassword = await bcrypt.hash(password, 10);
     const verificationToken = Math.floor(100000 + Math.random() * 900000);

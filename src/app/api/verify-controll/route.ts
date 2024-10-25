@@ -10,7 +10,7 @@ export const POST = async (request: Request ) => {
         const { email } = await request.json();
         
         //const email = params.email; // Accessing the dynamic route parameter
-        console.log(email); // Log the email to ensure it's captured
+       // console.log(email); // Log the email to ensure it's captured
 
         if (!email) {
             return NextResponse.json(
@@ -35,7 +35,7 @@ export const POST = async (request: Request ) => {
             );
         }
     } catch (error) {
-        console.error(error);
+       // console.error(error);
         return NextResponse.json(
             { error: "Failed to handle sign-In" },
             { status: 500 }
