@@ -12,32 +12,37 @@ import { Badge } from "@/src/components/shadcn/badge";
 import NewStockGraph from "@/src/components/ui/charts/newStockGraph";
 
 const StockView = (props: any) => {
-
-  const { companyData, currentStock, loading, error } = props.company;
+  const { companyData, currentStock, loading, error, companiesIds } = props.company;
+  
   const latestPrice = currentStock.ohlc[currentStock.ohlc.length - 1].close;
   const previousClose =
     currentStock.ohlc[currentStock.ohlc.length - 2]?.close || latestPrice;
   const change = latestPrice - previousClose;
   const changePercentage = (change / previousClose) * 100;
 
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!companyData || !currentStock) return <div>No data available</div>;
 
   return (
-    <div className="flex flex-col h-screen bg-white">
-      <div className="flex flex-1 overflow-hidden">
-        <main className="flex-1 p-6 overflow-auto">
-                <NewStockGraph currentStock={currentStock} setStockTimeInterval = {props.setStockTimeInterval} />
-          <div className="flex items-center mb-6">
-            <h1 className="text-3xl font-bold mr-3">{companyData.name}</h1>
+    <div className="flex flex-1 overflow-hidden w-4/5 h-auto  bg-white">
+      {/* <div className="flex flex-1 overflow-hidden"> */}
+        <main className="flex-1 p-6 ">
+          <NewStockGraph
+            currentStock={currentStock}
+            setStockTimeInterval={props.setStockTimeInterval}
+            />
+          <div className="flex my-6 items-center justify-between">
+            {/* <h1 className="text-3xl border border-red-500 font-bold mr-3">{}</h1> */}
             <Badge variant="secondary" className="text-lg py-1">
-              {companyData.id}
+              {companyData?.company?.searchParams?.name}
+            </Badge>
+            <Badge variant="secondary" className="text-lg py-1">
+              {companyData?.company?.companyId}
             </Badge>
           </div>
 
-          <Card className="mb-6">
+          <Card className="mb-6 ">
             <CardHeader>
               <CardTitle>Stock Performance</CardTitle>
             </CardHeader>
@@ -53,11 +58,11 @@ const StockView = (props: any) => {
               </div>
             </CardContent>
           </Card>
-          <StockInfo company = {props.company} />
+          <StockInfo company={props.company} />
           <StockRecentReports reports={props.reports} />
         </main>
       </div>
-    </div>
+    // </div>
   );
 };
 

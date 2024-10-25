@@ -1,6 +1,6 @@
 "use client";
 import { format, set } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { CalendarDays, Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/src/lib/utils/utils";
 import { Button } from "@/src/components/shadcn/button";
@@ -73,7 +73,7 @@ export const DatePickerComp = (props: any) => {
     <div className="">
       <Popover>
         <PopoverTrigger>
-          <Button>Open</Button>
+          <CalendarDays className=" h-10 w-10"/>
         </PopoverTrigger>
         <PopoverContent className="relative top-[20px] left-[60px]">
           <div className="relative">

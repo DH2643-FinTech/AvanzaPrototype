@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 
 export const renderGraph = (stockData: any, report: any) => {
-  const margin = { top: 70, right: 60, bottom: 50, left: 0 };
-  const width = 1200 - margin.left - margin.right;
-  const height = 800 - margin.top - margin.bottom;
+  const margin = { top: 70, right: 40, bottom: 50, left: 40 };
+  const width = 1000 - margin.left - margin.right;
+  const height = 600 - margin.top - margin.bottom;
   if (!stockData || stockData.length === 0) return;
 
   const {
@@ -98,7 +98,7 @@ export const renderGraph = (stockData: any, report: any) => {
   );
   y.domain([
     0,
-    ((d3.max(data, (d: { High: number }) => +d.High) ?? 0) + 1) * 2,
+    ((d3.max(data, (d: { High: number }) => +d.High) ?? 0) + 1) * 1.2,
   ]);
 
   const timeRange = Math.ceil(
@@ -262,16 +262,16 @@ export const renderGraph = (stockData: any, report: any) => {
     tooltip
       .style("display", "block")
       .style("position", "absolute")
-      .style("left", `${width + 270}px`)
-      .style("top", `${yPos + 300}px`)
+      .style("left", `${width + 400}px`)
+      .style("top", `${yPos + 200}px`)
       .style("border", `2px solid red`)
       .html(`$${d.Close !== undefined ? d.Close.toFixed(2) : "N/A"}`);
 
     tooltipRawDate
       .style("display", "block")
       .style("position", "absolute")
-      .style("left", `${xPos + 220}px`)
-      .style("top", `${height + 320}px`)
+      .style("left", `${xPos + 300}px`)
+      .style("top", `${height + 230}px`)
       .style("border", `2px solid red`)
       .html(
         `${d.Date !== undefined ? d.Date.toISOString().slice(0, 10) : "N/A"}`

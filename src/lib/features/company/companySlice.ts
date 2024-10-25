@@ -81,6 +81,7 @@ const companySlice = createSlice({
         } else {
           state.currentStock = action.payload.stockData;
           state.companyData = action.payload.companyData;
+
         }
       }
     );

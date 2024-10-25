@@ -32,7 +32,7 @@ const RecentStockReports = (props: any) => {
                 <Badge
                   key={index}
                   variant="secondary"
-                  className="flex items-center w-full justify-start p-2"
+                  className="flex items-center justify-start p-2"
                 >
                   <FileText className="mr-2 h-4 w-4" />
                   {report.eventTitle}

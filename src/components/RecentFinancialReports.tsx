@@ -43,11 +43,11 @@ const RecentFinancialReports = (props: any) => {
 
   return loading ? (
     Array.from({ length: reportsPerPage }).map(() => (
-      <div key={crypto.randomUUID()} className="flex flex-col space-y-3">
-        <Skeleton className="h-[125px] w-[550px] rounded-xl" />
+      <div key={crypto.randomUUID()} className="flex my-4 flex-col space-y-3">
+        <Skeleton className="h-[125px]  rounded-xl" />
         <div className="space-y-2">
-          <Skeleton className="h-4 w-[550px]" />
-          <Skeleton className="h-4 w-[500px]" />
+          <Skeleton className="h-4 " />
+          <Skeleton className="h-4 " />
         </div>
       </div>
     ))

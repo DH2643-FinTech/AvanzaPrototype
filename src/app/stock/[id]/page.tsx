@@ -12,6 +12,12 @@ import {
 } from "@/src/lib/features/company/companySlice";
 import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
 import { fetchRecentCompanyReports } from "@/src/lib/features/financialReports/financialReportsSlice";
+import { Skeleton } from "@/src/components/shadcn/skeleton";
+import { Card, CardHeader } from "@/src/components/shadcn/card";
+import CardContent from "@mui/material/CardContent/CardContent";
+
+import StockSkeleton from "@/src/views/StockView/StockSkeleton";
+
 
 const StockPage = () => {
   const { id } = useParams();
@@ -71,7 +77,7 @@ const StockPage = () => {
   }, []);
 
   return firstTimeLoading ? (
-    <div>Loading...</div>
+    <StockSkeleton />
   ) : (
     <StockView
       reports={reports}
