@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../shadcn/select";
-import { renderGraph } from "./graph";
+import { renderGraph } from "./d3Graph";
 import AddToFavoritesButton from "../../AddToFavoritesButton";
 import { useSession } from "next-auth/react";
 const NewStockGraph = (props: any) => {
