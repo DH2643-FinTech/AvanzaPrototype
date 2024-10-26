@@ -1,12 +1,12 @@
 "use client";
-import { useSession, signOut, signIn } from "next-auth/react";
-import { useAppDispatch, useAppSelector } from "../../lib/model/store";
+import { useSession, signIn } from "next-auth/react";
+import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 import { useEffect, useState } from "react";
-import { fetchAllCompanyIds } from "../../lib/model/slices/company/companyAPI";
+import { fetchAllCompanyIds } from "@/lib/model/slices/company/companyAPI";
 import {
   setCompanies,
   setSearchParamName,
-} from "../../lib/model/slices/company/companySlice";
+} from "@/lib/model/slices/company/companySlice";
 import { useRouter } from "next/navigation";
 import NavbarView from "./navbarView";
 import {

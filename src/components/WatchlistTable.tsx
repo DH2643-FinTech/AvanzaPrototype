@@ -39,47 +39,81 @@ type SortField =
   | "totalNumberOfShares";
 type SortOrder = "asc" | "desc";
 
-export default function WatchlistTable() {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-  const companies = useAppSelector((state) => state.company.companies);
-  const watchlistDetails = useAppSelector(
-    (state) => state.watchlist.watchlistDetails
-  );
-  const currentStock = useAppSelector((state) => state.company.currentStock);
+export default function WatchlistTable(props: any) {
 
-  const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortField, setSortField] = useState<SortField>("_id");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  //#region DEAD CODE
 
-  useEffect(() => {
-    dispatch(fetchWatchlist());
-  }, [dispatch]);
+  // const router = useRouter();
+  // const dispatch = useAppDispatch();
+  // const companies = useAppSelector((state) => state.company.companies);
+
+
+  // const watchlistDetails = useAppSelector(
+  //   (state) => state.watchlist.watchlistDetails
+  // );
+  // const currentStock = useAppSelector((state) => state.company.currentStock);
+
+
+  // const [expandedRow, setExpandedRow] = useState<string | null>(null);
+  // const [searchTerm, setSearchTerm] = useState("");
+  // const [sortField, setSortField] = useState<SortField>("_id");
+  // const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const rowsPerPage = 10;
+
+  // useEffect(() => {
+  //   dispatch(fetchWatchlist());
+  // }, [dispatch]);
+
+  // const handleRemoveFromWatchlist = (stockId: string) => {
+  //   dispatch(removeFromWatchlist(stockId));
+  // };
+
+
+
+  // const toggleRow = (id: string) => {
+  //   setExpandedRow(expandedRow === id ? null : id);
+  // };
+
+
+
+  // const toggleSort = (field: SortField) => {
+  //   if (field === sortField) {
+  //     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  //   } else {
+  //     setSortField(field);
+  //     setSortOrder("asc");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   setCurrentPage(1);
+  // }, [searchTerm]);
+
+//# endregion
+
+  const {
+    watchlistDetails,
+    currentStock,
+    companies,
+    expandedRow,
+    toggleRow,
+    searchTerm,
+    setSearchTerm,
+    sortField,
+    sortOrder,
+    toggleSort,
+    currentPage,
+    setCurrentPage,
+    rowsPerPage,
+    handleRemoveFromWatchlist,
+    router,
+  } = props;
 
   const watchlistCompanies = useMemo(() => {
     return watchlistDetails || companies;
     //return companies.filter(company => watchlistStocks.includes(company._id));
   }, [companies, watchlistDetails]);
-
-  const toggleRow = (id: string) => {
-    setExpandedRow(expandedRow === id ? null : id);
-  };
-
-  const toggleSort = (field: SortField) => {
-    if (field === sortField) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortOrder("asc");
-    }
-  };
-
-  const handleRemoveFromWatchlist = (stockId: string) => {
-    dispatch(removeFromWatchlist(stockId));
-  };
 
   const filteredAndSortedCompanies = useMemo(() => {
     return watchlistCompanies
@@ -97,6 +131,18 @@ export default function WatchlistTable() {
       });
   }, [watchlistCompanies, searchTerm, sortField, sortOrder]);
 
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredAndSortedCompanies.length / rowsPerPage)
+  );
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+
   const paginatedCompanies = useMemo(() => {
     const startIndex = (currentPage - 1) * rowsPerPage;
     return filteredAndSortedCompanies
@@ -107,20 +153,8 @@ export default function WatchlistTable() {
       );
   }, [filteredAndSortedCompanies, currentPage]);
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredAndSortedCompanies.length / rowsPerPage)
-  );
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm]);
 
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    }
-  }, [currentPage, totalPages]);
 
   const SortIcon = ({ field }: { field: SortField }) => (
     <span className="ml-2">
@@ -323,7 +357,7 @@ export default function WatchlistTable() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            onClick={() => setCurrentPage((prev: number) => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -335,7 +369,7 @@ export default function WatchlistTable() {
             variant="outline"
             size="sm"
             onClick={() =>
-              setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+              setCurrentPage((prev: number) => Math.min(totalPages, prev + 1))
             }
             disabled={currentPage === totalPages}
           >

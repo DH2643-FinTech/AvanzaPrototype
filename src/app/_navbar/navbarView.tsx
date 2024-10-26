@@ -13,14 +13,16 @@ import {
 } from "@/components/shadcn/dropdown-menu";
 import AvanzaSearchBar from "@/components/ui/avanzaSearchBar";
 import ToggleSingInSignUpForm from "../../components/ui/toggleSingInSignUpForm";
-import { useAppDispatch, useAppSelector } from "../../lib/model/store";
-import { useEffect } from "react";
-import { fetchAllCompanyIds } from "../../lib/model/slices/company/companyAPI";
-import {
-  setCompanies,
-  setSearchParamName,
-} from "../../lib/model/slices/company/companySlice";
-import { useRouter } from "next/navigation";
+
+// import { useAppDispatch, useAppSelector } from "../../lib/model/store";
+// import { useEffect } from "react";
+// import { fetchAllCompanyIds } from "../../lib/model/slices/company/companyAPI";
+// import {
+//   setCompanies,
+//   setSearchParamName,
+// } from "../../lib/model/slices/company/companySlice";
+// import { useRouter } from "next/navigation";
+
 import ProfileAvatar from "../../components/ProfileAvatar";
 
 const Navbar = (props: any) => {

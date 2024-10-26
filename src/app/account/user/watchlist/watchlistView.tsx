@@ -2,34 +2,8 @@
 import WatchlistTable from "@/components/WatchlistTable";
 import ToggleSingInSignUpForm from "@/components/ui/toggleSingInSignUpForm";
 
-// const RenderSignIn = ({
-// 	handleSignIn,
-// 	handleSignUp,
-//   }: {
-// 	handleSignIn: any;
-// 	handleSignUp: any;
-//   }) => (
-// 	<div className="text-center py-10">
-// 	  <h2 className="text-2xl font-bold mb-4">
-// 		Please sign in to view your watchlist
-// 	  </h2>
-// 	  {/* <Button onClick={() => router.push('/sign-in')}>Sign In</Button> */}
-// 	  <div className="flex w-full justify-center justify-items-center">
-// 		<ToggleSingInSignUpForm signIn={handleSignIn} signUp={handleSignUp} />
-// 	  </div>
-// 	</div>
-//   );
-
 const WatchlistView = (props: any) => {
-//   const { status, signUp, signIn } = props;
   const { status } = props;
-//   const handleSignIn = async (credProps: any) => {
-//     return signIn(credProps);
-//   };
-
-//   const handleSignUp = async (credProps: any) => {
-//     return signUp(credProps);
-//   };
 
   return (
     <div className="flex flex-col h-screen bg-white w-full">
@@ -46,7 +20,7 @@ const WatchlistView = (props: any) => {
             //   handleSignUp={handleSignUp}
             // />
           )}
-          {status === "authenticated" && <WatchlistTable />}
+          {status === "authenticated" && <WatchlistTable {...props.watchlistTableProps} />}
         </main>
       </div>
     </div>
