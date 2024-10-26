@@ -1,4 +1,4 @@
-import { Company } from "@/interfaces";
+import { Company } from "@/../interfaces";
 import { Collection } from "mongodb";
 import { avanzaFetchGeneralInfo, avanzaFetchPrice } from "./avanzaCalls";
 

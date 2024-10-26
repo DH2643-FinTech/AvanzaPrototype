@@ -18,7 +18,7 @@ import {
   registerNewUser,
   verificationController,
   verifyUser,
-} from "@/lib/services/account/accountAPI";
+} from "@/lib/api/accountAPI";
 import { sendPasswordResetEmail } from "@/lib/services/email_service";
 
 interface Props {

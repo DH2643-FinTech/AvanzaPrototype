@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 import {
   fetchWatchlist,
   removeFromWatchlist,
-  selectWatchlistStocks,
 } from "@/lib/model/slices/watchlistSlice";
 import {
   Table,
@@ -43,7 +42,6 @@ type SortOrder = "asc" | "desc";
 export default function WatchlistTable() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const watchlistStocks = useAppSelector(selectWatchlistStocks);
   const companies = useAppSelector((state) => state.company.companies);
   const watchlistDetails = useAppSelector(
     (state) => state.watchlist.watchlistDetails

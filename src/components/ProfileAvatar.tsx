@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Dialog, DialogOverlay, DialogContent, DialogTrigger, DialogHeader, DialogDescription, DialogTitle, DialogFooter } from '@/components/shadcn/dialog';
+import { Dialog,  DialogContent, DialogTrigger, DialogHeader, DialogDescription, DialogTitle, DialogFooter } from '@/components/shadcn/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from './shadcn/avatar';
-import { Label } from './shadcn/label';
 import { Input } from './shadcn/input';
 import { Button } from './shadcn/button';
 import { useSession } from 'next-auth/react';

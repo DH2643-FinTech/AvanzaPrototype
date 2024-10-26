@@ -1,10 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
-import StockCarousel from "@/components/StockCarousel";
+import React from "react";
 import RecentFinancialReports from "@/components/RecentFinancialReports";
-import NewStockGraph from "@/components/ui/charts/newStockGraph";
-import { useAppDispatch, useAppSelector } from "@/lib/model/store";
-import { fetchFinancialReports } from "@/lib/model/slices/financialReportsSlice";
 
 const OverviewView = (props:any) => {
 

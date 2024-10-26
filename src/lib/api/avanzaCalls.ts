@@ -1,4 +1,4 @@
-import { AvanzaCompanyDetailsResponse, AvanzaCompanyPriceResponse } from "@/interfaces";
+import { AvanzaCompanyDetailsResponse, AvanzaCompanyPriceResponse } from "@/../interfaces";
 
 const avanzaBaseUrl = 'https://www.avanza.se/_api';
 

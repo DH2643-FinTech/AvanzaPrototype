@@ -1,11 +1,8 @@
 // components/LoginButton.js
 "use client";
-import { signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 import * as React from "react";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";

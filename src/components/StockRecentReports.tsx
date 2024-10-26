@@ -1,4 +1,3 @@
-import { useAppSelector } from "@/lib/model/store";
 import {
   Card,
   CardContent,
@@ -10,7 +9,7 @@ import { FileText } from "lucide-react";
 
 const RecentStockReports = (props: any) => {
 
-  const { reports: recentReports, loading, error } = props.reports;
+  const { reports: recentReports} = props.reports;
   if (!recentReports) return null;
 
   return (

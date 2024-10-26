@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "./shadcn/button";
-import { addToWatchlist, fetchWatchlist, removeFromWatchlist, selectWatchlistStocks } from "../lib/model/slices/watchlistSlice";
+import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "../lib/model/slices/watchlistSlice";
 import { useAppDispatch,useAppSelector } from "../lib/model/store";
 import { Eye, EyeOff } from "lucide-react";
 

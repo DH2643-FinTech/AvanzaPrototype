@@ -4,7 +4,7 @@
  * IT IS NOT USED YET
  */
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useSearchParams and useRouter
 
 const PasswordReset = () => {

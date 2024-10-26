@@ -1,6 +1,5 @@
 // /pages/api/verify-controll/[email].ts
 
-import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import clientPromise from "../../../lib/integeration/mongodb";
 

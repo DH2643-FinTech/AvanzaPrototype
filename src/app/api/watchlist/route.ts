@@ -2,7 +2,6 @@ import { Company } from "@/../interfaces";
 import { getCachedCompany } from "@/lib/api/cachedCalls";
 import clientPromise from "@/lib/integeration/mongodb";
 import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
 import { NextResponse } from "next/server";
 
 //Watchlist route
