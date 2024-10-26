@@ -1,7 +1,7 @@
 // SidebarPresenter.types.ts
 
 import { Session } from "next-auth";
-import { RecentlyVisitedStock } from "@/lib/model/slices/recentlyVisitedSlice";
+import { RecentlyVisitedStock } from "@/lib/model/slices/recently_visited/recentlyVisitedSlice";
 
 export interface SidebarProps {
   pathname: string;

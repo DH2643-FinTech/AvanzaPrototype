@@ -5,7 +5,7 @@ import OverviewView from './overviewView';
 import { useRouter } from 'next/navigation';
 import { useAppSelector, useAppDispatch } from '@/lib/model/store';
 import { setSearchParamName } from '@/lib/model/slices/company/companySlice';
-import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/model/slices/financialReportsSlice";
+import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/model/slices/financialReport/financialReportsSlice";
 
 const OverviewPresenter = () => {
 

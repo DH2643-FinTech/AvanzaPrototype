@@ -4,11 +4,11 @@ import companyReducer, {
   setSearchParamName,
   setSearchParamTimeInterval,
 } from "@/lib/model/slices/company/companySlice";
-import { fetchCompanyDetails } from "@/lib/model/slices/company/companyAPI";
-import watchlistReducer from "@/lib/model/slices/watchlistSlice";
-import recentlyVisitedReducer from "@/lib/model/slices/recentlyVisitedSlice";
-import highlightedStocksReducer from "@/lib/model/slices/highlightedStocksSlice";
-import financialReportsReducer from "@/lib/model/slices/financialReportsSlice";
+import { fetchCompanyDetails } from "@/lib/model/slices/company/companyThunks";
+import watchlistReducer from "@/lib/model/slices/watchlist/watchlistSlice";
+import recentlyVisitedReducer from "@/lib/model/slices/recently_visited/recentlyVisitedSlice";
+import highlightedStocksReducer from "@/lib/model/slices/highlight/highlightedStocksSlice";
+import financialReportsReducer from "@/lib/model/slices/financialReport/financialReportsSlice";
 
 const listenerMiddleware = createListenerMiddleware();
 

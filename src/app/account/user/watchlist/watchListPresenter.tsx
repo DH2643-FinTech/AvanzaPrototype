@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import WatchlistView from "./watchlistView";
-import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlistSlice";
+import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlist/watchlistSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 

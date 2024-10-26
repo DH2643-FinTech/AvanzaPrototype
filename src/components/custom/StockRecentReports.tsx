@@ -6,7 +6,7 @@ import {
 } from "@/components/shadcn/card";
 import { Badge } from "@/components/shadcn/badge";
 import { FileText } from "lucide-react";
-import { FinancialReportsState } from "@/lib/model/slices/financialReportsSlice";
+import { FinancialReportsState } from "@/lib/model/slices/financialReport/financialReportsSlice";
 
 const RecentStockReports = ({reports}: {reports: FinancialReportsState} ) => {
 

@@ -3,16 +3,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch,useAppSelector } from "@/lib/model/store";
-import { addRecentlyVisited } from "@/lib/model/slices/recentlyVisitedSlice";
+import { addRecentlyVisited } from "@/lib/model/slices/recently_visited/recentlyVisitedSlice";
 import StockView from "@/app/company/stock/[id]/StockView";
 import {
   setSearchParamTimeInterval,
 } from "@/lib/model/slices/company/companySlice";
-import { fetchCompanyDetails } from "@/lib/model/slices/company/companyAPI";
-import { fetchRecentCompanyReports } from "@/lib/model/slices/financialReportsSlice";
+import { fetchCompanyDetails } from "@/lib/model/slices/company/companyThunks";
+import { fetchRecentCompanyReports } from "@/lib/model/slices/financialReport/financialReportThunks";
 import {StockSkeleton} from "./StockView";
 import { useSession } from "next-auth/react";
-import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlistSlice";
+import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlist/watchlistThunks";
 import { AddToWatchlistProps, StockGraphProps } from "./stockTypes";
 
 const StockPresenter = () => {

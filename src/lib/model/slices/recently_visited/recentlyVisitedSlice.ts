@@ -1,15 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/lib/model/store';
-
-export interface RecentlyVisitedStock {
-    id: string;
-    name: string;
-    price: number;
-}
-
-export interface RecentlyVisitedState {
-    stocks: RecentlyVisitedStock[];
-}
+import { RecentlyVisitedState, RecentlyVisitedStock } from './recentlyVisitedTypes';
 
 const initialState: RecentlyVisitedState = {
     stocks: [],

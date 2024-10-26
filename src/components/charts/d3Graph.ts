@@ -2,7 +2,7 @@ import { StockInfo } from "@/lib/model/slices/company/companyTypes";
 import {
   FinancialReportsResponse,
   FinancialReportsState,
-} from "@/lib/model/slices/financialReportsSlice";
+} from "@/lib/model/slices/financialReport/financialReportsSlice";
 import * as d3 from "d3";
 
 export const renderGraph = (

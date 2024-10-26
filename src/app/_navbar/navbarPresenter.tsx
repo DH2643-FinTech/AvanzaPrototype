@@ -2,7 +2,7 @@
 import { useSession, signIn } from "next-auth/react";
 import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 import { useEffect, useState } from "react";
-import { fetchAllCompanyIds } from "@/lib/model/slices/company/companyAPI";
+import { fetchAllCompanyIds } from "@/lib/model/slices/company/companyThunks";
 import {
   setCompanies,
   setSearchParamName,

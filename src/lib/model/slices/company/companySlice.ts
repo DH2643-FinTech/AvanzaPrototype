@@ -4,7 +4,7 @@ import {
   AvanzaData,
 } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
-import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyAPI";
+import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyThunks";
 
 const initialState: CompanyState = {
   companies: [],
