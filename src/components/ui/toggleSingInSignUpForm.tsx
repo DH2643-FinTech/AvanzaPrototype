@@ -86,7 +86,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 			}
 		} catch (error) {
 			console.error("Error during sign-in process:", error);
-			setLogInStatus('An error occurred during the sign-in process. Please try again.');
+			setLogInLogInStatus('An error occurred during the sign-in process. Please try again.');
 		}
 	};
 	
@@ -304,6 +304,7 @@ const handleResendCode = async () => {
                             Forgot your password?
                             </Link>
 						</div>
+						<p className={`text-center mt-2 text-red-600`}>{logInStatus}</p>
 						<p className={`text-center mt-2 text-red-600`}>{logInStatus}</p>
 						<DialogFooter>
 							<div className="w-full">
