@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useSession, signOut, signIn } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { Bell, ChevronDown } from "lucide-react";
 import { Button } from "@/components/shadcn/button";
 import {
@@ -13,16 +13,6 @@ import {
 } from "@/components/shadcn/dropdown-menu";
 import AvanzaSearchBar from "@/components/ui/avanzaSearchBar";
 import ToggleSingInSignUpForm from "../../components/ui/toggleSingInSignUpForm";
-
-// import { useAppDispatch, useAppSelector } from "../../lib/model/store";
-// import { useEffect } from "react";
-// import { fetchAllCompanyIds } from "../../lib/model/slices/company/companyAPI";
-// import {
-//   setCompanies,
-//   setSearchParamName,
-// } from "../../lib/model/slices/company/companySlice";
-// import { useRouter } from "next/navigation";
-
 import ProfileAvatar from "../../components/ProfileAvatar";
 
 const Navbar = (props: any) => {
@@ -83,7 +73,7 @@ const Navbar = (props: any) => {
   // }, []);
   //#endregion
 
-  const {sessionData: {data: session, status}, setSearchParam} = props;
+  const {sessionData: {data: session, status}} = props;
 
   return (
     <header className="border-b flex items-center">
@@ -97,7 +87,7 @@ const Navbar = (props: any) => {
       </div>
       <div className="flex-grow flex items-center justify-between p-4">
         <div className="flex-grow max-w-3xl">
-          <AvanzaSearchBar setSearchParam={setSearchParam} />
+          <AvanzaSearchBar {...props.searchBarProps} />
         </div>
         <div className="flex items-center">
           {status === "authenticated" ? (

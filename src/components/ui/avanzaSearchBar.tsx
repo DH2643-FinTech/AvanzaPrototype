@@ -4,64 +4,71 @@ import { Input } from "../shadcn/input";
 import { useAppSelector } from "@/lib/model/store";
 
 const AvanzaSearchBar = (props: any) => {
-  const [search, setSearch] = useState("");
-  const [showResults, setShowResults] = useState(false);
-  const [filteredResults, setFilteredResults] = useState<
-    { id: string; name: string }[]
-  >([]);
 
-  const result = useAppSelector((state) => state.company.companiesIds);
 
-  const companies =
-    result?.map((company: any) => ({
-      id: company._id,
-      name: company.name,
-    })) || [];
+  //#region DEAD CODE
 
-  useEffect(() => {
-    if (search?.trim()) {
-      const results = companies.filter((company: any) =>
-        company.name.toLowerCase().includes(search?.toLowerCase())
-      );
+  // const [search, setSearch] = useState("");
+  // const [showResults, setShowResults] = useState(false);
+  // const [filteredResults, setFilteredResults] = useState<
+  //   { id: string; name: string }[]
+  // >([]);
 
-      setFilteredResults(results);
-      setShowResults(true);
-    } else {
-      setFilteredResults([]);
-      setShowResults(false);
-    }
-  }, [search]);
+  // const result = useAppSelector((state) => state.company.companiesIds);
 
-  const handleSearch = (search: any) => {
-    // const id = companies.find((company) => company.name === search)?.id;
-    // dispatch(
-    //   fetchCompanyDetails({
-    //     name: search,
-    //     id: id,
-    //     defaultTimePeriod: true,
-    //     fromDateValid: false
-    //   })
-    // );
-    props.setSearchParam(search);
-  };
+  // const companies =
+  //   result?.map((company: any) => ({
+  //     id: company._id,
+  //     name: company.name,
+  //   })) || [];
 
-  const handleKeyDown = (e: any) => {
-    if (e.key === "Enter") {
-      setShowResults(false);
-      handleSearch(search);
-    }
-  };
+  // useEffect(() => {
+  //   if (search?.trim()) {
+  //     const results = companies.filter((company: any) =>
+  //       company.name.toLowerCase().includes(search?.toLowerCase())
+  //     );
 
-  const handleSelect = (companyName: any) => {
-    setSearch(companyName);
-    handleSearch(companyName);
-    setShowResults(false);
-  };
+  //     setFilteredResults(results);
+  //     setShowResults(true);
+  //   } else {
+  //     setFilteredResults([]);
+  //     setShowResults(false);
+  //   }
+  // }, [search]);
 
-  const handleInputChange = (e: any) => {
-    const query = e.target.value;
-    setSearch(query);
-  };
+  // const handleSearch = (search: any) => {
+  //   props.setSearchParam(search);
+  // };
+
+  // const handleKeyDown = (e: any) => {
+  //   if (e.key === "Enter") {
+  //     setShowResults(false);
+  //     handleSearch(search);
+  //   }
+  // };
+
+  // const handleSelect = (companyName: any) => {
+  //   setSearch(companyName);
+  //   handleSearch(companyName);
+  //   setShowResults(false);
+  // };
+
+  // const handleInputChange = (e: any) => {
+  //   const query = e.target.value;
+  //   setSearch(query);
+  // };
+
+  //#endregion
+
+  const {
+    search,
+    showResults,
+    filteredResults,
+    handleKeyDown,
+    handleSelect,
+    handleInputChange,
+  } = props;
+
 
   return (
     <div className="relative w-full">
@@ -77,7 +84,7 @@ const AvanzaSearchBar = (props: any) => {
       />
       {showResults && filteredResults.length > 0 && (
         <ul className="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
-          {filteredResults.map((company) => {
+          {filteredResults.map((company: { id: string; name: string }) => {
             return (
               <li
                 key={company.id}

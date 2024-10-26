@@ -18,6 +18,8 @@ import {
 import { sendPasswordResetEmail } from "@/lib/services/email_service";
 
 const NavbarPresenter = () => {
+
+  //#region LOGIN
   const router = useRouter();
   const session = useSession();
   const dispatch = useAppDispatch();
@@ -55,14 +57,6 @@ const NavbarPresenter = () => {
       dispatch(setCompanies(JSON.parse(storedCompanyIds)));
     }
   }, []);
-
-  const handleSearchParam = (searchParam: any) => {
-    dispatch(setSearchParamName(searchParam));
-    const id = companyIds.find(
-      (company: { name: string; _id: string }) => company.name === searchParam
-    )?._id;
-    router.push(`/company/stock/${id}`);
-  };
 
   const handleSignIn = async (credProps: any) => {
     try {
@@ -230,11 +224,82 @@ const NavbarPresenter = () => {
     setConfirmPassword,
   };
 
+  //#endregion
+
+  //#region SEARCHBAR 
+
+  const result = useAppSelector((state) => state.company.companiesIds);
+  const [search, setSearch] = useState("");
+  const [showResults, setShowResults] = useState(false);
+  const [filteredResults, setFilteredResults] = useState<
+    { id: string; name: string }[]
+  >([]);
+
+  const companies =
+    result?.map((company: any) => ({
+      id: company._id,
+      name: company.name,
+    })) || [];
+
+  useEffect(() => {
+    if (search?.trim()) {
+      const results = companies.filter((company: any) =>
+        company.name.toLowerCase().includes(search?.toLowerCase())
+      );
+
+      setFilteredResults(results);
+      setShowResults(true);
+    } else {
+      setFilteredResults([]);
+      setShowResults(false);
+    }
+  }, [search]);
+
+  const handleSearch = (searchParam: any) => {
+    dispatch(setSearchParamName(searchParam));
+    const id = companyIds.find(
+      (company: { name: string; _id: string }) => company.name === searchParam
+    )?._id;
+    router.push(`/company/stock/${id}`);
+  };
+
+  const handleKeyDown = (e: any) => {
+
+    if (e.key === "Enter") {
+      setShowResults(false);
+      handleSearch(search);
+    }
+  };
+
+  const handleSelect = (companyName: any) => {
+    setSearch(companyName);
+    handleSearch(companyName);
+    setShowResults(false);
+  };
+
+  const handleInputChange = (e: any) => {
+    const query = e.target.value;
+    setSearch(query);
+  };
+
+
+  const searchBarProps = {
+    search,
+    showResults,
+    filteredResults,
+    handleKeyDown,
+    handleSelect,
+    handleInputChange,
+  }
+
+  //#endregion
+
   return (
     <NavbarView
       sessionData={session}
-      setSearchParam={handleSearchParam}
+      // setSearchParam={handleSearchParam}
       loginProps={loginProps}
+      searchBarProps={searchBarProps}
     />
   );
 };

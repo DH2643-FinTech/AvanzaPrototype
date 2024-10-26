@@ -11,6 +11,8 @@ import {
 import { renderGraph } from "./d3Graph";
 import AddToFavoritesButton from "../../AddToFavoritesButton";
 import { useSession } from "next-auth/react";
+
+
 const NewStockGraph = (props: any) => {
   const { data: session, status } = useSession();
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
