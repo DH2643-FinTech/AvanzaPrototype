@@ -1,17 +1,28 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // Import useSearchParams and useRouter
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../components/shadcn/dialog";
+import { Button } from "../../components/shadcn/button";
+import { Input } from "../../components/shadcn/input";
+import { Label } from "../../components/shadcn/label";
 
 const PasswordReset = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
   const [status, setStatus] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
@@ -33,46 +44,88 @@ const PasswordReset = () => {
       }
 
       setStatus("Password reset successful!");
-      router.push("/login");
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
     } catch (error) {
       console.error("Error resetting password:", error);
-      setStatus("Failed to reset password");
+      setStatus("Failed to reset password. Please try again.");
     }
   };
 
+  useEffect(() => {
+    const handleBeforeUnload = async (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      
+      try {
+        const response = await fetch("/api/check-session");
+        if (response.ok) {
+          router.push("/");
+        } else {
+          event.returnValue = ""; // Prompt the user to confirm the tab closure
+        }
+      } catch (error) {
+        console.error("Error checking session:", error);
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [router]);
+
+  function changeDialogStatus (){
+    setIsDialogOpen(false);
+    router.push("/");
+  }
+
   return (
-    <div>
-      <h1>Reset Your Password</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          name="newPassword"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          placeholder="Enter new password"
-          required
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm new password"
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
-      {status && <p>{status}</p>}
-    </div>
+    <Dialog open={isDialogOpen} onOpenChange={changeDialogStatus} >
+      <DialogContent className="max-w-md mx-auto">
+        <DialogHeader>
+          <DialogTitle>Reset Your Password</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex flex-col space-y-2">
+            <Label htmlFor="new-password">New Password</Label>
+            <Input
+              id="new-password"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Enter new password"
+              required
+            />
+          </div>
+          <div className="flex flex-col space-y-2">
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm new password"
+              required
+            />
+          </div>
+          {status && (
+            <p className={`text-center mt-2 ${status === "Password reset successful!" ? "text-green-600" : "text-red-600"}`}>
+              {status}
+            </p>
+          )}
+          <DialogFooter>
+            <Button type="submit" className="w-full">
+              Reset Password
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-const PasswordResetPage = () => {
-  return (
-    <Suspense>
-      <PasswordReset />
-    </Suspense>
-  );
-};
-
-export default PasswordResetPage;
+export default function PasswordResetPage() {
+  return <PasswordReset />;
+}
