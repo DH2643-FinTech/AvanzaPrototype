@@ -39,7 +39,7 @@ const StockPresenter = () => {
     if (!watchlistStocks.length) {
       dispatch(fetchWatchlist());
     }
-  }, [watchlistStocks]);
+  }, [watchlistStocks, dispatch]);
 
   const isFavorite = watchlistStocks.includes(
     companies?.find((company: { _id: string; name: string }) => company._id === stockId)?.name || ""
@@ -118,7 +118,7 @@ const StockPresenter = () => {
       setFirstTimeLoading(false);
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return firstTimeLoading ? (
     <StockSkeleton />

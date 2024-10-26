@@ -1,5 +1,5 @@
 "use client";
-
+import { Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../components/shadcn/dialog";
-import { Button } from "../../components/shadcn/button";
-import { Input } from "../../components/shadcn/input";
-import { Label } from "../../components/shadcn/label";
+} from "@/components/shadcn/dialog";
+import { Button } from "@/components/shadcn/button";
+import { Input } from "@/components/shadcn/input";
+import { Label } from "@/components/shadcn/label";
 
 const PasswordReset = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -126,6 +126,12 @@ const PasswordReset = () => {
   );
 };
 
+
 export default function PasswordResetPage() {
-  return <PasswordReset />;
+
+  return( 
+  <Suspense>
+
+  <PasswordReset />
+  </Suspense>);
 }

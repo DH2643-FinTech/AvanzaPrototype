@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   Dialog,
@@ -127,5 +127,10 @@ const PasswordReset = () => {
 };
 
 export default function PasswordResetPage() {
-  return <PasswordReset />;
+
+  return (
+  <Suspense>
+  <PasswordReset />
+  </Suspense>
+  );
 }
