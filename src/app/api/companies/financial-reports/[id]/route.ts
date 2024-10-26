@@ -12,7 +12,6 @@ export const GET = async (request: NextRequest) => {
       const recentReports = await stocksCollection
         .find({ stockId: stockId })
         .toArray();
-      // console.log(recentReports);
       return NextResponse.json(
         { data: recentReports, message: "Records fetched" },
         { status: 200 }

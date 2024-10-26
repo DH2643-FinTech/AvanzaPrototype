@@ -1,15 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  Company,
   CompanyState,
-  Stock,
-  StockInfo,
-  avanzaData,
+  AvanzaData,
 } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
 import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyAPI";
-import { RootState } from "@/lib/model/store";
-import { mockAppleData } from "./mockStockData";
 
 const initialState: CompanyState = {
   companies: [],
@@ -17,8 +12,8 @@ const initialState: CompanyState = {
   loading: false,
   error: "",
   companiesIds: [],
-  currentStock: mockAppleData.stockData, // TODO Change back to null when not using example
-  companyData: mockAppleData.companyData, // TODO Change back to null when not using example
+  currentStock: null, 
+  companyData: null, 
   searchParams: null,
 };
 
@@ -35,6 +30,7 @@ const companySlice = createSlice({
       state.searchParams = {
         ...state.searchParams,
         resolution: action.payload,
+        name: state.searchParams?.name || "",
       };
     },
     setSearchParamName:(state, action: PayloadAction<string>) => {
@@ -61,6 +57,7 @@ const companySlice = createSlice({
         ...state.searchParams,
         startDate: action.payload.startDate,
         endDate: action.payload.endDate,
+        name: state.searchParams?.name || "",
       };
     },
     setCompanies: (state, action: PayloadAction<CompanyID[]>) => {
@@ -74,7 +71,7 @@ const companySlice = createSlice({
     });
     builder.addCase(
       fetchCompanyDetails.fulfilled,
-      (state, action: PayloadAction<avanzaData | string>) => {
+      (state, action: PayloadAction<AvanzaData | string>) => {
         state.loading = false;
         if (typeof action.payload === "string") {
           state.error = action.payload;
@@ -120,6 +117,4 @@ export const {
   setSearchParamName,
 } = companySlice.actions;
 
-// export const selectCurrentCompany = (state: RootState) =>
-//   state.company.companyDetails;
 export default companySlice.reducer;

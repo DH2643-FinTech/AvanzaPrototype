@@ -1,8 +1,8 @@
 // @/views/WatchlistView/WatchlistView.tsx
-// import WatchlistTable from "@/components/custom/WatchlistTable";
-import {ToggleSingInSignUpForm, WatchlistTable} from "@/components/custom";
+import { WatchlistTable} from "@/components/custom";
+import { WatchListPresenterProps } from "./watchlistTypes";
 
-const WatchlistView = (props: any) => {
+const WatchlistView = (props: WatchListPresenterProps) => {
   const { status } = props;
 
   return (
@@ -15,10 +15,6 @@ const WatchlistView = (props: any) => {
             <h2 className="text-2xl text-center pt-[200px] font-bold mb-4">
               Please log in to view your watchlist
             </h2>
-            // <RenderSignIn
-            //   handleSignIn={handleSignIn}
-            //   handleSignUp={handleSignUp}
-            // />
           )}
           {status === "authenticated" && <WatchlistTable {...props.watchlistTableProps} />}
         </main>

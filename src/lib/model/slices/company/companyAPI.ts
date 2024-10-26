@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { avanzaUrlBuilder, options, serverUrlBuilderCompanies } from "../../../utils/urls";
-import { avanzaData, Company, Stock, StockInfo } from "./companyTypes";
+import { AvanzaData } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
 
 interface FetchCompanyDetailsParams {
@@ -58,7 +57,7 @@ export const fetchCompanyDetails = createAsyncThunk(
         detailData,
         _id,
       } = resData;
-      const stockInfo: avanzaData = {
+      const stockInfo: AvanzaData = {
         stockData: {
           id: String(id),
           name: name,
@@ -71,7 +70,7 @@ export const fetchCompanyDetails = createAsyncThunk(
         companyData: detailData,
         id,
       };
-      return stockInfo as avanzaData;
+      return stockInfo as AvanzaData;
     } catch (error: any) {
       console.error("Fetch error:", error);
       // return rejectWithValue((error as Error).message || 'Failed to fetch company details');

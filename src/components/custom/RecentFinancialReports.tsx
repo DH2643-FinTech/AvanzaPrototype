@@ -12,9 +12,9 @@ import {
 } from "@/components/shadcn/pagination";
 
 import { Skeleton } from "@/components/shadcn/skeleton";
+import { OverviewViewProps } from "@/app/company/overview/overviewTypes";
 
-const RecentFinancialReports = (props: any) => {
-  // const router = useRouter();
+const RecentFinancialReports = (props: OverviewViewProps) => {
   const { reports, loading, error } = props.reports;
   const [currentPage, setCurrentPage] = useState(1);
   const reportsPerPage = 5;
@@ -85,7 +85,7 @@ const RecentFinancialReports = (props: any) => {
                 href="#"
                 className="w-18 pr-6"
                 onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                aria-disabled={currentPage === 1} size={undefined}              // size="smal"
+                aria-disabled={currentPage === 1} size={undefined}             
             />
           </PaginationItem>
           {[...Array(totalPages)].map((_, index) => (
@@ -93,7 +93,7 @@ const RecentFinancialReports = (props: any) => {
               <PaginationLink
                 href="#"
                 onClick={() => handlePageChange(index + 1)}
-                isActive={currentPage === index + 1} size={undefined}                // size="medium"
+                isActive={currentPage === index + 1} size={undefined}                
               >
                 {index + 1}
               </PaginationLink>
@@ -104,7 +104,7 @@ const RecentFinancialReports = (props: any) => {
                 href="#"
                 className=" pl-4 w-18"
                 onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                aria-disabled={currentPage === totalPages} size={undefined}              // size="medium"
+                aria-disabled={currentPage === totalPages} size={undefined}              
             />
           </PaginationItem>
         </PaginationContent>

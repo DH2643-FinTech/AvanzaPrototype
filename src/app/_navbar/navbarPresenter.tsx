@@ -16,6 +16,8 @@ import {
   verifyUser,
 } from "@/lib/api/accountAPI";
 import { sendPasswordResetEmail } from "@/lib/services/email_service";
+import { LoginProps, SearchBarProps } from "./navbarTypes";
+import { CompanyID } from "../api/companies/dataTypes";
 
 const NavbarPresenter = () => {
 
@@ -58,11 +60,11 @@ const NavbarPresenter = () => {
     }
   }, []);
 
-  const handleSignIn = async (credProps: any) => {
+  const handleSignIn = async (credProps: { method: string }) => {
     try {
       if (credProps.method === "google") {
-        const response = await signIn("google");
-        return response;
+        await signIn("google");
+        return;
       } else {
         const { status } = await verificationController(email);
         if (status === 200) {
@@ -92,7 +94,7 @@ const NavbarPresenter = () => {
     }
   };
 
-  const handlePasswordResetRequest = async (e: any) => {
+  const handlePasswordResetRequest = async (e: React.FormEvent) => {
     setStatus("");
     e.preventDefault();
     try {
@@ -119,11 +121,11 @@ const NavbarPresenter = () => {
     }
   };
 
-  const handleSignUp = async (credProps: any) => {
+  const handleSignUp = async (credProps: { method: string }): Promise<void> => {
     try {
       if (credProps.method === "google") {
-        const response = await signIn("google");
-        return response;
+        await signIn("google");
+        return;
       } else {
         const { ok, verificationLink } = await registerNewUser(email, password);
         if (!ok) {
@@ -196,7 +198,7 @@ const NavbarPresenter = () => {
     }
   };
 
-  const loginProps = {
+  const loginProps: LoginProps = {
     email,
     setEmail,
     password,
@@ -236,14 +238,17 @@ const NavbarPresenter = () => {
   >([]);
 
   const companies =
-    result?.map((company: any) => ({
+    result?.map((company: CompanyID) => ({
       id: company._id,
       name: company.name,
     })) || [];
 
   useEffect(() => {
     if (search?.trim()) {
-      const results = companies.filter((company: any) =>
+      const results = companies.filter((company: {
+        id: string;
+        name: string;
+    }) =>
         company.name.toLowerCase().includes(search?.toLowerCase())
       );
 
@@ -255,7 +260,7 @@ const NavbarPresenter = () => {
     }
   }, [search]);
 
-  const handleSearch = (searchParam: any) => {
+  const handleSearch = (searchParam: string) => {
     dispatch(setSearchParamName(searchParam));
     const id = companyIds.find(
       (company: { name: string; _id: string }) => company.name === searchParam
@@ -263,7 +268,7 @@ const NavbarPresenter = () => {
     router.push(`/company/stock/${id}`);
   };
 
-  const handleKeyDown = (e: any) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
 
     if (e.key === "Enter") {
       setShowResults(false);
@@ -271,19 +276,19 @@ const NavbarPresenter = () => {
     }
   };
 
-  const handleSelect = (companyName: any) => {
+  const handleSelect = (companyName: string) => {
     setSearch(companyName);
     handleSearch(companyName);
     setShowResults(false);
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearch(query);
   };
 
 
-  const searchBarProps = {
+  const searchBarProps: SearchBarProps = {
     search,
     showResults,
     filteredResults,

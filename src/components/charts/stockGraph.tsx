@@ -8,17 +8,28 @@ import {
   SelectValue,
 } from "../shadcn/select";
 import { renderGraph } from "./d3Graph";
-// import AddToFavoritesButton from "@/components/custom/AddToFavoritesButton";
+import { Stock } from "@/lib/model/slices/company/companyTypes";
+import { AddToWatchlistProps, StockGraphProps } from "@/app/company/stock/[id]/stockTypes";
 
-const NewStockGraph = (props: any) => {
-  const { status, stockData, reports } = props;
+const NewStockGraph = ({
+  currentStock,
+  setStockTimeInterval,
+  stockGraphProps,
+  addToWatchlistProps
+}: {
+  currentStock: Stock;
+  setStockTimeInterval: (interval: { startDate: string; endDate: string }) => void;
+  stockGraphProps: StockGraphProps; 
+  addToWatchlistProps: AddToWatchlistProps;
+}) => {
+  const { status, stockData, reports } = stockGraphProps;
 
   useEffect(() => {
     return renderGraph(stockData, reports || []);
   }, [stockData]);
 
   //TODO: not functional yet
-  const handleSelectChange = (value: any) => {
+  const handleSelectChange = () => {
     // setSelectedValue(value);
   };
 
@@ -40,12 +51,12 @@ const NewStockGraph = (props: any) => {
             <div className="relative justify-start items-center  top-10 flex left-8 px-10 bottom-2 h-[40px] w-[400px]">
               <div className="relative">
                 <DatePickerComp
-                  setStockTimeInterval={props.setStockTimeInterval}
+                  setStockTimeInterval={setStockTimeInterval}
                 />
               </div>
               {status === "authenticated" && (
                 <div className="left-4 relative">
-                  <AddToFavoritesButton {...props.addToWatchlistProps} />
+                  <AddToFavoritesButton {...addToWatchlistProps} />
                 </div>
               )}
             </div>

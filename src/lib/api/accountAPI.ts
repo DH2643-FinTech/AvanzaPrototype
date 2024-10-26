@@ -60,7 +60,7 @@ export const verificationController = async (email: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email }), // send email to API
+    body: JSON.stringify({ email }), 
   });
   const status = response.status;
   return { status };

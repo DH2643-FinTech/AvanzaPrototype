@@ -5,9 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/shadcn/card";
+import { CompanyState } from "@/lib/model/slices/company/companyTypes";
 
-const StockInfo = (props: any) => {
-  const { companyData } = props.company;
+const StockInfo = ({company}:{company: CompanyState}) => {
+  const { companyData } = company;
   if (!companyData) return null;
 
   return (

@@ -12,6 +12,8 @@ import NewStockGraph from "@/components/charts/stockGraph";
 import { BarChartRevenue } from "@/components/charts/barChartRevenue";
 import { LineChartEquity } from "@/components/charts/lineChartEquity";
 import { Skeleton } from "@/components/shadcn/skeleton";
+import { StockPresenterProps } from "./stockTypes";
+import { FinancialReportsResponse } from "@/lib/model/slices/financialReportsSlice";
 
 export const StockSkeleton = () =>{
   return (
@@ -29,29 +31,29 @@ export const StockSkeleton = () =>{
   )
 }
 
-const StockView = (props: any) => {
+const StockView = (props: StockPresenterProps) => {
   const { companyData, currentStock, loading, error, companiesIds } =
     props.company;
   const { reports } = props;
-  const latestPrice = currentStock.ohlc[currentStock.ohlc.length - 1].close;
+  const latestPrice = currentStock?.ohlc[currentStock.ohlc.length - 1].close;
   const previousClose =
-    currentStock.ohlc[currentStock.ohlc.length - 2]?.close || latestPrice;
-  const change = latestPrice - previousClose;
-  const changePercentage = (change / previousClose) * 100;
+    currentStock?.ohlc[currentStock.ohlc.length - 2]?.close || latestPrice;
+  const change = (latestPrice ?? 0) - (previousClose ?? latestPrice ?? 0);
+  const changePercentage = (change / (previousClose ?? 1)) * 100;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!companyData || !currentStock) return <div>No data available</div>;
 
   const getRevenueData = () => {
-    return reports.reports.data.map((report: any) => ({
+    return reports.reports.data.map((report: FinancialReportsResponse) => ({
       date: new Date(report.eventDate).toISOString().split("T")[0],
       revenue: report.incomeStatement.revenues,
     }));
   };
 
   const getEquityData = () => {
-    return reports.reports.data.map((report: any) => ({
+    return reports.reports.data.map((report: FinancialReportsResponse) => ({
       date: new Date(report.eventDate).toISOString().split("T")[0],
       equity: report.balanceSheet.equity,
     }));
@@ -95,7 +97,7 @@ const StockView = (props: any) => {
         <NewStockGraph
           currentStock={currentStock}
           setStockTimeInterval={props.setStockTimeInterval}
-          {...props.stockGraphProps}
+          stockGraphProps= {props.stockGraphProps}
           addToWatchlistProps={props.addToWatchlistProps}
         />
         <div className="flex my-6 items-center justify-between">
@@ -114,7 +116,7 @@ const StockView = (props: any) => {
           </CardHeader>
           <CardContent>
             <div className="mb-4">
-              <p className="text-2xl font-bold">${latestPrice.toFixed(2)}</p>
+              <p className="text-2xl font-bold">${(latestPrice ?? 0).toFixed(2)}</p>
               <p
                 className={`${change >= 0 ? "text-green-500" : "text-red-500"}`}
               >

@@ -1,12 +1,5 @@
 import React, {  useMemo, useEffect } from "react";
 
-// import { useRouter } from "next/navigation";
-// import { useAppDispatch, useAppSelector } from "@/lib/model/store";
-// import {
-//   fetchWatchlist,
-//   removeFromWatchlist,
-// } from "@/lib/model/slices/watchlistSlice";
-
 import {
   Table,
   TableBody,
@@ -31,6 +24,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/shadcn/tooltip";
+import { WatchlistTableProps } from "@/app/account/user/watchlist/watchlistTypes";
+import { Company } from "../../../interfaces";
 
 type SortField =
   | "_id"
@@ -41,57 +36,9 @@ type SortField =
   | "totalNumberOfShares";
 type SortOrder = "asc" | "desc";
 
-export default function WatchlistTable(props: any) {
-
-  //#region DEAD CODE
-  // const router = useRouter();
-  // const dispatch = useAppDispatch();
-  // const companies = useAppSelector((state) => state.company.companies);
+export default function WatchlistTable(props: WatchlistTableProps) {
 
 
-  // const watchlistDetails = useAppSelector(
-  //   (state) => state.watchlist.watchlistDetails
-  // );
-  // const currentStock = useAppSelector((state) => state.company.currentStock);
-
-
-  // const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [sortField, setSortField] = useState<SortField>("_id");
-  // const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const rowsPerPage = 10;
-
-  // useEffect(() => {
-  //   dispatch(fetchWatchlist());
-  // }, [dispatch]);
-
-  // const handleRemoveFromWatchlist = (stockId: string) => {
-  //   dispatch(removeFromWatchlist(stockId));
-  // };
-
-
-
-  // const toggleRow = (id: string) => {
-  //   setExpandedRow(expandedRow === id ? null : id);
-  // };
-
-
-
-  // const toggleSort = (field: SortField) => {
-  //   if (field === sortField) {
-  //     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  //   } else {
-  //     setSortField(field);
-  //     setSortOrder("asc");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setCurrentPage(1);
-  // }, [searchTerm]);
-
-//# endregion
 
   const {
     watchlistDetails,
@@ -113,13 +60,12 @@ export default function WatchlistTable(props: any) {
 
   const watchlistCompanies = useMemo(() => {
     return watchlistDetails || companies;
-    //return companies.filter(company => watchlistStocks.includes(company._id));
   }, [companies, watchlistDetails]);
 
   const filteredAndSortedCompanies = useMemo(() => {
     return watchlistCompanies
       .filter(
-        (company: any) =>
+        (company: Company) =>
           company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           company._id.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -149,8 +95,8 @@ export default function WatchlistTable(props: any) {
     return filteredAndSortedCompanies
       .slice(startIndex, startIndex + rowsPerPage)
       .map(
-        (company: any) =>
-          watchlistDetails?.find((c:any) => c._id === company._id) || company
+        (company: Company) =>
+          watchlistDetails?.find((c:Company) => c._id === company._id) || company
       );
   }, [filteredAndSortedCompanies, currentPage]);
 
@@ -213,7 +159,7 @@ export default function WatchlistTable(props: any) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedCompanies.map((company:any) => (
+            {paginatedCompanies.map((company:Company) => (
               <React.Fragment key={company._id}>
                 <TableRow
                   className="cursor-pointer"

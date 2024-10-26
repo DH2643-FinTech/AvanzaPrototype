@@ -1,5 +1,7 @@
 "use client";
-
+/**
+ * THIS COMPONENT IS NOT USED IN THE APP YET - IT IS A WORK IN PROGRESS
+ */
 import { Button } from "@/components/shadcn/button";
 import { Input } from "@/components/shadcn/input";
 import { Label } from "@/components/shadcn/label";

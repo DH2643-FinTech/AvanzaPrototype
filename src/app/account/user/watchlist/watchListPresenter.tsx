@@ -1,60 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import WatchlistView from "./watchlistView";
 import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlistSlice";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 
-type SortField =
+export type SortField =
   | "_id"
   | "name"
   | "lastPrice"
   | "change"
   | "changePercent"
   | "totalNumberOfShares";
-type SortOrder = "asc" | "desc";
+export type SortOrder = "asc" | "desc";
 
 const WatchListPresenter = () => {
   const { data: session, status } = useSession();
-
-  //#region DEAD CODE
-
-//   const handleSignIn = async (credProps: any) => {
-//     if (credProps.method === "google") {
-//       const response = await signIn("google");
-//       // console.log("success", response);
-//       return response;
-//     } else {
-//       const signInResponse = await signIn("credentials", {
-//         email: credProps.email,
-//         password: credProps.password,
-//         redirect: false,
-//       });
-//       return signInResponse;
-//     }
-//   };
-
-//   const handleSignUp = async (credProps: any) => {
-//     if (credProps.method === "google") {
-//       const response = await signIn("google");
-//       // console.log("success", response);
-//       return response;
-//     } else {
-//       const res = await fetch("/api/register", {
-//         method: "POST",
-//         body: JSON.stringify({
-//           email: credProps.email,
-//           password: credProps.password,
-//         }),
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-//       return res;
-//     }
-//   };
-
-  //#endregion
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -120,11 +81,8 @@ const WatchListPresenter = () => {
 
   return (
     <WatchlistView
-    //   signUp={handleSignUp}
-    //   signIn={handleSignIn}
       status={status}
-      watchlistTableProps={watchlistTableProps}
-    />
+      watchlistTableProps={watchlistTableProps} session={session}    />
   );
 };
 

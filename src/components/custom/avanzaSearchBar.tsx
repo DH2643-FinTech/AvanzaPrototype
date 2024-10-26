@@ -1,63 +1,9 @@
 
 import React from "react";
 import { Input } from "../shadcn/input";
+import { SearchBarProps } from "@/app/_navbar/navbarTypes";
 
-const AvanzaSearchBar = (props: any) => {
-
-
-  //#region DEAD CODE
-
-  // const [search, setSearch] = useState("");
-  // const [showResults, setShowResults] = useState(false);
-  // const [filteredResults, setFilteredResults] = useState<
-  //   { id: string; name: string }[]
-  // >([]);
-
-  // const result = useAppSelector((state) => state.company.companiesIds);
-
-  // const companies =
-  //   result?.map((company: any) => ({
-  //     id: company._id,
-  //     name: company.name,
-  //   })) || [];
-
-  // useEffect(() => {
-  //   if (search?.trim()) {
-  //     const results = companies.filter((company: any) =>
-  //       company.name.toLowerCase().includes(search?.toLowerCase())
-  //     );
-
-  //     setFilteredResults(results);
-  //     setShowResults(true);
-  //   } else {
-  //     setFilteredResults([]);
-  //     setShowResults(false);
-  //   }
-  // }, [search]);
-
-  // const handleSearch = (search: any) => {
-  //   props.setSearchParam(search);
-  // };
-
-  // const handleKeyDown = (e: any) => {
-  //   if (e.key === "Enter") {
-  //     setShowResults(false);
-  //     handleSearch(search);
-  //   }
-  // };
-
-  // const handleSelect = (companyName: any) => {
-  //   setSearch(companyName);
-  //   handleSearch(companyName);
-  //   setShowResults(false);
-  // };
-
-  // const handleInputChange = (e: any) => {
-  //   const query = e.target.value;
-  //   setSearch(query);
-  // };
-
-  //#endregion
+const AvanzaSearchBar = (props: SearchBarProps) => {
 
   const {
     search,
