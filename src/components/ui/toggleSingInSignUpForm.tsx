@@ -25,12 +25,34 @@ const ToggleSingInSignUpForm = (props: Props) => {
 	const [emailForgetPassword, setEmailForgetPassword] = useState('');
     const [status, setStatus] = useState('');
 	const [verificationCode, setVerificationCode] = useState('');
+	const [logInStatus, setLogInStatus] = useState('');
+	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
+		useState(false);
+	const [isVerificationDialogOpen, setIsVerificationDialogOpen] = useState(false);
+	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
 
 	const handleSignInWithGoogle = () => {
 		// console.log("Sign up with Google");
 		const response = signIn("google");
 		// console.log("success", response);
 	};
+	const resetStatuses = () => {
+		setEmail('');
+		setPassword('');
+		setConfirmPassword('');
+		setEmailForgetPassword('');
+		setStatus('');
+		setVerificationCode('');
+		setLogInStatus('');
+		setTimer(120);
+		setCanResend(false);
+	};
+	useEffect(() => {
+		if (!isLoginDialogOpen && !isSignUpDialogOpen && !isPasswordResetDialogOpen && !isVerificationDialogOpen) {
+			resetStatuses();
+		}
+	}, [isLoginDialogOpen, isSignUpDialogOpen, isPasswordResetDialogOpen, isVerificationDialogOpen]);
 
 	const handleSignInWithCredentials = async () => {
 		try {
@@ -39,7 +61,7 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ email }), // send email to API
+				body: JSON.stringify({ email }), 
 			});
 	
 			// console.log("Verification response:", response);
@@ -53,26 +75,21 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				if (signInResponse && !signInResponse.error) {
 					setEmail("");
 					setPassword("");
-					// console.log("Login successful:", signInResponse);
+					alert('Login successful');
 				} else {
-					setStatus('Invalid email or password.');
+					setLogInStatus('Invalid email or password.');
 				}
 			} else if (response.status === 201) {
-				setStatus('You are not a verified user, please signup again!');
-				// console.log('Verification failed:', status);
+				setLogInStatus('You are not a verified user, please signup again!');
 			} else {
-				setStatus('An error occurred while verifying your account.');
-				// console.log('Unexpected verification response:', response.status);
+				setLogInStatus('You do not have an account, please sign-up!');
 			}
 		} catch (error) {
-			// console.error("Error during sign-in process:", error);
-			setStatus('An error occurred during the sign-in process. Please try again.');
+			console.error("Error during sign-in process:", error);
+			setLogInStatus('An error occurred during the sign-in process. Please try again.');
 		}
 	};
 	
-	const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
-		useState(false);
-	const [isVerificationDialogOpen, setIsVerificationDialogOpen] = useState(false);
 
 		const handlePasswordResetRequest = async (e: any) => {
 			setStatus('');
@@ -109,12 +126,6 @@ const ToggleSingInSignUpForm = (props: Props) => {
 			  setStatus('Failed to send reset email. Please check the email address.');
 			}
 		  };
-
-	const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-	const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
-
-
-	// SIGN UP PROCESS
 
 	const handleSignUpWithCredentials = async (e: any) => {
 		e.preventDefault();
@@ -293,6 +304,7 @@ const handleResendCode = async () => {
                             Forgot your password?
                             </Link>
 						</div>
+						<p className={`text-center mt-2 text-red-600`}>{logInStatus}</p>
 						<DialogFooter>
 							<div className="w-full">
 								<div className="flex flex-row justify-around">
