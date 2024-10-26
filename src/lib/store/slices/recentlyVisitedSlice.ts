@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '@/src/lib/store/store';
+import { RootState } from '@/lib/store/store';
 
 export interface RecentlyVisitedStock {
     id: string;

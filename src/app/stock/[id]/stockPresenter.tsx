@@ -2,16 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
-import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
-import { addRecentlyVisited } from "@/lib/features/recentlyVisited/recentlyVisitedSlice";
+import { useAppDispatch,useAppSelector } from "@/lib/store/store";
+import { addRecentlyVisited } from "@/lib/store/slices/recentlyVisitedSlice";
 import StockView from "@/app/stock/[id]/StockView";
 import {
   setSearchParamName,
   setSearchParamTimeInterval,
-} from "@/lib/features/company/companySlice";
-import { fetchCompanyDetails } from "@/lib/features/company/companyAPI";
-import { fetchRecentCompanyReports } from "@/lib/features/financialReports/financialReportsSlice";
+} from "@/lib/store/slices/company/companySlice";
+import { fetchCompanyDetails } from "@/lib/store/slices/company/companyAPI";
+import { fetchRecentCompanyReports } from "@/lib/store/slices/financialReportsSlice";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { Card, CardHeader } from "@/components/shadcn/card";
 import CardContent from "@mui/material/CardContent/CardContent";

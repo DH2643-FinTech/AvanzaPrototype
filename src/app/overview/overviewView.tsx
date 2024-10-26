@@ -3,9 +3,8 @@ import React, { useEffect } from "react";
 import StockCarousel from "@/components/StockCarousel";
 import RecentFinancialReports from "@/components/RecentFinancialReports";
 import NewStockGraph from "@/components/ui/charts/newStockGraph";
-import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
-import { fetchFinancialReports } from "@/lib/features/financialReports/financialReportsSlice";
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { useAppDispatch, useAppSelector } from "@/lib/store/store";
+import { fetchFinancialReports } from "@/lib/store/slices/financialReportsSlice";
 
 const OverviewView = (props:any) => {
 

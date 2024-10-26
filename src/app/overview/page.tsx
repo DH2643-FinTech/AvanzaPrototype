@@ -1,12 +1,10 @@
 // src/app/overview/page.tsx
 'use client';
 import React, { useEffect } from 'react';
-import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
-import { fetchHighlightedStocks } from "@/lib/features/highlightedStocks/highlightedStocksSlice";
-import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/features/financialReports/financialReportsSlice";
+import { fetchHighlightedStocks } from "@/lib/store/slices/highlightedStocksSlice";
+import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/store/slices/financialReportsSlice";
 // import OverviewView from '@/app/overview/overviewView';
-import { useAppSelector } from '@/lib/hooks/useAppSelector';
-import { setSearchParamName } from '@/lib/features/company/companySlice';
+import { setSearchParamName } from '@/lib/store/slices/company/companySlice';
 import { useRouter } from 'next/navigation';
 import OverviewPresenter from './overviewPresenter';
 

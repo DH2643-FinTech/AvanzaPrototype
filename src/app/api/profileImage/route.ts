@@ -1,6 +1,6 @@
 import { User } from "@/../interfaces";
 import { uploadToAzureBlob } from "@/lib/api/imageStorage";
-import clientPromise from "@/lib/database/mongodb";
+import clientPromise from "@/lib/integeration/mongodb";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 

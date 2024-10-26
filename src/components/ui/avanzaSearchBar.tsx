@@ -1,12 +1,12 @@
+
 import React, { useEffect, useState } from "react";
 import { Input } from "../shadcn/input";
-import { useAppDispatch } from "@/lib/hooks/useAppDispatch";
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
-import { fetchAllCompanyIds } from "@/lib/features/company/companyAPI";
-import { fetchCompanyDetails } from "@/lib/features/company/companyAPI";
-import { setCompanies } from "@/lib/features/company/companySlice";
+import { useAppSelector, useAppDispatch } from "@/lib/store/store";
+import { fetchAllCompanyIds } from "@/lib/store/slices/company/companyAPI";
+import { fetchCompanyDetails } from "@/lib/store/slices/company/companyAPI";
+import { setCompanies } from "@/lib/store/slices/company/companySlice";
 
-const AvanzaSearchBar2 = (props: any) => {
+const AvanzaSearchBar = (props: any) => {
   const [search, setSearch] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [filteredResults, setFilteredResults] = useState<
@@ -17,16 +17,14 @@ const AvanzaSearchBar2 = (props: any) => {
   const result = useAppSelector((state) => state.company.companiesIds);
 
   const companies =
-    result?.map((company:any) => ({
+    result?.map((company: any) => ({
       id: company._id,
       name: company.name,
     })) || [];
 
-
-
   useEffect(() => {
     if (search?.trim()) {
-      const results = companies.filter((company:any) =>
+      const results = companies.filter((company: any) =>
         company.name.toLowerCase().includes(search?.toLowerCase())
       );
 
@@ -48,7 +46,7 @@ const AvanzaSearchBar2 = (props: any) => {
     //     fromDateValid: false
     //   })
     // );
-   props.setSearchParam(search)
+    props.setSearchParam(search);
   };
 
   const handleKeyDown = (e: any) => {
@@ -105,4 +103,4 @@ const AvanzaSearchBar2 = (props: any) => {
   );
 };
 
-export default AvanzaSearchBar2;
+export default AvanzaSearchBar;

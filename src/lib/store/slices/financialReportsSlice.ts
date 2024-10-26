@@ -1,6 +1,6 @@
-// @/src/lib/features/financialReports/financialReportsSlice.ts
+// @/lib/features/financialReports/financialReportsSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "@/src/lib/store/store";
+import { RootState } from "@/lib/store/store";
 
 // TODO: Use this slice for recent reports inside the company page as well
 

@@ -12,54 +12,12 @@ import {
 import { Button } from "@/components/shadcn/button";
 import { Mail, Github, Linkedin, User } from "lucide-react";
 
-const recentlyVisited = [
-  { id: "AAPL", price: 150.25 },
-  { id: "MSFT", price: 305.75 },
-  { id: "AMZN", price: 3302.5 },
-  { id: "GOOGL", price: 2750.0 },
-  { id: "FB", price: 330.15 },
-];
+const AboutUsView = (props:any) => {
 
-interface TeamMember {
-  name: string;
-  role: string;
-  email: string;
-  github: string;
-  linkedin: string;
-}
+  const {teamMembers} = props;
+  console.log(props);
 
-const teamMembers: TeamMember[] = [
-  {
-    name: "Namn Namnsson",
-    role: "Frontend Developer",
-    email: "Namn@kth.se",
-    github: "username",
-    linkedin: "username",
-  },
-  {
-    name: "Namn Namnsson",
-    role: "Backend Developer",
-    email: "erik@kth.se",
-    github: "username",
-    linkedin: "username",
-  },
-  {
-    name: "Namn Namnsson",
-    role: "Frontend Developer",
-    email: "Namn@kth.se",
-    github: "username",
-    linkedin: "username",
-  },
-  {
-    name: "Namn Namnsson",
-    role: "Backend Developer",
-    email: "Namn@kth.se",
-    github: "username",
-    linkedin: "username",
-  },
-];
 
-const AboutUsView = () => {
   return (
     <div className="flex flex-col h-screen bg-white">
       <div className="flex flex-1 overflow-hidden">
@@ -90,7 +48,7 @@ const AboutUsView = () => {
 
           <h2 className="text-2xl font-semibold mb-4">Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {teamMembers.map((member, index:number) => (
+            {teamMembers.map((member:any, index:number) => (
               <Card key={'about-us' + index + member.name}>
                 <CardContent className="flex items-center p-6">
                   <Avatar className="h-24 w-24 mr-6">

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
-import clientPromise from '../../../lib/database/mongodb';
+import clientPromise from '../../../lib/integeration/mongodb';
 
 export const POST = async (request: Request) => {
   try {

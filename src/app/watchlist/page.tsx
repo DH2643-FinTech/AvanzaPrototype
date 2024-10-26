@@ -1,7 +1,8 @@
 'use client';
 
-import WatchlistView from '@/views/WatchlistView/WatchlistView';
+// import WatchlistView from '@/app/watchlist/watchlistView';
+import WatchListPresenter from './watchListPresenter';
 
 export default function WatchlistPage() {
-  return <WatchlistView />;
+  return <WatchListPresenter />;
 }

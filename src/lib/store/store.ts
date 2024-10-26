@@ -3,19 +3,18 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import companyReducer, {
   setSearchParamName,
   setSearchParamTimeInterval,
-} from "@/src/lib/features/company/companySlice";
-import { fetchCompanyDetails } from "@/src/lib/features/company/companyAPI";
-import watchlistReducer from "@/src/lib/features/watchlist/watchlistSlice";
-import recentlyVisitedReducer from "@/src/lib/features/recentlyVisited/recentlyVisitedSlice";
-import highlightedStocksReducer from "@/src/lib/features/highlightedStocks/highlightedStocksSlice";
-import financialReportsReducer from "@/src/lib/features/financialReports/financialReportsSlice";
+} from "@/lib/store/slices/company/companySlice";
+import { fetchCompanyDetails } from "@/lib/store/slices/company/companyAPI";
+import watchlistReducer from "@/lib/store/slices/watchlistSlice";
+import recentlyVisitedReducer from "@/lib/store/slices/recentlyVisitedSlice";
+import highlightedStocksReducer from "@/lib/store/slices/highlightedStocksSlice";
+import financialReportsReducer from "@/lib/store/slices/financialReportsSlice";
 
 const listenerMiddleware = createListenerMiddleware();
 
 listenerMiddleware.startListening({
   actionCreator: setSearchParamName,
   effect: (action, listenerApi) => {
-    // console.log("Lister is listening to ", action.payload);
     const id = (listenerApi.getState() as RootState).company.companiesIds.find(
       (company) => company.name === action.payload
     )?._id;
@@ -35,7 +34,6 @@ listenerMiddleware.startListening({
 listenerMiddleware.startListening({
   actionCreator: setSearchParamTimeInterval,
   effect: (action, listenerApi) => {
-    // console.log("Lister is listening to ", action.payload);
     const currentStock = (listenerApi.getState() as RootState).company
       .currentStock;
     if (currentStock) {

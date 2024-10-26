@@ -1,6 +1,6 @@
-// @/src/lib/features/highlightedStocks/highlightedStocksSlice.ts
+// @/lib/features/highlightedStocks/highlightedStocksSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState } from '@/src/lib/store/store';
+import { RootState } from '@/lib/store/store';
 
 interface Stock {
     id: string;

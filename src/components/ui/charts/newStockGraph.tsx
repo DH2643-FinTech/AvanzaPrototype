@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { useAppSelector } from "@/lib/store/store";
 import { DatePickerComp } from "../datePicker";
 import {
   Select,
@@ -10,7 +10,9 @@ import {
 } from "../../shadcn/select";
 import { renderGraph } from "./graph";
 import AddToFavoritesButton from "../../AddToFavoritesButton";
+import { useSession } from "next-auth/react";
 const NewStockGraph = (props: any) => {
+  const { data: session, status } = useSession();
   const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
   const reports = useAppSelector((state) => state.financialReports);
 
@@ -44,9 +46,12 @@ const NewStockGraph = (props: any) => {
                 setStockTimeInterval={props.setStockTimeInterval}
                 />
             </div>
-            <div className="left-4 relative">
+            {
+              status === "authenticated" && (
+                <div className="left-4 relative">
               <AddToFavoritesButton stockId={props.currentStock.id} />
-            </div>
+            </div>)
+            }
                 </div>
           </div>
           <div className=" h-[600px]" id="chart-container"></div>

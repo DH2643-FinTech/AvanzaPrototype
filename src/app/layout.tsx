@@ -1,5 +1,5 @@
-import StoreProvider from "./StoreProvider";
-import AuthProvider from "./AuthProvider";
+import StoreProvider from "./_storeProvider";
+import AuthProvider from "./_authProvider";
 import "./globals.css";
 export const metadata = {
   title: "Next.js",

@@ -4,14 +4,17 @@ import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { TrendingUp, Eye, Info } from 'lucide-react'
 import { Button } from "@/components/shadcn/button"
-import { useAppSelector } from "@/lib/hooks/useAppSelector"
-import { selectRecentlyVisited } from "@/lib/features/recentlyVisited/recentlyVisitedSlice"
+import { useAppSelector } from "@/lib//store/store"
+import { selectRecentlyVisited } from "@/lib/store/slices/recentlyVisitedSlice"
 import { useAppDispatch } from '../lib/store/store'
-import { fetchRecentCompanyReports } from '../lib/features/financialReports/financialReportsSlice'
-import { setSearchParamName } from '../lib/features/company/companySlice'
+import { fetchRecentCompanyReports } from '../lib/store/slices/financialReportsSlice'
+import { setSearchParamName } from '../lib/store/slices/company/companySlice'
+import { useSession } from 'next-auth/react'
+import { stat } from 'fs'
 
 const Sidebar = () => {
-    const pathname = usePathname()
+    const pathname = usePathname();
+    const { data: session, status } = useSession();
     const recentlyVisited = useAppSelector(selectRecentlyVisited)
     const isActive = (path: string) => pathname === path;
 
@@ -39,6 +42,8 @@ const Sidebar = () => {
                         Overview
                     </Link>
                 </Button>
+
+                {status === 'authenticated' && (
                 <Button
                     variant={isActive('/watchlist') ? "default" : "ghost"}
                     className={`w-full justify-start text-left ${isActive('/watchlist') ? 'bg-black text-white hover:bg-black/90' : ''}`}
@@ -48,7 +53,7 @@ const Sidebar = () => {
                         <Eye className="mr-2 h-4 w-4" />
                         Watchlist
                     </Link>
-                </Button>
+                </Button>)}
                 <Button
                     variant={isActive('/about-us') ? "default" : "ghost"}
                     className={`w-full justify-start text-left ${isActive('/about-us') ? 'bg-black text-white hover:bg-black/90' : ''}`}

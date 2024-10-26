@@ -3,7 +3,7 @@
 import { Company } from "@/../interfaces";
 import AddToFavoritesButton from "@/components/AddToFavoritesButton";
 import { getCachedCompany } from "@/lib/api/cachedCalls";
-import clientPromise from "@/lib/database/mongodb";
+import clientPromise from "@/lib/integeration/mongodb";
 
 interface CompanyPageProps {
   params: { id: string };
@@ -15,9 +15,6 @@ const CompanyPage = async ({ params }: CompanyPageProps) => {
   const db = client.db('database');
   const collection = db.collection<Company>('stocks');
   const company = await getCachedCompany(id, collection);
-
-
-
 
   return (
     <div>

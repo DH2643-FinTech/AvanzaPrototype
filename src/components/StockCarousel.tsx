@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/shadcn/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shadcn/card"
-import { useAppSelector } from "@/lib/hooks/useAppSelector"
-import { selectHighlightedStocks } from "@/lib/features/highlightedStocks/highlightedStocksSlice"
+import { useAppSelector } from "@/lib//store/store"
+import { selectHighlightedStocks } from "@/lib/store/slices/highlightedStocksSlice"
 
 const StockCarousel = () => {
     const highlightedStocks = useAppSelector(selectHighlightedStocks)

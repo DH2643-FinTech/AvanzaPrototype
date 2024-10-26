@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
+import { useAppSelector } from "@/lib/store/store";
 import {
   Card,
   CardContent,

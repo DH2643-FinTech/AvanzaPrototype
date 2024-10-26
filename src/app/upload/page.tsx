@@ -1,38 +1,43 @@
-'use client'
-import { useState } from "react";
+/**
+ * DEPRICATED: This file is no longer in use.
+ */
 
-const UploadForm = () => {
-  const [image, setImage] = useState<File | null>(null);
 
-  const handleImageChange = (e: any) => {
-    setImage(e.target.files[0]);
-  };
+// 'use client'
+// import { useState } from "react";
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = new FormData();
-    if (image) {
-      formData.append("image", image);
+// const UploadForm = () => {
+//   const [image, setImage] = useState<File | null>(null);
 
-      const res = await fetch("/api/profileImage", {
-        method: "POST",
-        body: formData,
-      });
+//   const handleImageChange = (e: any) => {
+//     setImage(e.target.files[0]);
+//   };
 
-      if (res.ok) {
-        alert("Image uploaded successfully!");
-      } else {
-        alert("Error uploading image.");
-      }
-    }
-  };
+//   const handleSubmit = async (e: any) => {
+//     e.preventDefault();
+//     const formData = new FormData();
+//     if (image) {
+//       formData.append("image", image);
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" name="image" onChange={handleImageChange} />
-      <button type="submit">Upload Image</button>
-    </form>
-  );
-};
+//       const res = await fetch("/api/profileImage", {
+//         method: "POST",
+//         body: formData,
+//       });
 
-export default UploadForm;
+//       if (res.ok) {
+//         alert("Image uploaded successfully!");
+//       } else {
+//         alert("Error uploading image.");
+//       }
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <input type="file" name="image" onChange={handleImageChange} />
+//       <button type="submit">Upload Image</button>
+//     </form>
+//   );
+// };
+
+// export default UploadForm;
