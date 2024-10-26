@@ -44,7 +44,6 @@ type SortOrder = "asc" | "desc";
 export default function WatchlistTable(props: any) {
 
   //#region DEAD CODE
-
   // const router = useRouter();
   // const dispatch = useAppDispatch();
   // const companies = useAppSelector((state) => state.company.companies);

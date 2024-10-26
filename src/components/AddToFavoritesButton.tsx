@@ -1,41 +1,42 @@
-'use client';
+"use client";
 
-import { useEffect } from "react";
 import { Button } from "./shadcn/button";
-import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "../lib/model/slices/watchlistSlice";
-import { useAppDispatch,useAppSelector } from "../lib/model/store";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function AddToFavoritesButton(props: { stockId: string | undefined }) {
- 
-  const dispatch = useAppDispatch();
-  const watchlistStocks = useAppSelector(state => state.watchlist.stocks);
-  const companies = useAppSelector(state => state.watchlist.watchlistDetails);
+export default function AddToFavoritesButton(props: any) {
 
-  useEffect(() => {
-    if (!watchlistStocks.length) {
-      dispatch(fetchWatchlist());
-    }
-  }, [dispatch, watchlistStocks]);
+  //#region DEAD CODE
+  // const dispatch = useAppDispatch();
+  // const watchlistStocks = useAppSelector(state => state.watchlist.stocks);
+  // const companies = useAppSelector(state => state.watchlist.watchlistDetails);
 
-  const isFavorite = watchlistStocks.includes(
-    companies?.find((company: { _id: string; name: string }) => company._id === props.stockId)?.name || ""
-  );
+  // useEffect(() => {
+  //   if (!watchlistStocks.length) {
+  //     dispatch(fetchWatchlist());
+  //   }
+  // }, [dispatch, watchlistStocks]);
 
-  const toggleFavorites = async () => {
-    if(props.stockId === undefined) {
-      return null;
-    }
-    if (isFavorite) {
-      await dispatch(removeFromWatchlist(props.stockId));
-    } else {
-      await dispatch(addToWatchlist(props.stockId));
-    }
+  // const isFavorite = watchlistStocks.includes(
+  //   companies?.find((company: { _id: string; name: string }) => company._id === props.stockId)?.name || ""
+  // );
 
-    dispatch(fetchWatchlist());
-  };
+  // const toggleFavorites = async () => {
+  //   if(props.stockId === undefined) {
+  //     return null;
+  //   }
+  //   if (isFavorite) {
+  //     await dispatch(removeFromWatchlist(props.stockId));
+  //   } else {
+  //     await dispatch(addToWatchlist(props.stockId));
+  //   }
 
-  if(props.stockId === undefined) {
+  //   dispatch(fetchWatchlist());
+  // };
+//#endregion
+  
+const { stockId, isFavorite, toggleFavorites } = props;
+
+  if (stockId === undefined) {
     return <Button disabled>invalid stock id...</Button>;
   }
 
@@ -44,44 +45,20 @@ export default function AddToFavoritesButton(props: { stockId: string | undefine
   }
 
   return (
-    // <Star onClick={toggleFavorites} />
-    // <Cctv onClick={toggleFavorites}/>
-    // <Star >
-    // <Button onClick={toggleFavorites}>
-    //   {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
-    // </Button>    
-    // <Button className="" >
     <>
-      {isFavorite ?   <EyeOff className="w-10 h-10" style={{cursor: 'pointer'}}  onClick={toggleFavorites} /> : <Eye className="w-10 h-10" style={{cursor: 'pointer'}}  onClick={toggleFavorites}/>}
+      {isFavorite ? (
+        <EyeOff
+          className="w-10 h-10"
+          style={{ cursor: "pointer" }}
+          onClick={toggleFavorites}
+        />
+      ) : (
+        <Eye
+          className="w-10 h-10"
+          style={{ cursor: "pointer" }}
+          onClick={toggleFavorites}
+        />
+      )}
     </>
-    // </Button>
-    
-    // <Star />
-
-    // <div  style={{ cursor: 'pointer' }}>
-
-    // <Eye />
-
-    // <EyeClosed />
-
-  //   <div onClick={toggleFavorites} style={{ cursor: 'pointer' }}>
-  //   {isFavorite ? (
-  //     <Eye style={{ color: 'black' }} /> // When favorited, the Eye icon is black
-  //   ) : (
-  //     <EyeClosed style={{ color: 'white', border: '2px solid black' }} /> // When not favorited, the EyeClosed icon has a border and white fill
-  //   )}
-  // </div>
-
-    // <Cctv
-    // onClick={toggleFavorites}
-    //   className={`icon ${isFavorite ? 'bg-black text-white' : 'bg-white border border-black'}`}
-    //   style={{
-    //     color: isFavorite ? 'black' : 'white',
-    //     border: isFavorite ? 'none' : '2px solid black',
-    //     padding: '4px', // Optional: Add padding for visual effect
-    //   }}
-    // />
-  // </div>
-
   );
 }

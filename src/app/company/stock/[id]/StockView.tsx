@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/shadcn/card";
 import { Badge } from "@/components/shadcn/badge";
-import NewStockGraph from "@/components/ui/charts/newStockGraph";
+import NewStockGraph from "@/components/ui/charts/stockGraph";
 import { BarChartRevenue } from "@/components/ui/charts/barChartRevenue";
 import { LineChartEquity } from "@/components/ui/charts/lineChartEquity";
 import { Skeleton } from "@/components/shadcn/skeleton";
@@ -28,8 +28,6 @@ export const StockSkeleton = () =>{
   
   )
 }
-
-
 
 const StockView = (props: any) => {
   const { companyData, currentStock, loading, error, companiesIds } =
@@ -74,8 +72,8 @@ const StockView = (props: any) => {
             </tr>
           </thead>
           <tbody>
-            {companyData.companyEvents.events.map((event: any) => (
-              <tr key={event.id} className="hover:bg-gray-50">
+            {companyData.companyEvents.events.map((event: any, index:number) => (
+              <tr key={"upcommingEvent" + index} className="hover:bg-gray-50">
                 <td className="py-2 px-4 border border-gray-200">
                   {event.date}
                 </td>
@@ -97,6 +95,8 @@ const StockView = (props: any) => {
         <NewStockGraph
           currentStock={currentStock}
           setStockTimeInterval={props.setStockTimeInterval}
+          {...props.stockGraphProps}
+          addToWatchlistProps={props.addToWatchlistProps}
         />
         <div className="flex my-6 items-center justify-between">
           {/* <h1 className="text-3xl border border-red-500 font-bold mr-3">{}</h1> */}

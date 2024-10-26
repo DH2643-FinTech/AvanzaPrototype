@@ -1,5 +1,5 @@
-import StoreProvider from "./_storeProvider";
-import AuthProvider from "./_authProvider";
+import StoreProvider from "./_providers/_storeProvider";
+import AuthProvider from "./_providers/_authProvider";
 import "./globals.css";
 export const metadata = {
   title: "Next.js",
@@ -9,7 +9,6 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Navbar from "./_navbar/navbarView";
 import NavbarPresenter from "./_navbar/navbarPresenter";
 import SidebarPresenter from "./_sidebar/sidebarPresenter";
 

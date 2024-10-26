@@ -1,7 +1,6 @@
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Input } from "../shadcn/input";
-import { useAppSelector } from "@/lib/model/store";
 
 const AvanzaSearchBar = (props: any) => {
 
