@@ -29,7 +29,7 @@ const baseImageUrl = 'https://dh2643images.blob.core.windows.net/profile-picture
     if (image) {
       formData.append("image", image);
 
-      const res = await fetch("/api/account/profileImage", {
+      const res = await fetch("/api/account/user/profileImage", {
         method: "POST",
         body: formData,
       });

@@ -82,13 +82,9 @@ const WatchListPresenter = () => {
     dispatch(removeFromWatchlist(stockId));
   };
 
-
-
   const toggleRow = (id: string) => {
     setExpandedRow(expandedRow === id ? null : id);
   };
-
-
 
   const toggleSort = (field: SortField) => {
     if (field === sortField) {
