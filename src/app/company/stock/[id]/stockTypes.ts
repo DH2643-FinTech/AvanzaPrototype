@@ -1,7 +1,7 @@
 // StockPresenter.types.ts
 
 import {  CompanyState, StockInfo } from "@/lib/model/slices/company/companyTypes";
-import { FinancialReportsState } from "@/lib/model/slices/financialReport/financialReportsSlice";
+import { FinancialReportsState } from "@/lib/model/slices/financialReport/financialReportTypes";
   
   export interface WatchlistDetails {
     _id: string;

@@ -1,5 +1,5 @@
 
-import { FinancialReportsState } from "@/lib/model/slices/financialReport/financialReportsSlice";
+import { FinancialReportsState } from "@/lib/model/slices/financialReport/financialReportTypes";
 
 export interface OverviewViewProps {
     navigateToStockPage: (stockId: number) => void;

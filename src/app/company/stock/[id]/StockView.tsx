@@ -13,7 +13,7 @@ import { BarChartRevenue } from "@/components/charts/barChartRevenue";
 import { LineChartEquity } from "@/components/charts/lineChartEquity";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { StockPresenterProps } from "./stockTypes";
-import { FinancialReportsResponse } from "@/lib/model/slices/financialReport/financialReportsSlice";
+import { FinancialReportsResponse } from "@/lib/model/slices/financialReport/financialReportTypes";
 
 export const StockSkeleton = () =>{
   return (

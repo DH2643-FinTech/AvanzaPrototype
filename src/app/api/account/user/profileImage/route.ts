@@ -1,5 +1,5 @@
 import { User } from "@/../interfaces";
-import { uploadToAzureBlob } from "@/lib/api/imageStorage";
+import { uploadToAzureBlob } from "@/lib/services/azure_storage_blob_service";
 import clientPromise from "@/lib/integeration/mongodb";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";

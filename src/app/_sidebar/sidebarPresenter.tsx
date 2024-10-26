@@ -7,7 +7,7 @@ import { useAppDispatch } from '../../lib/model/store'
 import { usePathname, useRouter } from 'next/navigation'
 import { selectRecentlyVisited } from "@/lib/model/slices/recently_visited/recentlyVisitedSlice"
 import { setSearchParamName } from '../../lib/model/slices/company/companySlice'
-import { fetchRecentCompanyReports } from '../../lib/model/slices/financialReport/financialReportsSlice'
+import { fetchRecentCompanyReports } from '../../lib/model/slices/financialReport/financialReportThunks'
 import { SidebarProps } from './sidebarTypes'
 
 const SidebarPresenter = () => {
