@@ -65,8 +65,8 @@ const ToggleSingInSignUpForm = (props: Props) => {
 				// console.log('Unexpected verification response:', response.status);
 			}
 		} catch (error) {
-			console.error("Error during sign-in process:", error);
-			setLogInStatus('An error occurred during the sign-in process. Please try again.');
+			// console.error("Error during sign-in process:", error);
+			setStatus('An error occurred during the sign-in process. Please try again.');
 		}
 	};
 	
@@ -293,7 +293,6 @@ const handleResendCode = async () => {
                             Forgot your password?
                             </Link>
 						</div>
-						<p className={`text-center mt-2 text-red-600`}>{logInStatus}</p>
 						<DialogFooter>
 							<div className="w-full">
 								<div className="flex flex-row justify-around">
