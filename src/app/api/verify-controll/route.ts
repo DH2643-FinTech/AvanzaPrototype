@@ -22,6 +22,12 @@ export const POST = async (request: Request ) => {
         const client = await clientPromise;
         const db = client.db("database");
         const userVerified = await db.collection("users").findOne({ email: email });
+        if(!userVerified){
+            return NextResponse.json(
+                { message: "You do not have an account" },
+                { status: 401 }
+            );
+        }
 
         if (userVerified && userVerified.verified === true) {
             return NextResponse.json(
