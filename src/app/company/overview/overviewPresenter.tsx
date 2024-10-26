@@ -13,7 +13,7 @@ const OverviewPresenter = () => {
     const router = useRouter();
 
     const handleNavigateToStockPage = (stockId:number) =>{
-      router.push(`/stock/${stockId}`);
+      router.push(`/company/stock/${stockId}`);
       dispatch(fetchRecentCompanyReports(stockId));
     }
 

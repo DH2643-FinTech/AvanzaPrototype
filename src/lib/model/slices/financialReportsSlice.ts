@@ -76,7 +76,7 @@ export const fetchFinancialReports = createAsyncThunk(
     limit?: number;
     ids?: number[];
   }) => {
-    const url = "/api/financial-reports";
+    const url = "/api/companies/financial-reports";
     const searchParams = new URLSearchParams();
 
     if (random) {
@@ -110,7 +110,7 @@ export const fetchRecentCompanyReports = createAsyncThunk(
     searchParams.set("id", companyId.toString());
 
     const response = await fetch(
-      `/api/financial-reports/${companyId}?${searchParams.toString()}`,
+      `/api/companies/financial-reports/${companyId}?${searchParams.toString()}`,
       {
         method: "GET",
         headers: {

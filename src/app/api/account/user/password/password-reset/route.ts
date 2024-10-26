@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../lib/integeration/mongodb'; 
+import clientPromise from '@/lib/integeration/mongodb'; 
 import crypto from 'crypto'; 
 
 export const POST = async (request: any) => {
@@ -33,7 +33,7 @@ export const POST = async (request: any) => {
       }
     );
 
-    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/reset?token=${resetToken}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/account/reset?token=${resetToken}`;
 
     return NextResponse.json({ resetLink, email }, { status: 200 });
   } catch (error) {

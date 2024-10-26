@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '../../../lib/integeration/mongodb'; 
+import clientPromise from '@/lib/integeration/mongodb'; 
 
 import bcrypt from 'bcrypt';
 

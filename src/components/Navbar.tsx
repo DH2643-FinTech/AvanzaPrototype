@@ -32,7 +32,7 @@ const Navbar = (props: any) => {
   const handleSearchParam = (searchParam: any) => {
     dispatch(setSearchParamName(searchParam));
     const id = companyIds.find((company: { name: string; _id: string }) => company.name === searchParam)?._id;
-    router.push(`/stock/${id}`);
+    router.push(`/company/stock/${id}`);
   };
 
   const handleSignIn = async (credProps: any) => {
@@ -54,7 +54,7 @@ const Navbar = (props: any) => {
       const response = await signIn("google");
       return response;
     } else {
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/account/register", {
         method: "POST",
         body: JSON.stringify({
           email: credProps.email,

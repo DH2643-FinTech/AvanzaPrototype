@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch,useAppSelector } from "@/lib/model/store";
 import { addRecentlyVisited } from "@/lib/model/slices/recentlyVisitedSlice";
-import StockView from "@/app/stock/[id]/StockView";
+import StockView from "@/app/company/stock/[id]/StockView";
 import {
   setSearchParamName,
   setSearchParamTimeInterval,
@@ -65,7 +65,7 @@ const StockPresenter = () => {
           );
           await dispatch(fetchRecentCompanyReports(locSearchParam.id));
         } else {
-          router.push("/overview");
+          router.push("/company/overview");
         }
       }
       setFirstTimeLoading(false);

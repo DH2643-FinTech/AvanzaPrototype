@@ -289,7 +289,7 @@ export default function WatchlistTable() {
                               <Button
                                 variant="outline"
                                 onClick={() =>
-                                  router.push(`/stock/${company._id}`)
+                                  router.push(`/company/stock/${company._id}`)
                                 }
                               >
                                 View Detailed Page

@@ -22,7 +22,7 @@ const Sidebar = () => {
     const dispatch = useAppDispatch();
 
     const navigateToStock = ({stockId, searchParam}: {stockId:number, searchParam:string}) => {
-            router.push(`/stock/${stockId}`);
+            router.push(`/company/stock/${stockId}`);
             dispatch(fetchRecentCompanyReports(stockId));
               dispatch(setSearchParamName(searchParam));
           
@@ -33,11 +33,11 @@ const Sidebar = () => {
             <nav className="space-y-2">
                 <h2 className="text-lg font-semibold mb-2">Main Menu</h2>
                 <Button
-                    variant={isActive('/overview') ? "default" : "ghost"}
-                    className={`w-full justify-start text-left ${isActive('/overview') ? 'bg-black text-white hover:bg-black/90' : ''}`}
+                    variant={isActive('/company/overview') ? "default" : "ghost"}
+                    className={`w-full justify-start text-left ${isActive('/company/overview') ? 'bg-black text-white hover:bg-black/90' : ''}`}
                     asChild
                 >
-                    <Link href="/overview" className="flex items-center px-4 py-2">
+                    <Link href="/company/overview" className="flex items-center px-4 py-2">
                         <TrendingUp className="mr-2 h-4 w-4" />
                         Overview
                     </Link>
@@ -45,11 +45,11 @@ const Sidebar = () => {
 
                 {status === 'authenticated' && (
                 <Button
-                    variant={isActive('/watchlist') ? "default" : "ghost"}
-                    className={`w-full justify-start text-left ${isActive('/watchlist') ? 'bg-black text-white hover:bg-black/90' : ''}`}
+                    variant={isActive('/account/user/watchlist') ? "default" : "ghost"}
+                    className={`w-full justify-start text-left ${isActive('/account/user/watchlist') ? 'bg-black text-white hover:bg-black/90' : ''}`}
                     asChild
                 >
-                    <Link href="/watchlist" className="flex items-center px-4 py-2">
+                    <Link href="/account/user/watchlist" className="flex items-center px-4 py-2">
                         <Eye className="mr-2 h-4 w-4" />
                         Watchlist
                     </Link>

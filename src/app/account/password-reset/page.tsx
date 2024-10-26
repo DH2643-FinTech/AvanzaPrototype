@@ -15,7 +15,7 @@ const PasswordResetForm = () => {
 
     try {
       emailjs.init('9Q600vKX9f68s1yZd');
-      const response = await fetch('/api/password-reset', {
+      const response = await fetch('/api/account/user/password/password-reset', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

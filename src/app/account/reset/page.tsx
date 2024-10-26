@@ -24,7 +24,7 @@ const PasswordReset = () => {
     }
 
     try {
-      const response = await fetch("/api/password-change", {
+      const response = await fetch("/api/account/user/password/password-change", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

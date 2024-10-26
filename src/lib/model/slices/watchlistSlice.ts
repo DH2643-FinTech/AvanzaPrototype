@@ -26,7 +26,7 @@ export const fetchWatchlist = createAsyncThunk(
     'watchlist/fetchWatchlist',
     async (_, { rejectWithValue }) => {
         try {
-            const data = await fetch('/api/watchlist');
+            const data = await fetch('/api/account/user/watchlist');
             if (!data.ok) {
                 return rejectWithValue('Failed to fetch watchlist');
             }
@@ -42,7 +42,7 @@ export const addToWatchlist = createAsyncThunk(
     'watchlist/addToWatchlist',
     async (stockId: string, { rejectWithValue }) => {
         try {
-          const res = await fetch(`/api/watchlist/`, {
+          const res = await fetch(`/api/account/user/watchlist/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export const removeFromWatchlist = createAsyncThunk(
     'watchlist/removeFromWatchlist',
     async (stockId: string, { rejectWithValue }) => {
         try {
-            const res = await fetch(`/api/watchlist/`, {
+            const res = await fetch(`/api/account/user/watchlist/`, {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',

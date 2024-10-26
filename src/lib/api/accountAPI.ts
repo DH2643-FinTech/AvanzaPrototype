@@ -1,5 +1,5 @@
 export const fetchEmailRecoveryToken = async (email: string) => {
-  const response = await fetch("/api/password-reset", {
+  const response = await fetch("/api/account/user/password/password-reset", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +13,7 @@ export const fetchEmailRecoveryToken = async (email: string) => {
 };
 
 export const registerNewUser = async (email: string, password: string) => {
-  const res = await fetch("/api/register-verify", {
+  const res = await fetch("/api/account/verification/register-verify", {
     method: "POST",
     body: JSON.stringify({
       email: email,
@@ -30,7 +30,7 @@ export const registerNewUser = async (email: string, password: string) => {
 };
 
 export const verifyUser = async (email: string, verificationCode: string) => {
-  const res = await fetch("/api/verify", {
+  const res = await fetch("/api/account/verification/verify", {
     method: "POST",
     body: JSON.stringify({ email, code: verificationCode }),
     headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ export const verifyUser = async (email: string, verificationCode: string) => {
 };
 
 export const resendVerificationCode = async (email: string, password: string) => {
-  const res = await fetch("/api/register-verify", {
+  const res = await fetch("/api/account/verification/register-verify", {
     method: "POST",
     body: JSON.stringify({
       email: email,
@@ -55,7 +55,7 @@ export const resendVerificationCode = async (email: string, password: string) =>
 };
 
 export const verificationController = async (email: string) => {
-  const response = await fetch('/api/verify-controll', {
+  const response = await fetch('/api/account/verification/verify-controll', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
