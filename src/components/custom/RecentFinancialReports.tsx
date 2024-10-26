@@ -12,8 +12,9 @@ import {
 } from "@/components/shadcn/pagination";
 
 import { Skeleton } from "@/components/shadcn/skeleton";
+import { OverviewViewProps } from "@/app/company/overview/overviewTypes";
 
-const RecentFinancialReports = (props: any) => {
+const RecentFinancialReports = (props: OverviewViewProps) => {
   // const router = useRouter();
   const { reports, loading, error } = props.reports;
   const [currentPage, setCurrentPage] = useState(1);

@@ -13,13 +13,6 @@ import { Button } from "../shadcn/button";
 import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
-import {
-  fetchEmailRecoveryToken,
-  registerNewUser,
-  verificationController,
-  verifyUser,
-} from "@/lib/api/accountAPI";
-import { sendPasswordResetEmail } from "@/lib/services/email_service";
 import { LoginProps } from "@/app/_navbar/navbarTypes";
 
 

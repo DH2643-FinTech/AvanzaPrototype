@@ -1,9 +1,10 @@
 "use client";
 
+import { AddToWatchlistProps } from "@/app/company/stock/[id]/stockTypes";
 import { Button } from "../shadcn/button";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function AddToFavoritesButton(props: any) {
+export default function AddToFavoritesButton(props: Readonly<AddToWatchlistProps>) {
   
 const { stockId, isFavorite, toggleFavorites } = props;
 

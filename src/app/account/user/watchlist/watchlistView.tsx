@@ -1,7 +1,8 @@
 // @/views/WatchlistView/WatchlistView.tsx
 import {ToggleSingInSignUpForm, WatchlistTable} from "@/components/custom";
+import { WatchListPresenterProps } from "./watchlistTypes";
 
-const WatchlistView = (props: any) => {
+const WatchlistView = (props: WatchListPresenterProps) => {
   const { status } = props;
 
   return (

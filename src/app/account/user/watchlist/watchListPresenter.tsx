@@ -5,14 +5,14 @@ import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlis
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 
-type SortField =
+export type SortField =
   | "_id"
   | "name"
   | "lastPrice"
   | "change"
   | "changePercent"
   | "totalNumberOfShares";
-type SortOrder = "asc" | "desc";
+export type SortOrder = "asc" | "desc";
 
 const WatchListPresenter = () => {
   const { data: session, status } = useSession();
@@ -81,11 +81,10 @@ const WatchListPresenter = () => {
 
   return (
     <WatchlistView
-    //   signUp={handleSignUp}
-    //   signIn={handleSignIn}
+      //   signUp={handleSignUp}
+      //   signIn={handleSignIn}
       status={status}
-      watchlistTableProps={watchlistTableProps}
-    />
+      watchlistTableProps={watchlistTableProps} session={session}    />
   );
 };
 

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   CompanyState,
-  avanzaData,
+  AvanzaData,
 } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
 import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyAPI";
@@ -30,6 +30,7 @@ const companySlice = createSlice({
       state.searchParams = {
         ...state.searchParams,
         resolution: action.payload,
+        name: state.searchParams?.name || "",
       };
     },
     setSearchParamName:(state, action: PayloadAction<string>) => {
@@ -56,6 +57,7 @@ const companySlice = createSlice({
         ...state.searchParams,
         startDate: action.payload.startDate,
         endDate: action.payload.endDate,
+        name: state.searchParams?.name || "",
       };
     },
     setCompanies: (state, action: PayloadAction<CompanyID[]>) => {
@@ -69,7 +71,7 @@ const companySlice = createSlice({
     });
     builder.addCase(
       fetchCompanyDetails.fulfilled,
-      (state, action: PayloadAction<avanzaData | string>) => {
+      (state, action: PayloadAction<AvanzaData | string>) => {
         state.loading = false;
         if (typeof action.payload === "string") {
           state.error = action.payload;

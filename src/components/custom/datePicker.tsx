@@ -13,11 +13,11 @@ import {
 import { Label } from "../shadcn/label";
 import { useState } from "react";
 
-export const DatePickerComp = (props: any) => {
+export const DatePickerComp = ({setStockTimeInterval}:{setStockTimeInterval: (interval: { startDate: string; endDate: string }) => void}) => {
   const [from, setFrom] = useState(new Date());
   const [to, setTo] = useState(new Date());
   const handleFetch = () => {
-    props.setStockTimeInterval({
+    setStockTimeInterval({
       startDate: from.toString(),
       endDate: to.toString(),
     });

@@ -6,10 +6,11 @@ import {
 } from "@/components/shadcn/card";
 import { Badge } from "@/components/shadcn/badge";
 import { FileText } from "lucide-react";
+import { FinancialReportsState } from "@/lib/model/slices/financialReportsSlice";
 
-const RecentStockReports = (props: any) => {
+const RecentStockReports = ({reports}: {reports: FinancialReportsState} ) => {
 
-  const { reports: recentReports} = props.reports;
+  const { reports: recentReports} = reports;
   if (!recentReports) return null;
 
   return (

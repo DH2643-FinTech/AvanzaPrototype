@@ -1,15 +1,9 @@
 import React from 'react'
 import AboutUsView from './aboutUsView';
+import { TeamMember } from './aboutUsTypes';
 
 const aboutUsPresenter = () => {
 
-    interface TeamMember {
-        name: string;
-        role: string;
-        email: string;
-        github: string;
-        linkedin: string;
-      }
       
       const teamMembers: TeamMember[] = [
         {

@@ -27,8 +27,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function LineChartEquity(props: any) {
-  const { data } = props;
+export function LineChartEquity({ data }: { data: { date: string; equity: number; }[] }) {
+  // const { data } = props;
   return (
     <Card className="mt-6 w-3/5">
       <CardHeader>

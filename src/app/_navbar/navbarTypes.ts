@@ -29,7 +29,6 @@ export interface LoginProps {
     setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
   }
   
-  // Interface for Search Bar Props
   export interface SearchBarProps {
     search: string;
     showResults: boolean;
@@ -39,7 +38,6 @@ export interface LoginProps {
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   }
   
-  // Interface for NavbarPresenter Props
   export interface NavbarPresenterProps {
     sessionData: ReturnType<typeof useSession>;
     loginProps: LoginProps;

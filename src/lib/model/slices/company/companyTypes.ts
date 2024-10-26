@@ -26,10 +26,10 @@ export interface Stock{
     to: string; 
 }
 
-export interface avanzaData {
+export interface AvanzaData {
     stockData: Stock;
-    companyData: any;
-    id: any;
+    companyData: CompanyData;
+    id: string | undefined;
 }
 
 export interface CompanyState {
@@ -39,10 +39,142 @@ export interface CompanyState {
   error: string;
   companiesIds: CompanyID[];
   currentStock: Stock | null;
-  companyData: any;
-  searchParams: any;
+  companyData: CompanyData | null;
+  searchParams: {name: string, startDate?: string, endDate?: string, resolution?: string} | null;
 
 }
+
+
+
+/// company data
+export interface CompanyData {
+  stock: StockData;
+  company: CompanyInfo;
+  companyEvents: CompanyEvents;
+  companyOwners: CompanyOwners;
+  brokerTradeSummaries: BrokerTradeSummary[];
+  dividends: Dividends;
+  tradingTerms: TradingTerms;
+  fundExposures: FundExposure[];
+  esgView: ESGView;
+  trades: any[];
+  orderDepth: OrderDepth;
+  orderDepthLevels: any[];
+}
+
+interface StockData {
+  preferred: boolean;
+  depositoryReceipt: boolean;
+  numberOfShares: number;
+}
+
+export interface CompanyInfo {
+  companyId: string;
+  description: string;
+  ceo: string;
+  chairman: string;
+  totalNumberOfShares: number;
+  homepage: string;
+}
+
+interface CompanyEvents {
+  events: Event[];
+}
+
+interface Event {
+  date: string;
+  type: 'INTERIM_REPORT' | 'ANNUAL_REPORT' | 'GENERAL_MEETING';
+}
+
+interface CompanyOwners {
+  owners: Owner[];
+  updated: string;
+}
+
+interface Owner {
+  name: string;
+  percentOfCapital: number;
+  percentOfVotes: number;
+}
+
+interface BrokerTradeSummary {
+  // Define properties as needed
+}
+
+interface Dividends {
+  events: DividendEvent[];
+  pastEvents: PastDividendEvent[];
+}
+
+interface DividendEvent {
+  // Define properties as needed
+}
+
+interface PastDividendEvent {
+  exDate: string;
+  amount: number;
+  currencyCode: string;
+  dividendType: 'ORDINARY';
+}
+
+interface TradingTerms {
+  collateralValue: number;
+  marginRequirement: number;
+  shortSellable: boolean;
+  superInterestApproved: boolean;
+}
+
+interface FundExposure {
+  orderbookId: string;
+  name: string;
+  exposure: number;
+  instrumentType: 'FUND';
+  countryCode: string;
+  hasPosition: boolean;
+}
+
+interface ESGView {
+  companyEqualityView: CompanyEqualityView;
+  sustainabilityDevelopmentGoals: SustainabilityDevelopmentGoal[];
+  productInvolvements: ProductInvolvement[];
+}
+
+interface CompanyEqualityView {
+  womenOnBoard: number;
+  womenInSeniorManagment: number;
+  womenInWorkforce: number;
+  womenOnBoardYear: number;
+  womenInSeniorManagmentYear: number;
+  womenInWorkforceYear: number;
+}
+
+interface SustainabilityDevelopmentGoal {
+  year: number;
+  value: number;
+  name: string;
+  title: string;
+}
+
+interface ProductInvolvement {
+  year: number;
+  value: number;
+  name: string;
+  title: string;
+}
+
+
+
+interface OrderDepth {
+  receivedTime: number;
+  levels: any[];
+}
+
+
+
+
+
+
+
 
 export interface AvanzaUrlParams {
   companyIds: number[];

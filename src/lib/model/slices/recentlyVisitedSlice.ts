@@ -7,7 +7,7 @@ export interface RecentlyVisitedStock {
     price: number;
 }
 
-interface RecentlyVisitedState {
+export interface RecentlyVisitedState {
     stocks: RecentlyVisitedStock[];
 }
 

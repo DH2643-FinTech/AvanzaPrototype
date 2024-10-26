@@ -31,6 +31,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/shadcn/tooltip";
+import { WatchlistTableProps } from "@/app/account/user/watchlist/watchlistTypes";
+import { Company } from "../../../interfaces";
 
 type SortField =
   | "_id"
@@ -41,7 +43,7 @@ type SortField =
   | "totalNumberOfShares";
 type SortOrder = "asc" | "desc";
 
-export default function WatchlistTable(props: any) {
+export default function WatchlistTable(props: WatchlistTableProps) {
 
 
 
@@ -71,7 +73,7 @@ export default function WatchlistTable(props: any) {
   const filteredAndSortedCompanies = useMemo(() => {
     return watchlistCompanies
       .filter(
-        (company: any) =>
+        (company: Company) =>
           company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           company._id.toLowerCase().includes(searchTerm.toLowerCase())
       )
@@ -101,8 +103,8 @@ export default function WatchlistTable(props: any) {
     return filteredAndSortedCompanies
       .slice(startIndex, startIndex + rowsPerPage)
       .map(
-        (company: any) =>
-          watchlistDetails?.find((c:any) => c._id === company._id) || company
+        (company: Company) =>
+          watchlistDetails?.find((c:Company) => c._id === company._id) || company
       );
   }, [filteredAndSortedCompanies, currentPage]);
 
@@ -165,7 +167,7 @@ export default function WatchlistTable(props: any) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedCompanies.map((company:any) => (
+            {paginatedCompanies.map((company:Company) => (
               <React.Fragment key={company._id}>
                 <TableRow
                   className="cursor-pointer"

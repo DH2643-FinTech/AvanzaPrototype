@@ -13,17 +13,18 @@ import { fetchRecentCompanyReports } from "@/lib/model/slices/financialReportsSl
 import {StockSkeleton} from "./StockView";
 import { useSession } from "next-auth/react";
 import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlistSlice";
+import { AddToWatchlistProps, StockGraphProps } from "./stockTypes";
 
 const StockPresenter = () => {
 
   const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
   const stockId = useAppSelector((state) => state.company.currentStock?.id);
-  const stockData = useAppSelector((state) => state.company.currentStock?.ohlc);
+  const stockData = useAppSelector((state) => state.company.currentStock?.ohlc) || [];
   const reports = useAppSelector((state) => state.financialReports);
 
 
-  const stockGraphProps = {
+  const stockGraphProps: StockGraphProps = {
     status,
     stockData,
     reports,
@@ -46,7 +47,7 @@ const StockPresenter = () => {
 
   const toggleFavorites = async () => {
     if(stockId === undefined) {
-      return null;
+      return;
     }
     if (isFavorite) {
       await dispatch(removeFromWatchlist(stockId));
@@ -56,8 +57,8 @@ const StockPresenter = () => {
     dispatch(fetchWatchlist());
   };
 
-  const addToWatchlistProps = {
-    stockId,
+  const addToWatchlistProps: AddToWatchlistProps = {
+    stockId: stockId ? parseInt(stockId) : undefined,
     isFavorite,
     toggleFavorites,
   }

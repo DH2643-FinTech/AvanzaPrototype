@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { TrendingUp, Eye, Info } from "lucide-react";
 import { Button } from "@/components/shadcn/button";
+import { SidebarProps } from "./sidebarTypes";
 
-const Sidebar = (props: any) => {
+const Sidebar = (props: SidebarProps) => {
 
   const {
     pathname,

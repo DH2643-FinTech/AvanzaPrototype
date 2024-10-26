@@ -25,8 +25,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function BarChartRevenue(props: any) {
-  const { data } = props;
+export function BarChartRevenue({data}: { data: {date: string; revenue: number}[]}) {
+  // const { data } = props;
   return (
     <Card className="mt-6 w-3/5">
       <CardHeader>

@@ -4,8 +4,8 @@ import { RootState } from "@/lib/model/store";
 
 // TODO: Use this slice for recent reports inside the company page as well
 
-interface FinancialReportsResponse {
-  incomeStatment: {
+export interface FinancialReportsResponse {
+  incomeStatement: {
     revenues: number;
     costOfGoodsSold: number;
     grossProfit: number;
@@ -43,7 +43,7 @@ interface FinancialReportsResponse {
   url: string;
 }
 
-interface FinancialReportsState {
+export interface FinancialReportsState {
   reports: {
     message: string;
     data: FinancialReportsResponse[];

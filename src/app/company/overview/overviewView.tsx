@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import {RecentFinancialReports} from "@/components/custom";
+import { OverviewViewProps } from "./overviewTypes";
 
-const OverviewView = (props:any) => {
+const OverviewView = (props:OverviewViewProps) => {
 
   return (
     <div className="flex border w-4/5 flex-col h-screen bg-white">

@@ -1,8 +1,9 @@
 
 import React from "react";
 import { Input } from "../shadcn/input";
+import { SearchBarProps } from "@/app/_navbar/navbarTypes";
 
-const AvanzaSearchBar = (props: any) => {
+const AvanzaSearchBar = (props: SearchBarProps) => {
 
   const {
     search,

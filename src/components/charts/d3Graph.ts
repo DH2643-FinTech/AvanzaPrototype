@@ -1,6 +1,14 @@
+import { StockInfo } from "@/lib/model/slices/company/companyTypes";
+import {
+  FinancialReportsResponse,
+  FinancialReportsState,
+} from "@/lib/model/slices/financialReportsSlice";
 import * as d3 from "d3";
 
-export const renderGraph = (stockData: any, report: any) => {
+export const renderGraph = (
+  stockData: StockInfo[] | [],
+  report: FinancialReportsState
+) => {
   const margin = { top: 70, right: 40, bottom: 50, left: 40 };
   const width = 1000 - margin.left - margin.right;
   const height = 600 - margin.top - margin.bottom;
@@ -15,7 +23,7 @@ export const renderGraph = (stockData: any, report: any) => {
   if (!loading) {
   }
 
-  const pastEventStockPair = reportData.map((d: any) => {
+  const pastEventStockPair = reportData.map((d: FinancialReportsResponse) => {
     const findStock = () => {
       for (let i = 0, j = 1; j < stockData.length; i++, j++) {
         if (
@@ -26,14 +34,22 @@ export const renderGraph = (stockData: any, report: any) => {
         }
       }
     };
+
+    const stockValue = findStock();
+
+
+const stock: number = stockValue !== undefined && !isNaN(stockValue) 
+    ? parseFloat(stockValue.toFixed(2)) 
+    : 0; 
+
     return {
       event: d.eventDate,
-      stock: findStock()?.toFixed(2) || 0,
+      stock: stock,
       eventDetails: { ...d },
     };
   });
 
-  const data = stockData.map((d: any) => ({
+  const data = stockData?.map((d: StockInfo) => ({
     ...d,
     Date: new Date(d.timestamp),
     Open: +d.open,
@@ -104,7 +120,6 @@ export const renderGraph = (stockData: any, report: any) => {
   const timeRange = Math.ceil(
     (xDomain[1].getTime() - xDomain[0].getTime()) / (1000 * 60 * 60 * 24)
   );
-
 
   let tickInterval: any;
   let tickFormat: any;
@@ -277,10 +292,30 @@ export const renderGraph = (stockData: any, report: any) => {
         `${d.Date !== undefined ? d.Date.toISOString().slice(0, 10) : "N/A"}`
       );
 
-    pastEventStockPair.map((data: any) => {
+    interface StockEvent {
+      event: Date;
+      stock: number;
+      eventDetails: {
+        incomeStatement: {
+          revenues: number;
+          costOfGoodsSold: number;
+          grossProfit: number;
+          operatingExpenses: number;
+          operatingProfit: number;
+          netProfit: number;
+        };
+
+        [key: string]: any;
+        url: string;
+      };
+    }
+
+    pastEventStockPair.map((data: StockEvent) => {
       const eventDate = new Date(data.event);
       const xPos = x(eventDate);
+
       const yPos = y(data.stock);
+
       const circle = svg
         .append("circle")
         .attr("cx", xPos)
@@ -303,15 +338,15 @@ export const renderGraph = (stockData: any, report: any) => {
             .style("left", `${event.pageX + 10}px`)
             .style("top", `${event.pageY - 20}px`)
             .style("position", "absolute")
-            .style("background-color", "#f9f9f9") 
+            .style("background-color", "#f9f9f9")
             .style("border", "1px solid #ccc")
             .style("padding", "12px")
             .style("border-radius", "6px")
             .style("font-size", "13px")
             .style("box-shadow", "0 4px 8px rgba(0, 0, 0, 0.1)")
             .style("pointer-events", "none")
-            .style("width", "280px") 
-            .style("color", "#333") 
+            .style("width", "280px")
+            .style("color", "#333")
             .style("line-height", "1.6").html(`
     <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">
       ${data.eventDetails?.eventTitle || "No Title"}
@@ -341,12 +376,13 @@ export const renderGraph = (stockData: any, report: any) => {
             .attr("r", 5)
             .attr("fill", "blue");
           d3.select(".report-tooltip").remove();
-        }).on("click", function () {
+        })
+        .on("click", function () {
           const url = data.eventDetails?.url;
           if (url) {
-            window.open(url, '_blank');
+            window.open(url, "_blank");
           }
-        });;
+        });
     });
 
     listeningRect.on("mouseleave", () => {
