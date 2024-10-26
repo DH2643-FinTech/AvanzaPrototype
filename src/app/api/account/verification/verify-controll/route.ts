@@ -7,10 +7,6 @@ export const POST = async (request: Request ) => {
     try {
         
         const { email } = await request.json();
-        
-        //const email = params.email; // Accessing the dynamic route parameter
-       // console.log(email); // Log the email to ensure it's captured
-
         if (!email) {
             return NextResponse.json(
                 { error: "Email query parameter is required" },

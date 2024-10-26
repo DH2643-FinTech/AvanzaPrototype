@@ -43,55 +43,7 @@ type SortOrder = "asc" | "desc";
 
 export default function WatchlistTable(props: any) {
 
-  //#region DEAD CODE
-  // const router = useRouter();
-  // const dispatch = useAppDispatch();
-  // const companies = useAppSelector((state) => state.company.companies);
 
-
-  // const watchlistDetails = useAppSelector(
-  //   (state) => state.watchlist.watchlistDetails
-  // );
-  // const currentStock = useAppSelector((state) => state.company.currentStock);
-
-
-  // const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [sortField, setSortField] = useState<SortField>("_id");
-  // const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const rowsPerPage = 10;
-
-  // useEffect(() => {
-  //   dispatch(fetchWatchlist());
-  // }, [dispatch]);
-
-  // const handleRemoveFromWatchlist = (stockId: string) => {
-  //   dispatch(removeFromWatchlist(stockId));
-  // };
-
-
-
-  // const toggleRow = (id: string) => {
-  //   setExpandedRow(expandedRow === id ? null : id);
-  // };
-
-
-
-  // const toggleSort = (field: SortField) => {
-  //   if (field === sortField) {
-  //     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  //   } else {
-  //     setSortField(field);
-  //     setSortOrder("asc");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setCurrentPage(1);
-  // }, [searchTerm]);
-
-//# endregion
 
   const {
     watchlistDetails,

@@ -66,11 +66,9 @@ const StockPresenter = () => {
 
 
   const { id } = useParams();
-  // const dispatch = useAppDispatch();
   const router = useRouter();
   const [firstTimeLoading, setFirstTimeLoading] = useState(true);
   const company = useAppSelector((state) => state.company);
-  // const reports = useAppSelector((state) => state.financialReports);
   const { companyData, currentStock, loading, error, searchParams } = company;
   const handleSetStockTimeInterval = ({
     startDate,

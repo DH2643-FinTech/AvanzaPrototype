@@ -17,45 +17,6 @@ type SortOrder = "asc" | "desc";
 const WatchListPresenter = () => {
   const { data: session, status } = useSession();
 
-  //#region DEAD CODE
-
-//   const handleSignIn = async (credProps: any) => {
-//     if (credProps.method === "google") {
-//       const response = await signIn("google");
-//       // console.log("success", response);
-//       return response;
-//     } else {
-//       const signInResponse = await signIn("credentials", {
-//         email: credProps.email,
-//         password: credProps.password,
-//         redirect: false,
-//       });
-//       return signInResponse;
-//     }
-//   };
-
-//   const handleSignUp = async (credProps: any) => {
-//     if (credProps.method === "google") {
-//       const response = await signIn("google");
-//       // console.log("success", response);
-//       return response;
-//     } else {
-//       const res = await fetch("/api/register", {
-//         method: "POST",
-//         body: JSON.stringify({
-//           email: credProps.email,
-//           password: credProps.password,
-//         }),
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-//       return res;
-//     }
-//   };
-
-  //#endregion
-
   const router = useRouter();
   const dispatch = useAppDispatch();
   const companies = useAppSelector((state) => state.company.companies);

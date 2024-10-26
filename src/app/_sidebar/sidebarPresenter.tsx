@@ -9,11 +9,6 @@ import { setSearchParamName } from '../../lib/model/slices/company/companySlice'
 import { useSession } from 'next-auth/react'
 import SidebarView from './sidebarView'
 
-// import Link from 'next/link'
-// import { stat } from 'fs'
-// import { TrendingUp, Eye, Info } from 'lucide-react'
-// import { Button } from "@/components/shadcn/button"
-
 const SidebarPresenter = () => {
 
     const pathname = usePathname();

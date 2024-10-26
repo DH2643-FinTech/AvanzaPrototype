@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "../shadcn/select";
 import { renderGraph } from "./d3Graph";
-// import AddToFavoritesButton from "@/components/custom/AddToFavoritesButton";
 
 const NewStockGraph = (props: any) => {
   const { status, stockData, reports } = props;

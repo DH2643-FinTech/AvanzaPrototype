@@ -12,66 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/shadcn/dropdown-menu";
 import {AvanzaSearchBar, ToggleSingInSignUpForm, ProfileAvatar} from "@/components/custom";
-// import ToggleSingInSignUpForm from "../../components/custom/toggleSingInSignUpForm";
-// import ProfileAvatar from "@/components/custom/ProfileAvatar";
+import { NavbarPresenterProps } from "./navbarTypes";
 
-const Navbar = (props: any) => {
-
-  //#region DEAD CODE
-
-  // const { data: session, status } = useSession();
-  // const companyIds = useAppSelector((state) => state.company.companiesIds);
-  // const router = useRouter();
-
-  // const dispatch = useAppDispatch();
-  // const handleSearchParam = (searchParam: any) => {
-  //   dispatch(setSearchParamName(searchParam));
-  //   const id = companyIds.find((company: { name: string; _id: string }) => company.name === searchParam)?._id;
-  //   router.push(`/company/stock/${id}`);
-  // };
-
-  // const handleSignIn = async (credProps: any) => {
-  //   if (credProps.method === "google") {
-  //     const response = await signIn("google");
-  //     return response;
-  //   } else {
-  //     const signInResponse = await signIn("credentials", {
-  //       email: credProps.email,
-  //       password: credProps.password,
-  //       redirect: false,
-  //     });
-  //     return signInResponse;
-  //   }
-  // };
-
-  // const handleSignUp = async (credProps: any) => {
-  //   if (credProps.method === "google") {
-  //     const response = await signIn("google");
-  //     return response;
-  //   } else {
-  //     const res = await fetch("/api/account/register", {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         email: credProps.email,
-  //         password: credProps.password,
-  //       }),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     return res;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const storedCompanyIds = localStorage.getItem("allCompanyIds");
-  //   if (!storedCompanyIds) {
-  //     dispatch(fetchAllCompanyIds());
-  //   } else {
-  //     dispatch(setCompanies(JSON.parse(storedCompanyIds)));
-  //   }
-  // }, []);
-  //#endregion
+const Navbar = (props: NavbarPresenterProps) => {
 
   const {sessionData: {data: session, status}} = props;
 
@@ -129,8 +72,6 @@ const Navbar = (props: any) => {
             </>
           ) : (
             <ToggleSingInSignUpForm
-              // signIn={signIn}
-              // signUp={signUp}
               {...props.loginProps}
             />
           )}
