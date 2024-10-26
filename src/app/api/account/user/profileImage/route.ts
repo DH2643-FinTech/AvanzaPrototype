@@ -28,8 +28,9 @@ export const POST = async (request: Request) => {
 
     const arrayBuffer = await imageFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+    console.log(user);
 
-    const blobName = user._id.toString();
+    //const blobName = user._id.toString();
 
 
     await uploadToAzureBlob("profile-pictures", blobName, buffer);
