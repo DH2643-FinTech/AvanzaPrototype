@@ -4,8 +4,6 @@ import clientPromise from "@/lib/integeration/mongodb";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-//Watchlist route
-
 export const GET = async (request: Request) => {
   try {
     const session = await getServerSession();
