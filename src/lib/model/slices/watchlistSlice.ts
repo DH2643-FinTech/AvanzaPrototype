@@ -1,7 +1,7 @@
 // @/lib/features/watchlist/watchlistSlice.ts
 
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '@/lib/store/store';
+import { RootState } from '@/lib/model/store';
 import { Company } from '@/../interfaces';
 
 

@@ -1,10 +1,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Input } from "../shadcn/input";
-import { useAppSelector, useAppDispatch } from "@/lib/store/store";
-import { fetchAllCompanyIds } from "@/lib/store/slices/company/companyAPI";
-import { fetchCompanyDetails } from "@/lib/store/slices/company/companyAPI";
-import { setCompanies } from "@/lib/store/slices/company/companySlice";
+import { useAppSelector, useAppDispatch } from "@/lib/model/store";
+import { fetchAllCompanyIds } from "@/lib/model/slices/company/companyAPI";
+import { fetchCompanyDetails } from "@/lib/model/slices/company/companyAPI";
+import { setCompanies } from "@/lib/model/slices/company/companySlice";
 
 const AvanzaSearchBar = (props: any) => {
   const [search, setSearch] = useState("");

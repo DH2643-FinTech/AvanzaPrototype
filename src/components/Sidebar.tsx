@@ -4,11 +4,11 @@ import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { TrendingUp, Eye, Info } from 'lucide-react'
 import { Button } from "@/components/shadcn/button"
-import { useAppSelector } from "@/lib//store/store"
-import { selectRecentlyVisited } from "@/lib/store/slices/recentlyVisitedSlice"
-import { useAppDispatch } from '../lib/store/store'
-import { fetchRecentCompanyReports } from '../lib/store/slices/financialReportsSlice'
-import { setSearchParamName } from '../lib/store/slices/company/companySlice'
+import { useAppSelector } from "@/lib/model/store"
+import { selectRecentlyVisited } from "@/lib/model/slices/recentlyVisitedSlice"
+import { useAppDispatch } from '../lib/model/store'
+import { fetchRecentCompanyReports } from '../lib/model/slices/financialReportsSlice'
+import { setSearchParamName } from '../lib/model/slices/company/companySlice'
 import { useSession } from 'next-auth/react'
 import { stat } from 'fs'
 

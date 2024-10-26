@@ -1,10 +1,10 @@
 // src/app/overview/page.tsx
 'use client';
 import React, { useEffect } from 'react';
-import { fetchHighlightedStocks } from "@/lib/store/slices/highlightedStocksSlice";
-import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/store/slices/financialReportsSlice";
+import { fetchHighlightedStocks } from "@/lib/model/slices/highlightedStocksSlice";
+import { fetchFinancialReports, fetchRecentCompanyReports } from "@/lib/model/slices/financialReportsSlice";
 // import OverviewView from '@/app/overview/overviewView';
-import { setSearchParamName } from '@/lib/store/slices/company/companySlice';
+import { setSearchParamName } from '@/lib/model/slices/company/companySlice';
 import { useRouter } from 'next/navigation';
 import OverviewPresenter from './overviewPresenter';
 

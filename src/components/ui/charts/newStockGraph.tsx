@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useAppSelector } from "@/lib/store/store";
+import { useAppSelector } from "@/lib/model/store";
 import { DatePickerComp } from "../datePicker";
 import {
   Select,

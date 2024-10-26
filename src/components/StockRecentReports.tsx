@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/lib/store/store";
+import { useAppSelector } from "@/lib/model/store";
 import {
   Card,
   CardContent,

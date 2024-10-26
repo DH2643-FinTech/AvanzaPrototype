@@ -8,7 +8,7 @@ import {
 } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
 import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyAPI";
-import { RootState } from "@/lib/store/store";
+import { RootState } from "@/lib/model/store";
 import { mockAppleData } from "./mockStockData";
 
 const initialState: CompanyState = {

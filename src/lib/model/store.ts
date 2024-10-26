@@ -3,12 +3,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import companyReducer, {
   setSearchParamName,
   setSearchParamTimeInterval,
-} from "@/lib/store/slices/company/companySlice";
-import { fetchCompanyDetails } from "@/lib/store/slices/company/companyAPI";
-import watchlistReducer from "@/lib/store/slices/watchlistSlice";
-import recentlyVisitedReducer from "@/lib/store/slices/recentlyVisitedSlice";
-import highlightedStocksReducer from "@/lib/store/slices/highlightedStocksSlice";
-import financialReportsReducer from "@/lib/store/slices/financialReportsSlice";
+} from "@/lib/model/slices/company/companySlice";
+import { fetchCompanyDetails } from "@/lib/model/slices/company/companyAPI";
+import watchlistReducer from "@/lib/model/slices/watchlistSlice";
+import recentlyVisitedReducer from "@/lib/model/slices/recentlyVisitedSlice";
+import highlightedStocksReducer from "@/lib/model/slices/highlightedStocksSlice";
+import financialReportsReducer from "@/lib/model/slices/financialReportsSlice";
 
 const listenerMiddleware = createListenerMiddleware();
 

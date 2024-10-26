@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "./shadcn/button";
-import { addToWatchlist, fetchWatchlist, removeFromWatchlist, selectWatchlistStocks } from "../lib/store/slices/watchlistSlice";
-import { useAppDispatch,useAppSelector } from "../lib/store/store";
+import { addToWatchlist, fetchWatchlist, removeFromWatchlist, selectWatchlistStocks } from "../lib/model/slices/watchlistSlice";
+import { useAppDispatch,useAppSelector } from "../lib/model/store";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function AddToFavoritesButton(props: { stockId: string | undefined }) {

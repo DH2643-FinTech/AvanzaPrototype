@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/lib//store/store";
+import { useAppDispatch, useAppSelector } from "@/lib/model/store";
 import {
   fetchWatchlist,
   removeFromWatchlist,
   selectWatchlistStocks,
-} from "@/lib/store/slices/watchlistSlice";
+} from "@/lib/model/slices/watchlistSlice";
 import {
   Table,
   TableBody,

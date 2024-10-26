@@ -1,4 +1,4 @@
-import { AvanzaUrlParams, ServerCompaniesUrlParams } from "../store/slices/company/companyTypes";
+import { AvanzaUrlParams, ServerCompaniesUrlParams } from "../model/slices/company/companyTypes";
 
 export const avanzaUrlBuilder = (params: AvanzaUrlParams): string[] => {
   const { companyIds, timePeriod = "one_month" } = params;
