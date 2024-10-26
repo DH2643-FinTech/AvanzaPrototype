@@ -1,6 +1,6 @@
 // @/views/WatchlistView/WatchlistView.tsx
-import WatchlistTable from "@/components/WatchlistTable";
-import ToggleSingInSignUpForm from "@/components/ui/toggleSingInSignUpForm";
+// import WatchlistTable from "@/components/custom/WatchlistTable";
+import {ToggleSingInSignUpForm, WatchlistTable} from "@/components/custom";
 
 const WatchlistView = (props: any) => {
   const { status } = props;

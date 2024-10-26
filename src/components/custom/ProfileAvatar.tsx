@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Dialog,  DialogContent, DialogTrigger, DialogHeader, DialogDescription, DialogTitle, DialogFooter } from '@/components/shadcn/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from './shadcn/avatar';
-import { Input } from './shadcn/input';
-import { Button } from './shadcn/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../shadcn/avatar';
+import { Input } from '../shadcn/input';
+import { Button } from '../shadcn/button';
 import { useSession } from 'next-auth/react';
 
 const baseImageUrl = 'https://dh2643images.blob.core.windows.net/profile-pictures/';

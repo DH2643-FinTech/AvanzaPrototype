@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import RecentFinancialReports from "@/components/RecentFinancialReports";
+import {RecentFinancialReports} from "@/components/custom";
 
 const OverviewView = (props:any) => {
 

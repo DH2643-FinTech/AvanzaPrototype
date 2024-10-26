@@ -1,6 +1,6 @@
 // @/views/StockView/StockView.tsx
-import StockInfo from "@/components/StockInfo";
-import StockRecentReports from "@/components/StockRecentReports";
+// import StockInfo from "@/components/custom/StockInfo";
+import {RecentStockReports, StockInfo} from "@/components/custom";
 import {
   Card,
   CardContent,
@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from "@/components/shadcn/card";
 import { Badge } from "@/components/shadcn/badge";
-import NewStockGraph from "@/components/ui/charts/stockGraph";
-import { BarChartRevenue } from "@/components/ui/charts/barChartRevenue";
-import { LineChartEquity } from "@/components/ui/charts/lineChartEquity";
+import NewStockGraph from "@/components/charts/stockGraph";
+import { BarChartRevenue } from "@/components/charts/barChartRevenue";
+import { LineChartEquity } from "@/components/charts/lineChartEquity";
 import { Skeleton } from "@/components/shadcn/skeleton";
 
 export const StockSkeleton = () =>{
@@ -172,7 +172,7 @@ const StockView = (props: any) => {
             </p>
           </div>
         </div>
-        <StockRecentReports reports={props.reports} />
+        <RecentStockReports reports={props.reports} />
       </main>
     </div>
     // </div>

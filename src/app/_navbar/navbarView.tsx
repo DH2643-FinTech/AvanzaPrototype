@@ -11,9 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/shadcn/dropdown-menu";
-import AvanzaSearchBar from "@/components/ui/avanzaSearchBar";
-import ToggleSingInSignUpForm from "../../components/ui/toggleSingInSignUpForm";
-import ProfileAvatar from "../../components/ProfileAvatar";
+import {AvanzaSearchBar, ToggleSingInSignUpForm, ProfileAvatar} from "@/components/custom";
+// import ToggleSingInSignUpForm from "../../components/custom/toggleSingInSignUpForm";
+// import ProfileAvatar from "@/components/custom/ProfileAvatar";
 
 const Navbar = (props: any) => {
 

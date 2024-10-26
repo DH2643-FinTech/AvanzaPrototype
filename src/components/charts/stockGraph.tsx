@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { DatePickerComp } from "../datePicker";
+import { DatePickerComp, AddToFavoritesButton } from "@/components/custom";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../shadcn/select";
+} from "../shadcn/select";
 import { renderGraph } from "./d3Graph";
-import AddToFavoritesButton from "../../AddToFavoritesButton";
+// import AddToFavoritesButton from "@/components/custom/AddToFavoritesButton";
 
 const NewStockGraph = (props: any) => {
   const { status, stockData, reports } = props;

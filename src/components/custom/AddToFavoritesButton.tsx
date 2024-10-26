@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "./shadcn/button";
+import { Button } from "../shadcn/button";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function AddToFavoritesButton(props: any) {
