@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import WatchlistView from "./watchlistView";
 import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlistSlice";
 import { useRouter } from "next/navigation";
@@ -81,8 +81,6 @@ const WatchListPresenter = () => {
 
   return (
     <WatchlistView
-      //   signUp={handleSignUp}
-      //   signIn={handleSignIn}
       status={status}
       watchlistTableProps={watchlistTableProps} session={session}    />
   );

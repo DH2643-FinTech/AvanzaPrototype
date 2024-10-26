@@ -1,6 +1,4 @@
 "use client";
-
-import { TrendingUp } from "lucide-react";
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 
 import {
@@ -28,7 +26,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function LineChartEquity({ data }: { data: { date: string; equity: number; }[] }) {
-  // const { data } = props;
   return (
     <Card className="mt-6 w-3/5">
       <CardHeader>

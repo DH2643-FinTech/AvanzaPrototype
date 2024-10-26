@@ -1,12 +1,5 @@
 import React, {  useMemo, useEffect } from "react";
 
-// import { useRouter } from "next/navigation";
-// import { useAppDispatch, useAppSelector } from "@/lib/model/store";
-// import {
-//   fetchWatchlist,
-//   removeFromWatchlist,
-// } from "@/lib/model/slices/watchlistSlice";
-
 import {
   Table,
   TableBody,
@@ -67,7 +60,6 @@ export default function WatchlistTable(props: WatchlistTableProps) {
 
   const watchlistCompanies = useMemo(() => {
     return watchlistDetails || companies;
-    //return companies.filter(company => watchlistStocks.includes(company._id));
   }, [companies, watchlistDetails]);
 
   const filteredAndSortedCompanies = useMemo(() => {

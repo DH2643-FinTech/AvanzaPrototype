@@ -1,13 +1,10 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/shadcn/card";
@@ -26,7 +23,6 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function BarChartRevenue({data}: { data: {date: string; revenue: number}[]}) {
-  // const { data } = props;
   return (
     <Card className="mt-6 w-3/5">
       <CardHeader>
@@ -72,8 +68,6 @@ export function BarChartRevenue({data}: { data: {date: string; revenue: number}[
           </BarChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm"> */}
-      {/* </CardFooter> */}
     </Card>
   );
 }

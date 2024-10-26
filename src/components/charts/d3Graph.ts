@@ -37,10 +37,10 @@ export const renderGraph = (
 
     const stockValue = findStock();
 
-
-const stock: number = stockValue !== undefined && !isNaN(stockValue) 
-    ? parseFloat(stockValue.toFixed(2)) 
-    : 0; 
+    const stock: number =
+      stockValue !== undefined && !isNaN(stockValue)
+        ? parseFloat(stockValue.toFixed(2))
+        : 0;
 
     return {
       event: d.eventDate,
@@ -313,9 +313,7 @@ const stock: number = stockValue !== undefined && !isNaN(stockValue)
     pastEventStockPair.map((data: StockEvent) => {
       const eventDate = new Date(data.event);
       const xPos = x(eventDate);
-
       const yPos = y(data.stock);
-
       const circle = svg
         .append("circle")
         .attr("cx", xPos)

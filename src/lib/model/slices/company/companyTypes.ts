@@ -162,20 +162,12 @@ interface ProductInvolvement {
   title: string;
 }
 
-
-
 interface OrderDepth {
   receivedTime: number;
   levels: any[];
 }
 
-
-
-
-
-
-
-
+// AVANZA API
 export interface AvanzaUrlParams {
   companyIds: number[];
   timePeriod?: string;

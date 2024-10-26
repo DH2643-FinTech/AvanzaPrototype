@@ -1,21 +1,7 @@
 // StockPresenter.types.ts
 
-import { CompanyData, CompanyInfo, CompanyState, StockInfo } from "@/lib/model/slices/company/companyTypes";
+import {  CompanyState, StockInfo } from "@/lib/model/slices/company/companyTypes";
 import { FinancialReportsState } from "@/lib/model/slices/financialReportsSlice";
-
-// Define types for individual components, e.g., for stock data, reports, company details, etc.
-// export interface StockData {
-//     id: number;
-//     ohlc: { close: number }[]; // Adjust structure as per actual data
-//   }
-  
-//   export interface Report {
-//     id: number;
-//     year: number;
-//     revenue: number;
-//     profit: number;
-//     // Add any other properties you have
-//   }
   
   export interface WatchlistDetails {
     _id: string;
@@ -42,11 +28,4 @@ import { FinancialReportsState } from "@/lib/model/slices/financialReportsSlice"
     addToWatchlistProps: AddToWatchlistProps;
   }
   
-//   export interface Company {
-//     companyData: any; // Define this type in more detail based on your company's structure
-//     currentStock: StockData | null;
-//     loading: boolean;
-//     error: boolean;
-//     searchParams: any; // Define this as per actual structure
-//   }
   

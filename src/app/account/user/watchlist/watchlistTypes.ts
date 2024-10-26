@@ -1,14 +1,13 @@
-// WatchListPresenter.types.ts
 
 import { Session } from "next-auth";
-import { Company } from "@/../interfaces"; // Adjust these imports based on your actual types
-import { SortField, SortOrder } from "./watchListPresenter"; // Or define them here if they?re only used in this component
+import { Company } from "@/../interfaces"; 
+import { SortField, SortOrder } from "./watchListPresenter"; 
 import { useRouter } from "next/navigation";
 import { Stock } from "@/lib/model/slices/company/companyTypes";
 
 export interface WatchlistTableProps {
-  watchlistDetails: Company[] | null; // Adjust the type based on actual structure
-  currentStock: Stock | null; // Adjust based on actual structure
+  watchlistDetails: Company[] | null; 
+  currentStock: Stock | null; 
   companies: Company[];
   expandedRow: string | null;
   toggleRow: (id: string) => void;

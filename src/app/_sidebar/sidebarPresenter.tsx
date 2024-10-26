@@ -1,13 +1,14 @@
 "use client"
 
-import { usePathname, useRouter } from 'next/navigation'
-import { useAppSelector } from "@/lib/model/store"
-import { selectRecentlyVisited } from "@/lib/model/slices/recentlyVisitedSlice"
-import { useAppDispatch } from '../../lib/model/store'
-import { fetchRecentCompanyReports } from '../../lib/model/slices/financialReportsSlice'
-import { setSearchParamName } from '../../lib/model/slices/company/companySlice'
-import { useSession } from 'next-auth/react'
 import SidebarView from './sidebarView'
+import { useSession } from 'next-auth/react'
+import { useAppSelector } from "@/lib/model/store"
+import { useAppDispatch } from '../../lib/model/store'
+import { usePathname, useRouter } from 'next/navigation'
+import { selectRecentlyVisited } from "@/lib/model/slices/recentlyVisitedSlice"
+import { setSearchParamName } from '../../lib/model/slices/company/companySlice'
+import { fetchRecentCompanyReports } from '../../lib/model/slices/financialReportsSlice'
+import { SidebarProps } from './sidebarTypes'
 
 const SidebarPresenter = () => {
 
@@ -25,9 +26,8 @@ const SidebarPresenter = () => {
               dispatch(setSearchParamName(searchParam));
           
     }
-
     
-    const sidebarProps = {
+    const sidebarProps: SidebarProps = {
         pathname,
         session,
         status,
