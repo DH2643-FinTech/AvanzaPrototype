@@ -9,7 +9,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Navbar from "../components/Navbar";
+import Navbar from "./_navbar/navbarView";
+import NavbarPresenter from "./_navbar/navbarPresenter";
 import Sidebar from "../components/Sidebar";
 
 export default function RootLayout({
@@ -32,7 +33,7 @@ export default function RootLayout({
         <AuthProvider>
           <StoreProvider>
             <div className="flex flex-col">
-              <Navbar />
+              <NavbarPresenter />
               <div className="flex flex-row overflow-hidden">
                 <Sidebar />
                 {children}

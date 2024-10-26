@@ -12,70 +12,76 @@ import {
   DropdownMenuTrigger,
 } from "@/components/shadcn/dropdown-menu";
 import AvanzaSearchBar from "@/components/ui/avanzaSearchBar";
-import ToggleSingInSignUpForm from "./ui/toggleSingInSignUpForm";
-import { useAppDispatch, useAppSelector } from "../lib/model/store";
+import ToggleSingInSignUpForm from "../../components/ui/toggleSingInSignUpForm";
+import { useAppDispatch, useAppSelector } from "../../lib/model/store";
 import { useEffect } from "react";
-import { fetchAllCompanyIds } from "../lib/model/slices/company/companyAPI";
+import { fetchAllCompanyIds } from "../../lib/model/slices/company/companyAPI";
 import {
   setCompanies,
   setSearchParamName,
-} from "../lib/model/slices/company/companySlice";
+} from "../../lib/model/slices/company/companySlice";
 import { useRouter } from "next/navigation";
-import ProfileAvatar from "./ProfileAvatar";
+import ProfileAvatar from "../../components/ProfileAvatar";
 
 const Navbar = (props: any) => {
-  const { data: session, status } = useSession();
-  const companyIds = useAppSelector((state) => state.company.companiesIds);
-  const router = useRouter();
 
-  const dispatch = useAppDispatch();
-  const handleSearchParam = (searchParam: any) => {
-    dispatch(setSearchParamName(searchParam));
-    const id = companyIds.find((company: { name: string; _id: string }) => company.name === searchParam)?._id;
-    router.push(`/company/stock/${id}`);
-  };
+  //#region DEAD CODE
 
-  const handleSignIn = async (credProps: any) => {
-    if (credProps.method === "google") {
-      const response = await signIn("google");
-      return response;
-    } else {
-      const signInResponse = await signIn("credentials", {
-        email: credProps.email,
-        password: credProps.password,
-        redirect: false,
-      });
-      return signInResponse;
-    }
-  };
+  // const { data: session, status } = useSession();
+  // const companyIds = useAppSelector((state) => state.company.companiesIds);
+  // const router = useRouter();
 
-  const handleSignUp = async (credProps: any) => {
-    if (credProps.method === "google") {
-      const response = await signIn("google");
-      return response;
-    } else {
-      const res = await fetch("/api/account/register", {
-        method: "POST",
-        body: JSON.stringify({
-          email: credProps.email,
-          password: credProps.password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return res;
-    }
-  };
+  // const dispatch = useAppDispatch();
+  // const handleSearchParam = (searchParam: any) => {
+  //   dispatch(setSearchParamName(searchParam));
+  //   const id = companyIds.find((company: { name: string; _id: string }) => company.name === searchParam)?._id;
+  //   router.push(`/company/stock/${id}`);
+  // };
 
-  useEffect(() => {
-    const storedCompanyIds = localStorage.getItem("allCompanyIds");
-    if (!storedCompanyIds) {
-      dispatch(fetchAllCompanyIds());
-    } else {
-      dispatch(setCompanies(JSON.parse(storedCompanyIds)));
-    }
-  }, []);
+  // const handleSignIn = async (credProps: any) => {
+  //   if (credProps.method === "google") {
+  //     const response = await signIn("google");
+  //     return response;
+  //   } else {
+  //     const signInResponse = await signIn("credentials", {
+  //       email: credProps.email,
+  //       password: credProps.password,
+  //       redirect: false,
+  //     });
+  //     return signInResponse;
+  //   }
+  // };
+
+  // const handleSignUp = async (credProps: any) => {
+  //   if (credProps.method === "google") {
+  //     const response = await signIn("google");
+  //     return response;
+  //   } else {
+  //     const res = await fetch("/api/account/register", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         email: credProps.email,
+  //         password: credProps.password,
+  //       }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     return res;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const storedCompanyIds = localStorage.getItem("allCompanyIds");
+  //   if (!storedCompanyIds) {
+  //     dispatch(fetchAllCompanyIds());
+  //   } else {
+  //     dispatch(setCompanies(JSON.parse(storedCompanyIds)));
+  //   }
+  // }, []);
+  //#endregion
+
+  const {sessionData: {data: session, status}, setSearchParam} = props;
 
   return (
     <header className="border-b flex items-center">
@@ -89,7 +95,7 @@ const Navbar = (props: any) => {
       </div>
       <div className="flex-grow flex items-center justify-between p-4">
         <div className="flex-grow max-w-3xl">
-          <AvanzaSearchBar setSearchParam={handleSearchParam} />
+          <AvanzaSearchBar setSearchParam={setSearchParam} />
         </div>
         <div className="flex items-center">
           {status === "authenticated" ? (
@@ -131,8 +137,9 @@ const Navbar = (props: any) => {
             </>
           ) : (
             <ToggleSingInSignUpForm
-              signIn={handleSignIn}
-              signUp={handleSignUp}
+              // signIn={signIn}
+              // signUp={signUp}
+              {...props.loginProps}
             />
           )}
         </div>

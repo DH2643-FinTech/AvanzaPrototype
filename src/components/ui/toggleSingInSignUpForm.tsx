@@ -21,166 +21,199 @@ import {
 } from "@/lib/api/accountAPI";
 import { sendPasswordResetEmail } from "@/lib/services/email_service";
 
-interface Props {
-  signIn: (credProps: any) => Promise<any>;
-  signUp: (credProps: any) => Promise<any>;
-}
-const ToggleSingInSignUpForm = (props: Props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [status, setStatus] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
-  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
-    useState(false);
-  const [isVerificationDialogOpen, setIsVerificationDialogOpen] =
-    useState(false);
-  const handleSignInWithGoogle = () => {
-    const response = signIn("google");
-  };
 
-  const handleSignInWithCredentials = async () => {
-    try {
-      const { status } = await verificationController(email);
-      if (status === 200) {
-        const signInResponse = await signIn("credentials", {
-          email: email,
-          password: password,
-          redirect: false,
-        });
+const ToggleSingInSignUpForm = (props: any) => {
 
-        if (signInResponse && !signInResponse.error) {
-          setEmail("");
-          setPassword("");
-        } else {
-          setStatus("Invalid email or password.");
-        }
-      } else if (status === 201) {
-        setStatus("You are not a verified user, please signup again!");
-      } else {
-        setStatus("An error occurred while verifying your account.");
-      }
-    } catch (error) {
-      setStatus(
-        "An error occurred during the sign-in process. Please try again."
-      );
-    }
-  };
+  
 
-  const handlePasswordResetRequest = async (e: any) => {
-    setStatus("");
-    e.preventDefault();
-    try {
-      const { ok, resetLink } = await fetchEmailRecoveryToken(email);
-      console.log(ok, resetLink);
-      if (!ok) {
-        setStatus(
-          "Failed to send reset email. Please check the email address."
-        );
-        return;
-      }
-      const emailRes = await sendPasswordResetEmail({ email, resetLink });
-      if (typeof emailRes === "object" && emailRes?.status === 200) {
-        setStatus("Password reset email sent!");
-      } else {
-        setStatus(
-          "Failed to send reset email. Please check the email address."
-        );
-        console.error("EmailJS response not successful:", emailRes);
-      }
-    } catch (error) {
-      console.log("Error sending password reset email:", error);
-      setStatus("Failed to send reset email. Please check the email address.");
-    }
-  };
+//#region DEAD CODE
 
-  const handleSignUpWithCredentials = async (e: any) => {
-    e.preventDefault();
-    try {
-      const { ok, verificationLink } = await registerNewUser(email, password);
-      if (!ok) {
-        setStatus("Sign up failed. Please check your details and try again.");
-        return;
-      }
-      const emailRes = await sendPasswordResetEmail({
-        email,
-        resetLink: verificationLink,
-      });
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  // const [status, setStatus] = useState("");
+  // const [verificationCode, setVerificationCode] = useState("");
+  // const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  // const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
+  // const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
+  //   useState(false);
+  // const [isVerificationDialogOpen, setIsVerificationDialogOpen] =
+  //   useState(false);
+  // const handleSignInWithGoogle = () => {
+  //   const response = signIn("google");
+  // };
 
-      setStatus(
-        "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-      );
-      setIsSignUpDialogOpen(false);
-      setIsVerificationDialogOpen(true);
-    } catch (error) {
-      console.error("Error during sign up:", error);
-      setStatus("An error occurred during sign up. Please try again.");
-    }
-  };
+  // const handleSignInWithCredentials = async () => {
+  //   try {
+  //     const { status } = await verificationController(email);
+  //     if (status === 200) {
+  //       const signInResponse = await signIn("credentials", {
+  //         email: email,
+  //         password: password,
+  //         redirect: false,
+  //       });
 
-  const handleSignUpWithGoogle = () => {
-    const response = signIn("google");
-  };
+  //       if (signInResponse && !signInResponse.error) {
+  //         setEmail("");
+  //         setPassword("");
+  //       } else {
+  //         setStatus("Invalid email or password.");
+  //       }
+  //     } else if (status === 201) {
+  //       setStatus("You are not a verified user, please signup again!");
+  //     } else {
+  //       setStatus("An error occurred while verifying your account.");
+  //     }
+  //   } catch (error) {
+  //     setStatus(
+  //       "An error occurred during the sign-in process. Please try again."
+  //     );
+  //   }
+  // };
 
-  const handleVerifyCode = async () => {
-    try {
-      const { ok } = await verifyUser(email, verificationCode);
+  // const handlePasswordResetRequest = async (e: any) => {
+  //   setStatus("");
+  //   e.preventDefault();
+  //   try {
+  //     const { ok, resetLink } = await fetchEmailRecoveryToken(email);
+  //     console.log(ok, resetLink);
+  //     if (!ok) {
+  //       setStatus(
+  //         "Failed to send reset email. Please check the email address."
+  //       );
+  //       return;
+  //     }
+  //     const emailRes = await sendPasswordResetEmail({ email, resetLink });
+  //     if (typeof emailRes === "object" && emailRes?.status === 200) {
+  //       setStatus("Password reset email sent!");
+  //     } else {
+  //       setStatus(
+  //         "Failed to send reset email. Please check the email address."
+  //       );
+  //       console.error("EmailJS response not successful:", emailRes);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error sending password reset email:", error);
+  //     setStatus("Failed to send reset email. Please check the email address.");
+  //   }
+  // };
 
-      if (ok) {
-        setStatus("Verification successful! You can now log in.");
-        setIsVerificationDialogOpen(false);
-      } else {
-        setStatus("Invalid verification code. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-      setStatus("An error occurred during verification. Please try again.");
-    }
-  };
+  // const handleSignUpWithCredentials = async (e: any) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { ok, verificationLink } = await registerNewUser(email, password);
+  //     if (!ok) {
+  //       setStatus("Sign up failed. Please check your details and try again.");
+  //       return;
+  //     }
+  //     const emailRes = await sendPasswordResetEmail({
+  //       email,
+  //       resetLink: verificationLink,
+  //     });
 
-  const [timer, setTimer] = useState(120);
-  const [canResend, setCanResend] = useState(false);
+  //     setStatus(
+  //       "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+  //     );
+  //     setIsSignUpDialogOpen(false);
+  //     setIsVerificationDialogOpen(true);
+  //   } catch (error) {
+  //     console.error("Error during sign up:", error);
+  //     setStatus("An error occurred during sign up. Please try again.");
+  //   }
+  // };
 
-  useEffect(() => {
-    if (timer > 0) {
-      const countdown = setInterval(() => setTimer(timer - 1), 1000);
-      return () => clearInterval(countdown);
-    } else {
-      setCanResend(true);
-    }
-  }, [timer]);
+  // const handleSignUpWithGoogle = () => {
+  //   const response = signIn("google");
+  // };
 
-  const handleResendCode = async () => {
-    try {
-      try {
-        const { ok, verificationLink } = await registerNewUser(email, password);
-        if (!ok) {
-          setStatus("Sign up failed. Please check your details and try again.");
-          return;
-        }
-        const emailRes = await sendPasswordResetEmail({
-          email,
-          resetLink: verificationLink,
-        });
+  // const handleVerifyCode = async () => {
+  //   try {
+  //     const { ok } = await verifyUser(email, verificationCode);
 
-        setStatus(
-          "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-        );
-        setIsSignUpDialogOpen(false);
-        setIsVerificationDialogOpen(true);
-      } catch (error) {
-        console.error("Error during sign up:", error);
-        setStatus("An error occurred during sign up. Please try again.");
-      }
-      setTimer(120);
-      setCanResend(false);
-    } catch (error) {
-      console.error("Error resending verification code:", error);
-      setStatus("Failed to resend the code. Please try again.");
-    }
-  };
+  //     if (ok) {
+  //       setStatus("Verification successful! You can now log in.");
+  //       setIsVerificationDialogOpen(false);
+  //     } else {
+  //       setStatus("Invalid verification code. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error verifying code:", error);
+  //     setStatus("An error occurred during verification. Please try again.");
+  //   }
+  // };
+
+  // const [timer, setTimer] = useState(120);
+  // const [canResend, setCanResend] = useState(false);
+
+  // useEffect(() => {
+  //   if (timer > 0) {
+  //     const countdown = setInterval(() => setTimer(timer - 1), 1000);
+  //     return () => clearInterval(countdown);
+  //   } else {
+  //     setCanResend(true);
+  //   }
+  // }, [timer]);
+
+  // const handleResendCode = async () => {
+  //   try {
+  //     try {
+  //       const { ok, verificationLink } = await registerNewUser(email, password);
+  //       if (!ok) {
+  //         setStatus("Sign up failed. Please check your details and try again.");
+  //         return;
+  //       }
+  //       const emailRes = await sendPasswordResetEmail({
+  //         email,
+  //         resetLink: verificationLink,
+  //       });
+
+  //       setStatus(
+  //         "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+  //       );
+  //       setIsSignUpDialogOpen(false);
+  //       setIsVerificationDialogOpen(true);
+  //     } catch (error) {
+  //       console.error("Error during sign up:", error);
+  //       setStatus("An error occurred during sign up. Please try again.");
+  //     }
+  //     setTimer(120);
+  //     setCanResend(false);
+  //   } catch (error) {
+  //     console.error("Error resending verification code:", error);
+  //     setStatus("Failed to resend the code. Please try again.");
+  //   }
+  // };
+  //#endregion
+
+
+  
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    status,
+    setStatus,
+    handleSignIn,
+    handleSignUp,
+    handlePasswordResetRequest,
+    isLoginDialogOpen,
+    setIsLoginDialogOpen,
+    isSignUpDialogOpen,
+    setIsSignUpDialogOpen,
+    isPasswordResetDialogOpen,
+    setIsPasswordResetDialogOpen,
+    isVerificationDialogOpen,
+    setIsVerificationDialogOpen,
+    verificationCode,
+    setVerificationCode,
+    handleVerifyCode,
+    handleResendCode,
+    timer,
+    canResend,
+    confirmPassword, 
+    setConfirmPassword
+  } = props;
 
   return (
     <div>
@@ -241,14 +274,14 @@ const ToggleSingInSignUpForm = (props: Props) => {
               <div className="w-full">
                 <div className="flex flex-row justify-around">
                   <Button
-                    onClick={handleSignInWithCredentials}
+                    onClick={()=>handleSignIn({method: "credentials"})}
                     type="submit"
                     className="w-full"
                   >
                     Login
                   </Button>
                   <Button
-                    onClick={handleSignInWithGoogle}
+                    onClick={()=>handleSignIn({method: "google"})}
                     variant="outline"
                     className="w-full ml-1"
                   >
@@ -325,14 +358,16 @@ const ToggleSingInSignUpForm = (props: Props) => {
 
             <DialogFooter>
               <Button
-                onClick={handleSignUpWithCredentials}
+                onClick={()=>handleSignUp({method: "credentials"})}
                 type="submit"
                 className="w-full"
               >
                 Sign Up
               </Button>
               <Button
-                onClick={handleSignUpWithGoogle}
+                onClick={()=>handleSignUp({
+                  method: "google",
+                })}
                 variant="outline"
                 type="submit"
                 className="w-full"
