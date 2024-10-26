@@ -11,6 +11,25 @@ import { Badge } from "@/components/shadcn/badge";
 import NewStockGraph from "@/components/ui/charts/newStockGraph";
 import { BarChartRevenue } from "@/components/ui/charts/barChartRevenue";
 import { LineChartEquity } from "@/components/ui/charts/lineChartEquity";
+import { Skeleton } from "@/components/shadcn/skeleton";
+
+export const StockSkeleton = () =>{
+  return (
+    
+    <div className="w-full my-2">
+
+    <Skeleton className="h-[200px] mb-2 w-full rounded-lg" />
+    <Skeleton className="h-[40px] mb-2 w-1/2 rounded-lg" />
+    <Skeleton className="h-[40px] mb-8 w-1/3 rounded-lg" />
+    <Skeleton className="h-[200px] mb-2 w-full rounded-lg" />
+    <Skeleton className="h-[40px] mb-2 w-1/2 rounded-lg" />
+    <Skeleton className="h-[40px] mb-2 w-1/3 rounded-lg" />
+    </div>
+  
+  )
+}
+
+
 
 const StockView = (props: any) => {
   const { companyData, currentStock, loading, error, companiesIds } =

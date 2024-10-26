@@ -10,11 +10,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/shadcn/pagination";
-import { useAppSelector } from "@/lib/hooks/useAppSelector";
-import { selectFinancialReports } from "@/lib/features/financialReports/financialReportsSlice";
 
 import { Skeleton } from "@/components/shadcn/skeleton";
-import { useRouter } from "next/navigation";
 
 const RecentFinancialReports = (props: any) => {
   // const router = useRouter();
