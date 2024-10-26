@@ -11,7 +11,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Navbar from "./_navbar/navbarView";
 import NavbarPresenter from "./_navbar/navbarPresenter";
-import Sidebar from "../components/Sidebar";
+import SidebarPresenter from "./_sidebar/sidebarPresenter";
 
 export default function RootLayout({
   children,
@@ -35,7 +35,7 @@ export default function RootLayout({
             <div className="flex flex-col">
               <NavbarPresenter />
               <div className="flex flex-row overflow-hidden">
-                <Sidebar />
+                <SidebarPresenter />
                 {children}
               </div>
             </div>
