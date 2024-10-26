@@ -6,8 +6,8 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
-import { cn } from "@/src/lib/utils/utils"
-import { Button } from "@/src/components/shadcn/button"
+import { cn } from "@/lib/utils/utils"
+import { Button } from "@/components/shadcn/button"
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>

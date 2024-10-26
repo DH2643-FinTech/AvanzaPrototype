@@ -1,5 +1,5 @@
-import StoreProvider from "./StoreProvider";
-import AuthProvider from "./AuthProvider";
+import StoreProvider from "./_providers/_storeProvider";
+import AuthProvider from "./_providers/_authProvider";
 import "./globals.css";
 export const metadata = {
   title: "Next.js",
@@ -9,8 +9,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import NavbarPresenter from "./_navbar/navbarPresenter";
+import SidebarPresenter from "./_sidebar/sidebarPresenter";
 
 export default function RootLayout({
   children,
@@ -32,9 +32,9 @@ export default function RootLayout({
         <AuthProvider>
           <StoreProvider>
             <div className="flex flex-col">
-              <Navbar />
+              <NavbarPresenter />
               <div className="flex flex-row overflow-hidden">
-                <Sidebar />
+                <SidebarPresenter />
                 {children}
               </div>
             </div>
