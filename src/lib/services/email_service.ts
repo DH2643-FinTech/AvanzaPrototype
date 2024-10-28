@@ -1,7 +1,7 @@
 import emailjs from '@emailjs/browser';
 
 const SERVICE_ID = 'service_us3vp1r';
-const TEMPLATE_ID = 'template_q029h7e';
+const TEMPLATE_ID = 'template_kmg9wjd';
 const USER_ID = '9Q600vKX9f68s1yZd';
 
 export const sendPasswordResetEmail = async ({email, resetLink}: {email:string, resetLink:string}) => {
