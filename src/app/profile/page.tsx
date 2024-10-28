@@ -90,7 +90,7 @@ const ProfilePage = (props: LoginProps) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ address }),
+      body: JSON.stringify({ address, session }),
     });
     if (res.ok) {
       alert("Address updated!");
@@ -108,8 +108,7 @@ const ProfilePage = (props: LoginProps) => {
         <Skeleton className="h-80" />
       ) : (
         <>
-          {/* Personal Information Section */}
-          <section className="bg-white p-6 rounded-lg shadow-lg space-y-6 w-full">
+           <section className="bg-white p-6 rounded-lg shadow-lg space-y-6 w-full">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Personal Information</h2>
               {!isEditingPersonalInfo && (
@@ -122,6 +121,13 @@ const ProfilePage = (props: LoginProps) => {
               )}
             </div>
             <div className="space-y-4">
+              {/* Email Display */}
+              <div>
+                <Label>Email</Label>
+                <div className="border rounded-md p-2 bg-gray-100">
+                  {session?.user?.email || 'Not provided'}
+                </div>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <Label>First Name</Label>
@@ -141,16 +147,6 @@ const ProfilePage = (props: LoginProps) => {
                     className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                   />
                 </div>
-              </div>
-              <div>
-                <Label>Email</Label>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={!isEditingPersonalInfo}
-                  className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
-                />
               </div>
               <div>
                 <Label>Phone Number</Label>
