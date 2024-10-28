@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { ProfilePresenter } from "./ProfilePresenter"; // Adjust path if needed
+import { ProfilePresenter } from "./ProfilePresenter"; 
 import { Button } from "../../components/shadcn/button";
 import { Input } from "../../components/shadcn/input";
 import { Label } from "../../components/shadcn/label";
