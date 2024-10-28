@@ -7,13 +7,29 @@ import { NextResponse } from "next/server";
    try {
     //const requestJson =  request.headers.get("email");
     //const email = request.json();
-    console.log(request + "Ermia");
+    // console.log(request + "Ermia");
     // const jsonEmail = request.json();
     // console.log(jsonEmail.headers.get("eamil"));
-    //const { data: session } = useSession(); 
+    //const { data: session } = useSession();
+    const session = request.headers.get("email"); 
+    console.log(session);
+    const sessionJson = session ? JSON.parse(session) : null;
+    console.log(sessionJson);
+    // const {email } = sessionJson;
+    const {
+      session: {
+        user: { id: userId, name: userName, email: userEmail },
+        expires,
+        id: sessionId,
+        name: sessionName,
+        email: sessionEmail,
+      },
+    } = sessionJson;
+    console.log(userEmail);
+
     const client = await clientPromise;
     const db = client.db("database");
-    const user = await db.collection("users").findOne({ email: email });
+    const user = await db.collection("users").findOne({ email: userEmail });
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });

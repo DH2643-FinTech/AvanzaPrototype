@@ -9,10 +9,12 @@ import { Skeleton } from "../../components/shadcn/skeleton";
 import { LoginProps } from "@/app/_navbar/navbarTypes";
 
 const ProfilePage = (props: LoginProps) => {
-  const {
-    email,
-  } = props;
-  const { data: session } = useSession(); 
+  // const { email } = props;
+  const { data: session, status } = useSession();
+  const [email, setEmail] = useState("");
+  const mySession = useSession();
+  console.log("testing session in profile page");
+  console.log(mySession);
   //const userEmail = session?.user?.email;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -32,32 +34,35 @@ const ProfilePage = (props: LoginProps) => {
   const [isEditingAddress, setIsEditingAddress] = useState(false);
 
   useEffect(() => {
+    // console.log(session + "testing session");
+
     const fetchData = async () => {
-      console.log(session + "Ermia");
       try {
-        const response = await fetch("/api/account/user/update", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "email": JSON.stringify({session}),
-          },
-        });
-        console.log(response);
-  
-        if (response.ok) {
-          const data = await response.json();
-          setFirstName(data.firstName || "");
-          setLastName(data.lastName || "");
-          setPhone(data.phone || "");
-          setAddress({
-            street: data.address?.street || "",
-            city: data.address?.city || "",
-            state: data.address?.state || "",
-            country: data.address?.country || "",
-            zip: data.address?.zip || "",
+        if (status === "authenticated") {
+          const response = await fetch("/api/account/user/update", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              email: JSON.stringify({ session }),
+            },
           });
-        } else {
-          console.error("Failed to fetch data:", response.statusText);
+          console.log(response);
+
+          if (response.ok) {
+            const data = await response.json();
+            setFirstName(data.firstName || "");
+            setLastName(data.lastName || "");
+            setPhone(data.phone || "");
+            setAddress({
+              street: data.address?.street || "",
+              city: data.address?.city || "",
+              state: data.address?.state || "",
+              country: data.address?.country || "",
+              zip: data.address?.zip || "",
+            });
+          } else {
+            console.error("Failed to fetch data:", response.statusText);
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -65,18 +70,18 @@ const ProfilePage = (props: LoginProps) => {
         setLoading(false);
       }
     };
-  
+
     fetchData();
-  }, []);
+  }, [status]);
 
   const handleSavePersonalInfo = async () => {
-    const updatedInfo = { firstName, lastName, email, phone };
+    const updatedInfo = { firstName, lastName, phone };
     const res = await fetch("/api/account/user/update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({updatedInfo, session}),
+      body: JSON.stringify({ updatedInfo, session }),
     });
     if (res.ok) {
       alert("Personal information updated!");
@@ -115,7 +120,10 @@ const ProfilePage = (props: LoginProps) => {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Personal Information</h2>
               {!isEditingPersonalInfo && (
-                <Button onClick={() => setIsEditingPersonalInfo(true)} variant="outline">
+                <Button
+                  onClick={() => setIsEditingPersonalInfo(true)}
+                  variant="outline"
+                >
                   Edit
                 </Button>
               )}
@@ -163,7 +171,10 @@ const ProfilePage = (props: LoginProps) => {
               {isEditingPersonalInfo && (
                 <div className="flex justify-end space-x-4">
                   <Button onClick={handleSavePersonalInfo}>Save</Button>
-                  <Button onClick={() => setIsEditingPersonalInfo(false)} variant="outline">
+                  <Button
+                    onClick={() => setIsEditingPersonalInfo(false)}
+                    variant="outline"
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -176,7 +187,10 @@ const ProfilePage = (props: LoginProps) => {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-semibold">Address</h2>
               {!isEditingAddress && (
-                <Button onClick={() => setIsEditingAddress(true)} variant="outline">
+                <Button
+                  onClick={() => setIsEditingAddress(true)}
+                  variant="outline"
+                >
                   Edit
                 </Button>
               )}
@@ -187,7 +201,9 @@ const ProfilePage = (props: LoginProps) => {
                   <Label>Street Address</Label>
                   <Input
                     value={address.street}
-                    onChange={(e) => setAddress({ ...address, street: e.target.value })}
+                    onChange={(e) =>
+                      setAddress({ ...address, street: e.target.value })
+                    }
                     disabled={!isEditingAddress}
                     className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                   />
@@ -196,7 +212,9 @@ const ProfilePage = (props: LoginProps) => {
                   <Label>City</Label>
                   <Input
                     value={address.city}
-                    onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                    onChange={(e) =>
+                      setAddress({ ...address, city: e.target.value })
+                    }
                     disabled={!isEditingAddress}
                     className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                   />
@@ -205,7 +223,9 @@ const ProfilePage = (props: LoginProps) => {
                   <Label>State</Label>
                   <Input
                     value={address.state}
-                    onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                    onChange={(e) =>
+                      setAddress({ ...address, state: e.target.value })
+                    }
                     disabled={!isEditingAddress}
                     className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                   />
@@ -214,7 +234,9 @@ const ProfilePage = (props: LoginProps) => {
                   <Label>Country</Label>
                   <Input
                     value={address.country}
-                    onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                    onChange={(e) =>
+                      setAddress({ ...address, country: e.target.value })
+                    }
                     disabled={!isEditingAddress}
                     className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                   />
@@ -224,7 +246,9 @@ const ProfilePage = (props: LoginProps) => {
                 <Label>ZIP Code</Label>
                 <Input
                   value={address.zip}
-                  onChange={(e) => setAddress({ ...address, zip: e.target.value })}
+                  onChange={(e) =>
+                    setAddress({ ...address, zip: e.target.value })
+                  }
                   disabled={!isEditingAddress}
                   className="rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500 w-full"
                 />
@@ -232,7 +256,10 @@ const ProfilePage = (props: LoginProps) => {
               {isEditingAddress && (
                 <div className="flex justify-end space-x-4">
                   <Button onClick={handleSaveAddress}>Save</Button>
-                  <Button onClick={() => setIsEditingAddress(false)} variant="outline">
+                  <Button
+                    onClick={() => setIsEditingAddress(false)}
+                    variant="outline"
+                  >
                     Cancel
                   </Button>
                 </div>
