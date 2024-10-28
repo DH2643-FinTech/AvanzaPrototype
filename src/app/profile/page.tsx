@@ -12,13 +12,8 @@ const ProfilePage = (props: LoginProps) => {
   // const { email } = props;
   const { data: session, status } = useSession();
   const [email, setEmail] = useState("");
-  const mySession = useSession();
-  console.log("testing session in profile page");
-  console.log(mySession);
-  //const userEmail = session?.user?.email;
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  //const [email, setEmail] = useState(userEmail || "");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState({
     street: "",
@@ -34,8 +29,6 @@ const ProfilePage = (props: LoginProps) => {
   const [isEditingAddress, setIsEditingAddress] = useState(false);
 
   useEffect(() => {
-    // console.log(session + "testing session");
-
     const fetchData = async () => {
       try {
         if (status === "authenticated") {
@@ -43,7 +36,7 @@ const ProfilePage = (props: LoginProps) => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              email: JSON.stringify({ session }),
+              "session": JSON.stringify({ session }),
             },
           });
           console.log(response);
