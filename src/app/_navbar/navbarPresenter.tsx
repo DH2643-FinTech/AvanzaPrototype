@@ -18,6 +18,7 @@ import {
 import { sendPasswordResetEmail } from "@/lib/services/email_service";
 import { LoginProps, SearchBarProps } from "./navbarTypes";
 import { CompanyID } from "../api/companies/dataTypes";
+import { isSessionStorageAvailable } from "@/lib/utils/utils";
 
 const NavbarPresenter = () => {
 
@@ -52,11 +53,13 @@ const NavbarPresenter = () => {
   }, [timer]);
 
   useEffect(() => {
-    const storedCompanyIds = localStorage.getItem("allCompanyIds");
-    if (!storedCompanyIds) {
-      dispatch(fetchAllCompanyIds());
-    } else {
-      dispatch(setCompanies(JSON.parse(storedCompanyIds)));
+    if(isSessionStorageAvailable()){
+      const storedCompanyIds = sessionStorage.getItem("allCompanyIds");
+      if (!storedCompanyIds) {
+        dispatch(fetchAllCompanyIds());
+      } else {
+        dispatch(setCompanies(JSON.parse(storedCompanyIds)));
+      }
     }
   }, []);
 

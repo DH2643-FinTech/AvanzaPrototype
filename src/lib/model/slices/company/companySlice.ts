@@ -5,6 +5,7 @@ import {
 } from "./companyTypes";
 import { CompanyID } from "@/app/api/companies/dataTypes";
 import { fetchCompanyDetails, fetchAllCompanyIds } from "./companyThunks";
+import { isSessionStorageAvailable } from "@/lib/utils/utils";
 
 const initialState: CompanyState = {
   companies: [],
@@ -44,8 +45,9 @@ const companySlice = createSlice({
         const id = companyIds.find(
           (company:any) => company.name === action.payload
         )?._id;
-        if(id){
-          localStorage.setItem("searchParams", JSON.stringify({id:id, name: action.payload}));
+        if(id && isSessionStorageAvailable()){
+
+          sessionStorage.setItem("searchParams", JSON.stringify({id:id, name: action.payload}));
         }
       }
     },
@@ -98,7 +100,9 @@ const companySlice = createSlice({
         } else {
           state.companiesIds = [];
           state.companiesIds.push(...action.payload);
-          localStorage.setItem("allCompanyIds", JSON.stringify(action.payload));
+          if(isSessionStorageAvailable()){
+            sessionStorage.setItem("allCompanyIds", JSON.stringify(action.payload));
+          }
         }
       }
     );

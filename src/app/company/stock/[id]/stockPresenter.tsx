@@ -14,6 +14,7 @@ import {StockSkeleton} from "./StockView";
 import { useSession } from "next-auth/react";
 import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlist/watchlistThunks";
 import { AddToWatchlistProps, StockGraphProps } from "./stockTypes";
+import { isSessionStorageAvailable } from "@/lib/utils/utils";
 
 const StockPresenter = () => {
 
@@ -97,9 +98,10 @@ const StockPresenter = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!searchParams) {
-        const locSearchParam = localStorage.getItem("searchParams")
-          ? JSON.parse(localStorage.getItem("searchParams") as string)
+      if (!searchParams && isSessionStorageAvailable()) {
+
+        const locSearchParam = sessionStorage.getItem("searchParams")
+          ? JSON.parse(sessionStorage.getItem("searchParams") as string)
           : null;
         if (locSearchParam) {
           await dispatch(

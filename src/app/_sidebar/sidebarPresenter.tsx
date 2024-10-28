@@ -9,6 +9,9 @@ import { selectRecentlyVisited } from "@/lib/model/slices/recently_visited/recen
 import { setSearchParamName } from '../../lib/model/slices/company/companySlice'
 import { fetchRecentCompanyReports } from '../../lib/model/slices/financialReport/financialReportThunks'
 import { SidebarProps } from './sidebarTypes'
+import { useEffect } from 'react'
+import { isSessionStorageAvailable } from '@/lib/utils/utils'
+import { setRecentlyVisited, loadStocksFromSessionStorage } from '@/lib/model/slices/recently_visited/recentlyVisitedSlice'
 
 const SidebarPresenter = () => {
 
@@ -26,6 +29,12 @@ const SidebarPresenter = () => {
               dispatch(setSearchParamName(searchParam));
           
     }
+
+    useEffect(() => {
+       if(isSessionStorageAvailable()) {
+        dispatch(setRecentlyVisited(loadStocksFromSessionStorage()))
+       }
+    }, [])
     
     const sidebarProps: SidebarProps = {
         pathname,
@@ -43,3 +52,4 @@ const SidebarPresenter = () => {
 }
 
 export default SidebarPresenter
+
