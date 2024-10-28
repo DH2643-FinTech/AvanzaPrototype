@@ -1,10 +1,9 @@
-import { NextResponse } from "next/server";
-import clientPromise from "@/src/lib/database/mongodb";
 import { CompanyID } from "./dataTypes";
+import { NextResponse } from "next/server";
+import clientPromise from "@/lib/integeration/mongodb";
 
 export const GET = async (request: Request) => {
   try {
-    // console.log("GET request to /api/companies");
     const client = await clientPromise;
     const db = client.db("database");
     const stocksCollection = db.collection("stocks");
