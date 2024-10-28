@@ -123,7 +123,7 @@ export const authConfig: NextAuthOptions = {
 			}
 			const newSession = {
 				...session,
-				id: token.id,
+				id: existingUser._id.toString(),
 				name: token.name,
 				email: token.email,
 				user: {
