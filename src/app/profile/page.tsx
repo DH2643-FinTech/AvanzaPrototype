@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
-import ProfileView from './ProfileView'; 
+import ProfilePresenter from './ProfilePresenter'; 
 
 export default function ProfilePage() {
     return (
-        <ProfileView />
+        <ProfilePresenter />
     );
 }

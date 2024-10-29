@@ -56,7 +56,16 @@ export default function WatchlistTable(props: WatchlistTableProps) {
     rowsPerPage,
     handleRemoveFromWatchlist,
     router,
+    handleNavigateToStockPage,
+    handleSetSearchParam
   } = props;
+
+
+
+  const handleNaviagtion = (stockId: number, searchParam: string) => {
+    handleNavigateToStockPage(stockId);
+    handleSetSearchParam(searchParam);
+  }
 
   const watchlistCompanies = useMemo(() => {
     return watchlistDetails || companies;
@@ -270,7 +279,8 @@ export default function WatchlistTable(props: WatchlistTableProps) {
                               <Button
                                 variant="outline"
                                 onClick={() =>
-                                  router.push(`/company/stock/${company._id}`)
+                                  handleNaviagtion(parseInt(company._id), company.name)
+                                  // router.push(`/company/stock/${company._id}`)
                                 }
                               >
                                 View Detailed Page

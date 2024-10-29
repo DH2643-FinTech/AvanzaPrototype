@@ -11,7 +11,7 @@ import { addToWatchlist, fetchWatchlist, removeFromWatchlist } from './watchlist
 
 const initialState: WatchlistState = {
     stocks: [],
-    watchlistDetails: null,
+    watchlistDetails: [],
     loading: false,
     error: null,
     lastUpdated: new Date().toISOString(),
@@ -43,7 +43,7 @@ const watchlistSlice = createSlice({
             .addCase(fetchWatchlist.fulfilled, (state, action) => {
                 state.loading = false;
                 state.stocks = action.payload.map(item => item.name);
-                state.watchlistDetails = action.payload;
+                state.watchlistDetails = action.payload || [];
                 state.lastUpdated = new Date().toISOString();
             })
             .addCase(fetchWatchlist.rejected, (state, action) => {
@@ -57,9 +57,22 @@ const watchlistSlice = createSlice({
                 }
             })
             .addCase(removeFromWatchlist.fulfilled, (state, action) => {
+
+                const beforeUpdate = state.stocks;
+                console.log("before update");
+                console.log(beforeUpdate);
+                console.log(action.payload);
+                const index = state.watchlistDetails.findIndex(stock => stock._id === action.payload);
+                state.watchlistDetails = state.watchlistDetails.filter(stock => stock._id !== action.payload);
+                console.log("after update");
+                // console.log(update);
+                if(index !== -1){{
+                    const stockUpdate = state.stocks.at(index);
+                    state.stocks = state.stocks.filter(id => id !== stockUpdate);
+                }
                 state.stocks = state.stocks.filter(id => id !== action.payload);
                 state.lastUpdated = new Date().toISOString();
-            });
+    }});
     },
 });
 

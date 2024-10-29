@@ -1,16 +1,16 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { ProfilePresenter } from "./ProfilePresenter"; 
+// import { ProfilePresenter } from "./ProfilePresenter"; 
 import { Button } from "../../components/shadcn/button";
 import { Input } from "../../components/shadcn/input";
 import { Label } from "../../components/shadcn/label";
 import { Skeleton } from "../../components/shadcn/skeleton";
 import { LoginProps } from "@/app/_navbar/navbarTypes";
+import { ProfileViewProps } from "./profileTypes";
 
-const ProfileView = (props: LoginProps) => {
+const ProfileView = (props: ProfileViewProps) => {
   const { data: session } = useSession();
-  const presenter = new ProfilePresenter(session);
   const {
     personalInfo,
     address,
@@ -23,7 +23,7 @@ const ProfileView = (props: LoginProps) => {
     handleSaveAddress,
     setIsEditingPersonalInfo,
     setIsEditingAddress,
-  } = presenter.useProfile();
+  } = props;
 
   return (
     <div className="container mx-auto p-4 space-y-8">
@@ -98,7 +98,7 @@ const ProfileView = (props: LoginProps) => {
           {/* Address Section */}
           <section className="bg-white p-6 rounded-lg shadow-lg space-y-6 w-full">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Address</h2>
+              <h2 className="text-xl font-semibold">Address </h2>
               {!isEditingAddress && (
                 <Button
                   onClick={() => setIsEditingAddress(true)}

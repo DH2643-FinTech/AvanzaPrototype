@@ -21,6 +21,8 @@ export interface WatchlistTableProps {
   rowsPerPage: number;
   handleRemoveFromWatchlist: (stockId: string) => void;
   router: ReturnType<typeof useRouter>;
+  handleNavigateToStockPage: (stockId: number) => void;
+  handleSetSearchParam: (searchParam: string) => void;
 }
 
 export interface WatchListPresenterProps {

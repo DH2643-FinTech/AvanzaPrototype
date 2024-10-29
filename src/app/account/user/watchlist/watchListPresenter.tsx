@@ -4,6 +4,8 @@ import WatchlistView from "./watchlistView";
 import { fetchWatchlist, removeFromWatchlist } from "@/lib/model/slices/watchlist/watchlistThunks";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/model/store";
+import { fetchRecentCompanyReports } from "@/lib/model/slices/financialReport/financialReportThunks";
+import { setSearchParamName } from "@/lib/model/slices/company/companySlice";
 
 export type SortField =
   | "_id"
@@ -56,6 +58,15 @@ const WatchListPresenter = () => {
     }
   };
 
+  const handleNavigateToStockPage = (stockId:number) =>{
+    router.push(`/company/stock/${stockId}`);
+    dispatch(fetchRecentCompanyReports(stockId));
+  }
+
+  const handleSetSearchParam = (searchParam: string) => {
+      dispatch(setSearchParamName(searchParam));
+  };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
@@ -77,6 +88,8 @@ const WatchListPresenter = () => {
     rowsPerPage,
     handleRemoveFromWatchlist,
     router,
+    handleNavigateToStockPage,
+    handleSetSearchParam
   }
 
   return (
