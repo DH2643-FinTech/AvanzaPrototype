@@ -15,7 +15,6 @@ import { Mail, Github, Linkedin, User } from "lucide-react";
 const AboutUsView = (props:any) => {
 
   const {teamMembers} = props;
-  // console.log(props);
 
 
   return (

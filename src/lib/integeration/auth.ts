@@ -114,7 +114,6 @@ export const authConfig: NextAuthOptions = {
 				.findOne({ email: session.user.email });
 
 			if (!existingUser) {
-				console.log("No existing user");
 
 				return session;
 			}

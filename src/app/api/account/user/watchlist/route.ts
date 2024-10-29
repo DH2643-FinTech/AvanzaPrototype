@@ -53,7 +53,6 @@ export const GET = async (request: Request) => {
 export const POST = async (request: Request) => {
   try {
     const session = await getServerSession();
-    console.log(session);
     
     if (!session || !session.user || !session.user.email) {
       return NextResponse.json(

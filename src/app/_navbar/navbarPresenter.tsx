@@ -102,7 +102,6 @@ const NavbarPresenter = () => {
     e.preventDefault();
     try {
       const { ok, resetLink } = await fetchEmailRecoveryToken(email);
-      console.log(ok, resetLink);
       if (!ok) {
         setStatus(
           "Failed to send reset email. Please check the email address."

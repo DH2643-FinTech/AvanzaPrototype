@@ -30,7 +30,6 @@ export const addToWatchlist = createAsyncThunk(
           });
       
           if (res.ok) {
-            // console.log('Added to watchlist');
             return stockId;
           }
           rejectWithValue('Failed to add to watchlist');

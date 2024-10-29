@@ -29,7 +29,6 @@ export async function GET(req: Request) {
     fromDateValid: fromDateValid,
   });
 
-  // console.log("avanzaUrls : ", avanzaUrls);
 
   const detailUrls = detailUrlBuilder(_id);
 
