@@ -20,6 +20,30 @@ import { LoginProps, SearchBarProps } from "./navbarTypes";
 import { CompanyID } from "../api/companies/dataTypes";
 import { isSessionStorageAvailable } from "@/lib/utils/utils";
 
+export class SignUpError extends Error {
+  constructor(message: string) {
+    super(message);
+    // this.name = "SignUpError"; // Optional: gives the error a custom name
+  }
+}
+
+
+export class SignInError extends Error {
+  constructor(message: string) {
+    super(message);
+    // this.name = "SignInError"; // Optional: gives the error a custom name
+  }
+}
+
+
+export class SendVerificationCodeError extends Error {
+  constructor(message: string) {
+    super(message);
+    // this.name = "SendVerificationCodeError"; // Optional: gives the error a custom name
+  }
+}
+
+
 const NavbarPresenter = () => {
 
   //#region LOGIN
@@ -63,169 +87,187 @@ const NavbarPresenter = () => {
     }
   }, []);
 
-  const handleSignIn = async (credProps: { method: string }) => {
+  const handleSignIn = async (credProps: { method: string, email: string, password: string }) => {
     try {
       if (credProps.method === "google") {
         await signIn("google");
-        return;
+        return true;
       } else {
-        const { status } = await verificationController(email);
+        const { status } = await verificationController(credProps.email);
         if (status === 200) {
           const signInResponse = await signIn("credentials", {
-            email: email,
-            password: password,
+            email: credProps.email,
+            password: credProps.password,
             redirect: false,
           });
 
           if (signInResponse && !signInResponse.error) {
-            setEmail("");
-            setPassword("");
+            // setEmail("");
+            // setPassword("");
+            return true;
           } else {
-            setStatus("Invalid email or password.");
+            // setStatus("Invalid email or password.");
+            throw new SignInError("Invalid email or password.");
           }
         } else if (status === 201) {
-          setStatus("You are not a verified user, please signup again!");
+          // setStatus("You are not a verified user, please signup again!");
+          throw new SignInError("You are not a verified user, please signup again!");
         } else {
-          setStatus("An error occurred while verifying your account.");
+          // setStatus("An error occurred while verifying your account.");
+          throw new SignInError("An error occurred while verifying your account.");
         }
       }
     } catch (error) {
+      if (error instanceof SignInError) {
+        throw error;
+      }
       console.error("An error occurred while signing in: ", error);
-      setStatus(
-        "An error occurred during the sign-in process. Please try again."
-      );
+      return false;
+      // setStatus(
+      //   "An error occurred during the sign-in process. Please try again."
+      // );
     }
   };
 
-  const handlePasswordResetRequest = async (e: React.FormEvent) => {
-    setStatus("");
-    e.preventDefault();
+  const handlePasswordResetRequest = async (email: string) => {
+    // setStatus("");
     try {
       const { ok, resetLink } = await fetchEmailRecoveryToken(email);
       if (!ok) {
-        setStatus(
-          "Failed to send reset email. Please check the email address."
-        );
-        return;
+        // setStatus(
+        //   "Failed to send reset email. Please check the email address."
+        // );
+        return ok;
       }
       const emailRes = await sendPasswordResetEmail({ email, resetLink });
       if (typeof emailRes === "object" && emailRes?.status === 200) {
-        setStatus("Password reset email sent!");
+        // setStatus("Password reset email sent!");
+        return true;
       } else {
-        setStatus(
-          "Failed to send reset email. Please check the email address."
-        );
-        console.error("EmailJS response not successful:", emailRes);
+        return false;
+        // setStatus(
+        //   "Failed to send reset email. Please check the email address."
+        // );
+        // console.error("EmailJS response not successful:", emailRes);
       }
     } catch (error) {
       console.log("Error sending password reset email:", error);
-      setStatus("Failed to send reset email. Please check the email address.");
+
+      // setStatus("Failed to send reset email. Please check the email address.");
+      throw error;
     }
   };
 
-  const handleSignUp = async (credProps: { method: string }): Promise<void> => {
+  const handleSignUp = async (credProps: { method: string, email: string, password: string }) => {
     try {
       if (credProps.method === "google") {
         await signIn("google");
-        return;
+        return true;
       } else {
-        const { ok, verificationLink } = await registerNewUser(email, password);
+        const { ok, verificationLink } = await registerNewUser(credProps.email, credProps.password);
         if (!ok) {
-          setStatus("Sign up failed. Please check your details and try again.");
-          return;
+          // setStatus("Sign up failed. Please check your details and try again.");
+          // throw new SignUpError("Sign up failed. Please check your details and try again.");
+          return false;
         }
         const emailRes = await sendPasswordResetEmail({
-          email,
+          email: credProps.email,
           resetLink: verificationLink,
         });
 
-        setStatus(
-          "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-        );
-        setIsSignUpDialogOpen(false);
-        setIsVerificationDialogOpen(true);
+        // setStatus(
+        //   "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+        // );
+        // setIsSignUpDialogOpen(false);
+        // setIsVerificationDialogOpen(true);
+        return true;
       }
     } catch (error) {
       console.error("An error occurred while signing up: ", error);
-      setStatus(
-        "An error occurred during the sign-up process. Please try again."
-      );
+      throw new SignUpError("An error occurred during the sign-up process. Please try again.");
     }
   };
 
-  const handleVerifyCode = async () => {
-    try {
-      const { ok } = await verifyUser(email, verificationCode);
-
-      if (ok) {
-        setStatus("Verification successful! You can now log in.");
-        setIsVerificationDialogOpen(false);
-      } else {
-        setStatus("Invalid verification code. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error verifying code:", error);
-      setStatus("An error occurred during verification. Please try again.");
-    }
+  const handleVerifyCode = async ({email, verificationCode}: {email: string, verificationCode: string}) => {
+    // try {
+      const {ok} = await verifyUser(email, verificationCode);
+      return ok;
+      // return ok;
+      // if (ok) {
+      //   setStatus("Verification successful! You can now log in.");
+      //   setIsVerificationDialogOpen(false);
+      // } else {
+      //   setStatus("Invalid verification code. Please try again.");
+      // }
+    // } catch (error) {
+    //   console.error("Error verifying code:", error);
+    //   setStatus("An error occurred during verification. Please try again.");
+    // return false;
+    // }
   };
 
 
-  const handleResendCode = async () => {
+  const handleResendCode = async ({email, password}: {email: string, password: string}) => {
     try {
       try {
         const { ok, verificationLink } = await registerNewUser(email, password);
         if (!ok) {
-          setStatus("Sign up failed. Please check your details and try again.");
-          return;
+          // setStatus("Sign up failed. Please check your details and try again.");
+          return ok;
+          // throw new SignUpError("Sign up failed. Please check your details and try again.");
         }
+
         const emailRes = await sendPasswordResetEmail({
           email,
           resetLink: verificationLink,
         });
 
-        setStatus(
-          "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-        );
-        setIsSignUpDialogOpen(false);
-        setIsVerificationDialogOpen(true);
+        // setStatus(
+        //   "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+        // );
+        // setIsSignUpDialogOpen(false);
+        // setIsVerificationDialogOpen(true);
+        return ok;
       } catch (error) {
         console.error("Error during sign up:", error);
-        setStatus("An error occurred during sign up. Please try again.");
+        // setStatus("An error occurred during sign up. Please try again.");
+        throw new SignUpError("An error occurred during sign up. Please try again.");
       }
-      setTimer(120);
-      setCanResend(false);
+      // setTimer(120);
+      // setCanResend(false);
     } catch (error) {
       console.error("Error resending verification code:", error);
-      setStatus("Failed to resend the code. Please try again.");
+      // setStatus("Failed to resend the code. Please try again.");
+      throw new SendVerificationCodeError("Failed to resend the code. Please try again.");
     }
   };
 
   const loginProps: LoginProps = {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    status,
-    setStatus,
+    // email,
+    // setEmail,
+    // password,
+    // setPassword,
+    // status,
+    // setStatus,
     handleSignIn,
     handleSignUp,
     handlePasswordResetRequest,
-    isLoginDialogOpen,
-    setIsLoginDialogOpen,
-    isSignUpDialogOpen,
-    setIsSignUpDialogOpen,
-    isPasswordResetDialogOpen,
-    setIsPasswordResetDialogOpen,
-    isVerificationDialogOpen,
-    setIsVerificationDialogOpen,
-    verificationCode,
-    setVerificationCode,
+    // isLoginDialogOpen,
+    // setIsLoginDialogOpen,
+    // isSignUpDialogOpen,
+    // setIsSignUpDialogOpen,
+    // isPasswordResetDialogOpen,
+    // setIsPasswordResetDialogOpen,
+    // isVerificationDialogOpen,
+    // setIsVerificationDialogOpen,
+    // verificationCode,
+    // setVerificationCode,
     handleVerifyCode,
     handleResendCode,
-    timer,
-    canResend,
-    confirmPassword,
-    setConfirmPassword,
+    // timer,
+    // canResend,
+    // confirmPassword,
+    // setConfirmPassword,
   };
 
   //#endregion

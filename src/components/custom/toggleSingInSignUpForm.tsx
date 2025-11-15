@@ -12,37 +12,154 @@ import { Label } from "../shadcn/label";
 import { Input } from "../shadcn/input";
 import Link from "next/link";
 import { LoginProps } from "@/app/_navbar/navbarTypes";
-
+import { useEffect, useState } from "react";
+import {SignUpError, SendVerificationCodeError, SignInError} from "@/app/_navbar/navbarPresenter";
+import { set } from "date-fns";
 
 const ToggleSingInSignUpForm = (props: LoginProps) => {
   
   const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    status,
-    setStatus,
+    // email,
+    // setEmail,
+    // password,
+    // setPassword,
+    // status,
+    // setStatus,
     handleSignIn,
     handleSignUp,
     handlePasswordResetRequest,
-    isLoginDialogOpen,
-    setIsLoginDialogOpen,
-    isSignUpDialogOpen,
-    setIsSignUpDialogOpen,
-    isPasswordResetDialogOpen,
-    setIsPasswordResetDialogOpen,
-    isVerificationDialogOpen,
-    setIsVerificationDialogOpen,
-    verificationCode,
-    setVerificationCode,
+    // isLoginDialogOpen,
+    // setIsLoginDialogOpen,
+    // isSignUpDialogOpen,
+    // setIsSignUpDialogOpen,
+    // isPasswordResetDialogOpen,
+    // setIsPasswordResetDialogOpen,
+    // isVerificationDialogOpen,
+    // setIsVerificationDialogOpen,
+    // verificationCode,
+    // setVerificationCode,
     handleVerifyCode,
     handleResendCode,
-    timer,
-    canResend,
-    confirmPassword, 
-    setConfirmPassword
+    // timer,
+    // canResend,
+    // confirmPassword, 
+    // setConfirmPassword
   } = props;
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [isVerificationDialogOpen, setIsVerificationDialogOpen] = useState(false);
+  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
+  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [timer, setTimer] = useState(120);
+  const [canResend, setCanResend] = useState(false);
+
+    useEffect(() => {
+      if (timer > 0) {
+        const countdown = setInterval(() => setTimer(timer - 1), 1000);
+        return () => clearInterval(countdown);
+      } else {
+        setCanResend(true);
+      }
+    }, [timer]);
+
+    const handlePasswordResetRequestACB = async (email: string) => {
+      try{
+
+        setStatus("");
+        const ok = await handlePasswordResetRequest(email);
+        if(!ok){
+          setStatus("Failed to send password reset email. Please check the email address and try again.");
+          return;
+        }
+        setStatus("Password reset email sent! If you do not receive the email, please check your email address for any errors.");  
+      } catch (error) {
+        setStatus("An unexpected error occurred while sending the password reset email. Please try again.");
+      }
+
+    }
+
+    const handleSignInACB = async(method: string) =>{
+      try{
+
+        const ok = await handleSignIn({method: method, email, password});
+        if(ok){
+          setEmail("");
+          setPassword("");
+        }
+      } catch (error) {
+        if(error instanceof SignInError){
+          setStatus(error.message);
+        }
+        else{
+          setStatus("An unexpected error occurred during sign in. Please try again.");
+        }
+
+      }
+    }
+
+
+    const handleVerifyCodeACB = async (e: React.FormEvent) =>{
+      const ok = await handleVerifyCode ({email, verificationCode});
+      if (ok) {
+        setStatus("Verification successful! You can now log in.");
+        setIsVerificationDialogOpen(false);
+      }
+      else{
+        setStatus("Invalid verification code. Please try again.");
+      }
+    }
+
+    const handleResendCodeACB = async (e: React.FormEvent) => {
+      try {
+        const ok = await handleResendCode({email, password});
+        if (ok) {
+        setStatus(
+          "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+        );
+        setIsSignUpDialogOpen(false);
+        setIsVerificationDialogOpen(true);
+        }
+        else{
+          setStatus("Sign up failed. Please check your details and try again.");
+        }
+      } catch (error) {
+        if (error instanceof SignUpError) {
+          setStatus(error.message);
+          setTimer(120);
+          setCanResend(false);
+        } else if (error instanceof SendVerificationCodeError) {
+          setStatus(error.message);
+        } else {
+          setStatus("An unexpected error occurred. Please try again.");
+        }
+      }
+    }
+
+    const handleSignUpACB = async (method: string) => {
+      try {
+        const ok = await handleSignUp({method: method, email, password});
+        if (!ok) {
+          setStatus("Sign up failed. Please check your details and try again.");
+          return;
+        }
+        setStatus(
+          "Password reset email sent! If you do not receive the email, please check your email address for any errors."
+        );
+        setIsSignUpDialogOpen(false);
+        setIsVerificationDialogOpen(true);
+      } catch (error) {
+        if (error instanceof SignUpError) {
+          setStatus(error.message);
+        } else {
+          setStatus("An error occurred during the sign-up process. Please try again.");
+        }
+      }
+    }
 
   return (
     <div>
@@ -103,14 +220,14 @@ const ToggleSingInSignUpForm = (props: LoginProps) => {
               <div className="w-full">
                 <div className="flex flex-row justify-around">
                   <Button
-                    onClick={()=>handleSignIn({method: "credentials"})}
+                    onClick={()=>handleSignInACB("credentials")}
                     type="submit"
                     className="w-full"
                   >
                     Login
                   </Button>
                   <Button
-                    onClick={()=>handleSignIn({method: "google"})}
+                    onClick={()=>handleSignInACB("google")}
                     variant="outline"
                     className="w-full ml-1"
                   >
@@ -187,16 +304,14 @@ const ToggleSingInSignUpForm = (props: LoginProps) => {
 
             <DialogFooter>
               <Button
-                onClick={()=>handleSignUp({method: "credentials"})}
+                onClick={()=>handleSignUpACB("credentials")}
                 type="submit"
                 className="w-full"
               >
                 Sign Up
               </Button>
               <Button
-                onClick={()=>handleSignUp({
-                  method: "google",
-                })}
+                onClick={()=>handleSignUpACB("google")}
                 variant="outline"
                 type="submit"
                 className="w-full"
@@ -241,7 +356,7 @@ const ToggleSingInSignUpForm = (props: LoginProps) => {
               </p>
             )}
             <DialogFooter>
-              <Button onClick={handlePasswordResetRequest} className="w-full">
+              <Button onClick={() => handlePasswordResetRequestACB(email)} className="w-full">
                 Send Reset Link
               </Button>
             </DialogFooter>
@@ -290,7 +405,7 @@ const ToggleSingInSignUpForm = (props: LoginProps) => {
               ) : (
                 <Button
                   variant="outline"
-                  onClick={handleResendCode}
+                  onClick={handleResendCodeACB}
                   className="mt-2"
                 >
                   Resend Verification Code
@@ -299,7 +414,7 @@ const ToggleSingInSignUpForm = (props: LoginProps) => {
             </div>
             <DialogFooter>
               <div className="w-full flex justify-between">
-                <Button onClick={handleVerifyCode} className="w-full mr-2">
+                <Button onClick={handleVerifyCodeACB} className="w-full mr-2">
                   Verify
                 </Button>
                 <Button
