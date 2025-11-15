@@ -19,31 +19,11 @@ import { set } from "date-fns";
 const ToggleSingInSignUpForm = (props: LoginProps) => {
   
   const {
-    // email,
-    // setEmail,
-    // password,
-    // setPassword,
-    // status,
-    // setStatus,
     handleSignIn,
     handleSignUp,
     handlePasswordResetRequest,
-    // isLoginDialogOpen,
-    // setIsLoginDialogOpen,
-    // isSignUpDialogOpen,
-    // setIsSignUpDialogOpen,
-    // isPasswordResetDialogOpen,
-    // setIsPasswordResetDialogOpen,
-    // isVerificationDialogOpen,
-    // setIsVerificationDialogOpen,
-    // verificationCode,
-    // setVerificationCode,
     handleVerifyCode,
     handleResendCode,
-    // timer,
-    // canResend,
-    // confirmPassword, 
-    // setConfirmPassword
   } = props;
 
   const [email, setEmail] = useState("");

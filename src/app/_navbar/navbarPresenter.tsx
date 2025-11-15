@@ -20,64 +20,19 @@ import { LoginProps, SearchBarProps } from "./navbarTypes";
 import { CompanyID } from "../api/companies/dataTypes";
 import { isSessionStorageAvailable } from "@/lib/utils/utils";
 
-export class SignUpError extends Error {
-  constructor(message: string) {
-    super(message);
-    // this.name = "SignUpError"; // Optional: gives the error a custom name
-  }
-}
-
-
-export class SignInError extends Error {
-  constructor(message: string) {
-    super(message);
-    // this.name = "SignInError"; // Optional: gives the error a custom name
-  }
-}
-
-
-export class SendVerificationCodeError extends Error {
-  constructor(message: string) {
-    super(message);
-    // this.name = "SendVerificationCodeError"; // Optional: gives the error a custom name
-  }
-}
-
+export class SignUpError extends Error {}
+export class SignInError extends Error {}
+export class SendVerificationCodeError extends Error {}
 
 const NavbarPresenter = () => {
-
   //#region LOGIN
   const router = useRouter();
   const session = useSession();
   const dispatch = useAppDispatch();
   const companyIds = useAppSelector((state) => state.company.companiesIds);
 
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
-  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = useState(false);
-  const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
-    useState(false);
-  const [isVerificationDialogOpen, setIsVerificationDialogOpen] =
-    useState(false);
-  const [timer, setTimer] = useState(120);
-  const [canResend, setCanResend] = useState(false);
-
-
   useEffect(() => {
-    if (timer > 0) {
-      const countdown = setInterval(() => setTimer(timer - 1), 1000);
-      return () => clearInterval(countdown);
-    } else {
-      setCanResend(true);
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    if(isSessionStorageAvailable()){
+    if (isSessionStorageAvailable()) {
       const storedCompanyIds = sessionStorage.getItem("allCompanyIds");
       if (!storedCompanyIds) {
         dispatch(fetchAllCompanyIds());
@@ -87,7 +42,11 @@ const NavbarPresenter = () => {
     }
   }, []);
 
-  const handleSignIn = async (credProps: { method: string, email: string, password: string }) => {
+  const handleSignIn = async (credProps: {
+    method: string;
+    email: string;
+    password: string;
+  }) => {
     try {
       if (credProps.method === "google") {
         await signIn("google");
@@ -101,178 +60,121 @@ const NavbarPresenter = () => {
             redirect: false,
           });
 
-          if (signInResponse && !signInResponse.error) {
-            // setEmail("");
-            // setPassword("");
-            return true;
-          } else {
-            // setStatus("Invalid email or password.");
+          if (signInResponse && !signInResponse.error) return true;
+          else {
             throw new SignInError("Invalid email or password.");
           }
         } else if (status === 201) {
-          // setStatus("You are not a verified user, please signup again!");
-          throw new SignInError("You are not a verified user, please signup again!");
+          throw new SignInError(
+            "You are not a verified user, please signup again!"
+          );
         } else {
-          // setStatus("An error occurred while verifying your account.");
-          throw new SignInError("An error occurred while verifying your account.");
+          throw new SignInError(
+            "An error occurred while verifying your account."
+          );
         }
       }
     } catch (error) {
-      if (error instanceof SignInError) {
-        throw error;
-      }
+      if (error instanceof SignInError) throw error;
       console.error("An error occurred while signing in: ", error);
       return false;
-      // setStatus(
-      //   "An error occurred during the sign-in process. Please try again."
-      // );
     }
   };
 
   const handlePasswordResetRequest = async (email: string) => {
-    // setStatus("");
     try {
       const { ok, resetLink } = await fetchEmailRecoveryToken(email);
-      if (!ok) {
-        // setStatus(
-        //   "Failed to send reset email. Please check the email address."
-        // );
-        return ok;
-      }
+      if (!ok) return ok;
       const emailRes = await sendPasswordResetEmail({ email, resetLink });
-      if (typeof emailRes === "object" && emailRes?.status === 200) {
-        // setStatus("Password reset email sent!");
-        return true;
-      } else {
-        return false;
-        // setStatus(
-        //   "Failed to send reset email. Please check the email address."
-        // );
-        // console.error("EmailJS response not successful:", emailRes);
-      }
+      if (typeof emailRes === "object" && emailRes?.status === 200) return true;
+      else return false;
     } catch (error) {
       console.log("Error sending password reset email:", error);
-
-      // setStatus("Failed to send reset email. Please check the email address.");
       throw error;
     }
   };
 
-  const handleSignUp = async (credProps: { method: string, email: string, password: string }) => {
+  const handleSignUp = async (credProps: {
+    method: string;
+    email: string;
+    password: string;
+  }) => {
     try {
       if (credProps.method === "google") {
         await signIn("google");
         return true;
       } else {
-        const { ok, verificationLink } = await registerNewUser(credProps.email, credProps.password);
-        if (!ok) {
-          // setStatus("Sign up failed. Please check your details and try again.");
-          // throw new SignUpError("Sign up failed. Please check your details and try again.");
-          return false;
-        }
+        const { ok, verificationLink } = await registerNewUser(
+          credProps.email,
+          credProps.password
+        );
+        if (!ok) return false;
         const emailRes = await sendPasswordResetEmail({
           email: credProps.email,
           resetLink: verificationLink,
         });
-
-        // setStatus(
-        //   "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-        // );
-        // setIsSignUpDialogOpen(false);
-        // setIsVerificationDialogOpen(true);
         return true;
       }
     } catch (error) {
       console.error("An error occurred while signing up: ", error);
-      throw new SignUpError("An error occurred during the sign-up process. Please try again.");
+      throw new SignUpError(
+        "An error occurred during the sign-up process. Please try again."
+      );
     }
   };
 
-  const handleVerifyCode = async ({email, verificationCode}: {email: string, verificationCode: string}) => {
-    // try {
-      const {ok} = await verifyUser(email, verificationCode);
-      return ok;
-      // return ok;
-      // if (ok) {
-      //   setStatus("Verification successful! You can now log in.");
-      //   setIsVerificationDialogOpen(false);
-      // } else {
-      //   setStatus("Invalid verification code. Please try again.");
-      // }
-    // } catch (error) {
-    //   console.error("Error verifying code:", error);
-    //   setStatus("An error occurred during verification. Please try again.");
-    // return false;
-    // }
+  const handleVerifyCode = async ({
+    email,
+    verificationCode,
+  }: {
+    email: string;
+    verificationCode: string;
+  }) => {
+    const { ok } = await verifyUser(email, verificationCode);
+    return ok;
   };
 
-
-  const handleResendCode = async ({email, password}: {email: string, password: string}) => {
+  const handleResendCode = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     try {
       try {
         const { ok, verificationLink } = await registerNewUser(email, password);
-        if (!ok) {
-          // setStatus("Sign up failed. Please check your details and try again.");
-          return ok;
-          // throw new SignUpError("Sign up failed. Please check your details and try again.");
-        }
-
+        if (!ok) return ok;
         const emailRes = await sendPasswordResetEmail({
           email,
           resetLink: verificationLink,
         });
-
-        // setStatus(
-        //   "Password reset email sent! If you do not receive the email, please check your email address for any errors."
-        // );
-        // setIsSignUpDialogOpen(false);
-        // setIsVerificationDialogOpen(true);
         return ok;
       } catch (error) {
         console.error("Error during sign up:", error);
-        // setStatus("An error occurred during sign up. Please try again.");
-        throw new SignUpError("An error occurred during sign up. Please try again.");
+        throw new SignUpError(
+          "An error occurred during sign up. Please try again."
+        );
       }
-      // setTimer(120);
-      // setCanResend(false);
     } catch (error) {
       console.error("Error resending verification code:", error);
-      // setStatus("Failed to resend the code. Please try again.");
-      throw new SendVerificationCodeError("Failed to resend the code. Please try again.");
+      throw new SendVerificationCodeError(
+        "Failed to resend the code. Please try again."
+      );
     }
   };
 
   const loginProps: LoginProps = {
-    // email,
-    // setEmail,
-    // password,
-    // setPassword,
-    // status,
-    // setStatus,
     handleSignIn,
     handleSignUp,
     handlePasswordResetRequest,
-    // isLoginDialogOpen,
-    // setIsLoginDialogOpen,
-    // isSignUpDialogOpen,
-    // setIsSignUpDialogOpen,
-    // isPasswordResetDialogOpen,
-    // setIsPasswordResetDialogOpen,
-    // isVerificationDialogOpen,
-    // setIsVerificationDialogOpen,
-    // verificationCode,
-    // setVerificationCode,
     handleVerifyCode,
     handleResendCode,
-    // timer,
-    // canResend,
-    // confirmPassword,
-    // setConfirmPassword,
   };
 
   //#endregion
 
-  //#region SEARCHBAR 
+  //#region SEARCHBAR
 
   const result = useAppSelector((state) => state.company.companiesIds);
   const [search, setSearch] = useState("");
@@ -289,11 +191,9 @@ const NavbarPresenter = () => {
 
   useEffect(() => {
     if (search?.trim()) {
-      const results = companies.filter((company: {
-        id: string;
-        name: string;
-    }) =>
-        company.name.toLowerCase().includes(search?.toLowerCase())
+      const results = companies.filter(
+        (company: { id: string; name: string }) =>
+          company.name.toLowerCase().includes(search?.toLowerCase())
       );
 
       setFilteredResults(results);
@@ -313,7 +213,6 @@ const NavbarPresenter = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-
     if (e.key === "Enter") {
       setShowResults(false);
       handleSearch(search);
@@ -331,7 +230,6 @@ const NavbarPresenter = () => {
     setSearch(query);
   };
 
-
   const searchBarProps: SearchBarProps = {
     search,
     showResults,
@@ -339,7 +237,7 @@ const NavbarPresenter = () => {
     handleKeyDown,
     handleSelect,
     handleInputChange,
-  }
+  };
 
   //#endregion
 
